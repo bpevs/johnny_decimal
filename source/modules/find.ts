@@ -25,12 +25,12 @@ export async function findPathFromLocation(location: Location) {
     // Match:
     //   - 2-digit category number is not preceded by `.` or `-`
     //   - Category number is directly followed by space + name
-    const matchDirStartingWithCategory = `[^.-]${category}\\s[a-zA-Z]+$`;
+    const matchDirStartingWithCategory = `[^.-]${category}\\s[^/]+$`;
     const match = [RegExp(matchDirStartingWithCategory)];
     return (walk(home, { ...walkOptions, match })).next();
   } else if (area != null) {
     // Match: `\d\d-\d\d` is directly followed by space + name
-    const matchDirStartingWithArea = `${area}\\s[a-zA-Z]+$`;
+    const matchDirStartingWithArea = `${area}\\s[^/]+$`;
     const match = [RegExp(matchDirStartingWithArea)];
     return (walk(home, { ...walkOptions, match })).next();
   }
