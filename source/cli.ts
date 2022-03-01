@@ -4,12 +4,13 @@
 import { parse } from "https://deno.land/std/flags/mod.ts";
 import { basename } from "https://deno.land/std@0.127.0/path/mod.ts";
 import {
+  findFilesFromName,
   findPathFromLocation,
   getShallowFileList,
   help as displayHelp,
   list,
   Location,
-  logDir,
+  logFiles,
   open,
 } from "./mod.ts";
 
@@ -30,7 +31,7 @@ if (command === "ls" || command === "list") {
   if (Location.isLocationString(locationString)) {
     const location = Location.fromFilename(locationString);
     const path = await findPathFromLocation(location);
-    logDir(basename(path), await getShallowFileList(path));
+    logFiles(basename(path), await getShallowFileList(path));
     Deno.exit(0);
   }
 
@@ -39,9 +40,9 @@ if (command === "ls" || command === "list") {
   if (Location.isLocationString(dirName)) {
     const location = Location.fromFilename(dirName);
     const path = await findPathFromLocation(location);
-    logDir(basename(path), await getShallowFileList(path));
+    logFiles(basename(path), await getShallowFileList(path));
   } else {
-    logDir("Home", await list());
+    logFiles("Home", await list());
   }
   Deno.exit(0);
 }
@@ -50,6 +51,10 @@ if (command === "o" || command === "open") {
   const [locationString] = args;
   await open(Location.fromFilename(locationString));
   Deno.exit(0);
+}
+
+if (command === "search") {
+  logFiles("Search Results", await findFilesFromName(args[0]));
 }
 
 if (Location.isLocationString(command)) {

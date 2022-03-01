@@ -1,6 +1,7 @@
 import { walk } from "https://deno.land/std@0.127.0/fs/mod.ts";
 import { Location } from "./Location.ts";
 import { getHome } from "./environment.ts";
+import { sortByName } from "../utilities/sortByName.ts";
 
 const walkOptions = Object.freeze({
   maxDepth: 3, // $JD_HOME/AREA/CATEGORY/ID -> 3
@@ -31,4 +32,19 @@ export async function findPathFromLocation(
   const path = (await walkResults.next())?.value?.path;
   if (!path) throw new Error("No Location Found");
   return path;
+}
+
+export async function findFilesFromName(
+  name: string,
+): Promise<Array<Deno.DirEntry>> {
+  const results: Array<Deno.DirEntry> = [];
+  const match = [new RegExp(name, "i")];
+  const walkResults = walk(getHome(), { ...walkOptions, match });
+
+  for await (const file of walkResults) {
+    if (file.name[0] === ".") continue;
+    results.push(file);
+  }
+
+  return results.sort(sortByName);
 }

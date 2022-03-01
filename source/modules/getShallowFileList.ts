@@ -1,3 +1,6 @@
+import { Location } from "./Location.ts";
+import { sortByName } from "../utilities/sortByName.ts";
+
 export interface Options {
   includeHidden?: boolean;
 }
@@ -14,8 +17,4 @@ export async function getShallowFileList(
   }
 
   return contents.sort(sortByName);
-}
-
-function sortByName(a: Deno.DirEntry, b: Deno.DirEntry) {
-  return a.name.localeCompare(b.name);
 }
