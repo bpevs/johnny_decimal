@@ -17,22 +17,26 @@ if (help && _.length === 0) {
 
 if (command === "ls" || command === "list") {
   const [locationString] = args;
+
   if (Location.isLocationString(locationString)) {
     await list(Location.fromFilename(locationString));
+    Deno.exit(0);
+  }
+
+  const dir = (Deno.cwd() || "").split("/") || [];
+  const dirName = dir[dir.length - 1];
+
+  if (Location.isLocationString(dirName)) {
+    await list(Location.fromFilename(dirName));
   } else {
     await list();
   }
+
   Deno.exit(0);
 }
 
-if (command === "open") {
+if (command === "o" || command === "open") {
   const [locationString] = args;
   await open(Location.fromFilename(locationString));
   Deno.exit(0);
-}
-
-if (Location.isLocationString(command)) {
-  await list(Location.fromFilename(command));
-} else {
-  await list();
 }
