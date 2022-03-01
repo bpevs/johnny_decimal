@@ -11,7 +11,6 @@ jd() {
   elif [[ "$1" =~ ^[0-9]{2}$ ]]; then
     # Matches category regex: `dd`. Navigate to category
     cd $JD_HOME/*/${1}*/ 2>/dev/null;
-  # User is specifying "cd". Check for id navigation
   elif [[ "$1" =~ ^[0-9]{2}\.[0-9]{2}$ ]]; then
     # Matches id regex: `dd.dd`. Navigate to id
     cd $JD_HOME/*/*/${1}*/ 2>/dev/null;
