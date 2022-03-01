@@ -33,7 +33,7 @@ deno install --allow-read --allow-env --allow-run --name=johnny_decimal -f sourc
 ```sh
 export JD_HOME="$HOME/Root"
 export JD_DEFAULT_APP="Sublime Text"
-````
+```
 
 ### Usage
 

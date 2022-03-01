@@ -2,7 +2,16 @@
  * CLI tool that can be used for interacting with a local filesystem
  */
 import { parse } from "https://deno.land/std/flags/mod.ts";
-import { help as displayHelp, list, Location, open } from "./mod.ts";
+import { basename } from "https://deno.land/std@0.127.0/path/mod.ts";
+import {
+  findPathFromLocation,
+  getShallowFileList,
+  help as displayHelp,
+  list,
+  Location,
+  logDir,
+  open,
+} from "./mod.ts";
 
 // Use raw args to keep categories and ids as strings
 const [command, ...args] = Deno.args;
@@ -19,24 +28,33 @@ if (command === "ls" || command === "list") {
   const [locationString] = args;
 
   if (Location.isLocationString(locationString)) {
-    await list(Location.fromFilename(locationString));
+    const location = Location.fromFilename(locationString);
+    const path = await findPathFromLocation(location);
+    logDir(basename(path), await getShallowFileList(path));
     Deno.exit(0);
   }
 
-  const dir = (Deno.cwd() || "").split("/") || [];
-  const dirName = dir[dir.length - 1];
+  const dirName = basename(Deno.cwd());
 
   if (Location.isLocationString(dirName)) {
-    await list(Location.fromFilename(dirName));
+    const location = Location.fromFilename(dirName);
+    const path = await findPathFromLocation(location);
+    logDir(basename(path), await getShallowFileList(path));
   } else {
-    await list();
+    logDir("Home", await list());
   }
-
   Deno.exit(0);
 }
 
 if (command === "o" || command === "open") {
   const [locationString] = args;
   await open(Location.fromFilename(locationString));
+  Deno.exit(0);
+}
+
+if (Location.isLocationString(command)) {
+  const location = Location.fromFilename(command);
+  const path = await findPathFromLocation(location);
+  if (!path) throw new Error("No Location Found");
   Deno.exit(0);
 }

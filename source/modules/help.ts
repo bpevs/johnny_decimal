@@ -1,6 +1,7 @@
 const commands = {
   "jd --help": "Show this message",
-  "jd [<location>]": "Change directory to location. If location ommitted, go to root.",
+  "jd [<location>]":
+    "Change directory to location. If location ommitted, go to root.",
   "jd ls [<location>]": "List files in a location",
   "jd open <location>": "Open location, using $JD_DEFAULT_APP",
 };

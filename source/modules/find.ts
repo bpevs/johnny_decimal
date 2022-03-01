@@ -11,27 +11,24 @@ const walkOptions = Object.freeze({
  * Find Filesystem Path from Location
  * @todo Memoize
  */
-export async function findPathFromLocation(location: Location) {
+export async function findPathFromLocation(
+  { id, category, area }: Location,
+): Promise<string> {
   const home = getHome();
-  if (!home) return;
+  if (!home) throw new Error("No $JD_HOME exists");
 
-  const { id, category, area } = location;
+  let match;
 
-  if (id != null) {
-    const matchDirStartingWithId = `${id.replace(".", "\\.")}`;
-    const match = [RegExp(matchDirStartingWithId)];
-    return (await walk(home, { ...walkOptions, match })).next();
-  } else if (category != null) {
-    // Match:
-    //   - 2-digit category number is not preceded by `.` or `-`
-    //   - Category number is directly followed by space + name
-    const matchDirStartingWithCategory = `[^.-]${category}\\s[^/]+$`;
-    const match = [RegExp(matchDirStartingWithCategory)];
-    return (walk(home, { ...walkOptions, match })).next();
-  } else if (area != null) {
-    // Match: `\d\d-\d\d` is directly followed by space + name
-    const matchDirStartingWithArea = `${area}\\s[^/]+$`;
-    const match = [RegExp(matchDirStartingWithArea)];
-    return (walk(home, { ...walkOptions, match })).next();
-  }
+  if (id != null) match = RegExp(`${id.replace(".", "\\.")}`);
+  // - 2-digit category number is not preceded by `.` or `-`
+  // - Category number is directly followed by space + name
+  else if (category != null) match = RegExp(`[^.-]${category}\\s[^/]+$`);
+  // Match: `\d\d-\d\d` is directly followed by space + name
+  else if (area != null) match = RegExp(`${area}\\s[^/]+$`);
+  else throw new Error("Invalid Location");
+
+  const walkResults = await walk(home, { ...walkOptions, match: [match] });
+  const path = (await walkResults.next())?.value?.path;
+  if (!path) throw new Error("No Location Found");
+  return path;
 }
