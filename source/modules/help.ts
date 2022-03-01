@@ -1,7 +1,8 @@
 const commands = {
   "jd --help": "Show this message",
-  "jd <location>": "Open location, or list locations in an Area/Category",
+  "jd <location>": "Chagne directory to location",
   "jd list [<location>]": "List files in a location",
+  "jd open [<location>]": "Open location, using $JD_DEFAULT_APP",
 };
 
 const helpText = `\
@@ -14,10 +15,6 @@ Note: <location> refers to a Johnny Decimal location. This includes:
 
 Usage:\
 `;
-
-// const usageText = `\
-// ${commands.map(formatCommandString)}
-// `;
 
 export function help() {
   console.log(helpText);
