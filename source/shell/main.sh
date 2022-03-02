@@ -20,5 +20,5 @@ jd() {
   fi
 
   # Deno script also handles logging around cd functionality.
-  johnny_decimal $*
+  $DENO_DIR/bin/jd $*
 }

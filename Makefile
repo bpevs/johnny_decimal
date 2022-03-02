@@ -1,8 +1,8 @@
 start:
-	deno run --allow-read --allow-env --allow-run source/cli.ts
+	deno run --allow-read --allow-write --allow-env --allow-run source/main.ts
 
 install:
-	deno install --allow-read --allow-env --allow-run --name=johnny_decimal source/cli.ts
+	deno install --allow-read --allow-write --allow-env --allow-run --name=jd source/main.ts
 
 uninstall:
-	deno uninstall johnny_decimal
+	deno uninstall jd
