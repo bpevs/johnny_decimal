@@ -1,4 +1,4 @@
-import { walk } from "https://deno.land/std@0.127.0/fs/mod.ts";
+import { walk } from "https://deno.land/std/fs/mod.ts";
 import { Location } from "./Location.ts";
 import { getHome } from "./environment.ts";
 import { sortByLocation } from "./sortByLocation.ts";

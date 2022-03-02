@@ -5,8 +5,8 @@
  * export JD_HOME="~/Documents"
  * export JD_DEFAULT_APP="Sublime Text"
  */
-import "https://deno.land/std@0.127.0/dotenv/load.ts";
-import { config } from "https://deno.land/std@0.127.0/dotenv/mod.ts";
+import "https://deno.land/std/dotenv/load.ts";
+import { config } from "https://deno.land/std/dotenv/mod.ts";
 
 const JD_HOME: string = "JD_HOME";
 const JD_DEFAULT_APP: string = "JD_DEFAULT_APP";

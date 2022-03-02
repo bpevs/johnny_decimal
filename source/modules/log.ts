@@ -1,4 +1,4 @@
-import { bold, red } from "https://deno.land/std@0.127.0/fmt/colors.ts";
+import { bold, red } from "https://deno.land/std/fmt/colors.ts";
 import { Location } from "./Location.ts";
 
 const { AREA, CATEGORY, ID } = Location.TYPE;

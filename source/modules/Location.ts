@@ -11,15 +11,6 @@ export class Location {
   readonly category?: string;
   readonly id?: string;
 
-  static isLocationString(locationString: string): boolean {
-    try {
-      Location.fromFilename(locationString);
-    } catch (e) {
-      return false;
-    }
-    return true;
-  }
-
   static fromFilename(filename: string) {
     const prefix = filename.split(" ")[0];
     return new Location(prefix);
@@ -38,6 +29,15 @@ export class Location {
   static isId(locationString: string) {
     const prefix = locationString.split(" ")[0];
     return /^[0-9]{2}\.[0-9]{2}$/.test(prefix);
+  }
+
+  static isLocationString(locationString: string): boolean {
+    try {
+      Location.fromFilename(locationString);
+    } catch (e) {
+      return false;
+    }
+    return true;
   }
 
   constructor(locationString: string) {
