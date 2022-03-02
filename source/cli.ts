@@ -55,6 +55,12 @@ if (command === "o" || command === "open") {
 
 if (command === "search") {
   logFiles("Search Results", await findFilesFromName(args[0]));
+  Deno.exit(0);
+}
+
+if (command === "index") {
+  logFiles("Search Results", await findFilesFromName(""));
+  Deno.exit(0);
 }
 
 if (Location.isLocationString(command)) {

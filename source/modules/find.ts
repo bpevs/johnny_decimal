@@ -1,7 +1,7 @@
 import { walk } from "https://deno.land/std@0.127.0/fs/mod.ts";
 import { Location } from "./Location.ts";
 import { getHome } from "./environment.ts";
-import { sortByName } from "../utilities/sortByName.ts";
+import { sortByLocation } from "./sortByLocation.ts";
 
 const walkOptions = Object.freeze({
   maxDepth: 3, // $JD_HOME/AREA/CATEGORY/ID -> 3
@@ -46,5 +46,5 @@ export async function findFilesFromName(
     results.push(file);
   }
 
-  return results.sort(sortByName);
+  return results.sort(sortByLocation);
 }

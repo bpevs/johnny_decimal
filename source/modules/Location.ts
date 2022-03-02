@@ -21,21 +21,37 @@ export class Location {
   }
 
   static fromFilename(filename: string) {
-    return new Location(filename.split(" ")[0]);
+    const prefix = filename.split(" ")[0];
+    return new Location(prefix);
+  }
+
+  static isArea(locationString: string) {
+    const prefix = locationString.split(" ")[0];
+    return /^[0-9]{2}-[0-9]{2}$/.test(prefix);
+  }
+
+  static isCategory(locationString: string) {
+    const prefix = locationString.split(" ")[0];
+    return /^[0-9]{2}$/.test(prefix);
+  }
+
+  static isId(locationString: string) {
+    const prefix = locationString.split(" ")[0];
+    return /^[0-9]{2}\.[0-9]{2}$/.test(prefix);
   }
 
   constructor(locationString: string) {
-    if (isId(locationString)) {
+    if (Location.isId(locationString)) {
       const id = Number(locationString);
       const category = Math.floor(id);
       this.id = formatId(id);
       this.category = formatCategory(category);
       this.area = formatAreaFromCategory(category);
-    } else if (isCategory(locationString)) {
+    } else if (Location.isCategory(locationString)) {
       const category = Number(locationString);
       this.category = formatCategory(category);
       this.area = formatAreaFromCategory(category);
-    } else if (isArea(locationString)) {
+    } else if (Location.isArea(locationString)) {
       this.area = locationString;
     } else {
       throw new Error("Invalid Location String");
@@ -83,31 +99,4 @@ function formatCategory(category: number): string {
 
 function formatId(id: number): string {
   return String(id.toFixed(2));
-}
-
-/**
- *  Predicates for checking validity of location strings
- */
-function isArea(locationString: string): boolean {
-  if (Number(locationString)) return false;
-
-  const range = locationString.split("-");
-  if (range.length !== 2) return false;
-
-  const [start, end] = range;
-  return (Number(end) - Number(start) === 9);
-}
-
-function isCategory(locationString: string): boolean {
-  return (
-    Number(locationString) <= 99 &&
-    locationString.split(".").length === 1
-  );
-}
-
-function isId(locationString: string): boolean {
-  return (
-    Number(locationString) <= 99 &&
-    locationString.split(".").length === 2
-  );
 }

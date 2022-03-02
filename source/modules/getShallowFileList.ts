@@ -1,5 +1,5 @@
 import { Location } from "./Location.ts";
-import { sortByName } from "../utilities/sortByName.ts";
+import { sortByLocation } from "./sortByLocation.ts";
 
 export interface Options {
   includeHidden?: boolean;
@@ -16,5 +16,5 @@ export async function getShallowFileList(
     contents.push(file);
   }
 
-  return contents.sort(sortByName);
+  return contents.sort(sortByLocation);
 }

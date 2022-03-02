@@ -1,10 +1,10 @@
-import { bold } from "https://deno.land/std@0.127.0/fmt/colors.ts";
+import { bold, red } from "https://deno.land/std@0.127.0/fmt/colors.ts";
 import { Location } from "./Location.ts";
 
 const { AREA, CATEGORY, ID } = Location.TYPE;
 const indent = "  ";
 
-// @todo: See additional sort and log issues with `jd search 1`
+// @todo: Include containing directories if including deep locations
 export function logFiles(
   name: string,
   contents: Array<Deno.DirEntry>,
@@ -22,7 +22,7 @@ export function logFiles(
 
   const contentsString = contents.map(({ name }) => {
     if (numDepths <= 1) return name;
-    if (!Location.isLocationString(name)) return name;
+    if (!Location.isLocationString(name)) return red(name);
 
     const location = Location.fromFilename(name);
     if (location.depth === AREA) return name;

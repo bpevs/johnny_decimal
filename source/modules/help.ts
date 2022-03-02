@@ -4,6 +4,7 @@ const commands = {
     "Change directory to location. If location ommitted, go to root.",
   "jd ls [<location>]": "List files in a location",
   "jd open <location>": "Open location, using $JD_DEFAULT_APP",
+  "jd index": "Show all directories in your JD filesystem",
 };
 
 const helpText = `\
