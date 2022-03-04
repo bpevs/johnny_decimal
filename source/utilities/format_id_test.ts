@@ -3,7 +3,7 @@ import {
   getFormattedAreaId,
   getFormattedCategoryId,
   getFormattedItemId,
-} from "./formatId.ts";
+} from "./format_id.ts";
 
 Deno.test("getFormattedItemId", () => {
   assertEquals(getFormattedItemId({ itemId: "23.02" }), "23.02");

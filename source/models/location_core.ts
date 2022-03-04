@@ -2,7 +2,7 @@ import {
   getFormattedAreaId,
   getFormattedCategoryId,
   getFormattedItemId,
-} from "../utilities/formatId.ts";
+} from "../utilities/format_id.ts";
 
 import {
   isAreaFilename,
@@ -15,7 +15,7 @@ import {
   isLocationId,
   parseId,
   regex,
-} from "../utilities/idUtilities.ts";
+} from "../utilities/id_utilities.ts";
 
 export enum LocationType {
   AREA = "AREA",

@@ -10,7 +10,7 @@ import {
   JD_FILESYSTEM_DIR,
   SH_DIR,
 } from "./constants.ts";
-import { Directory } from "./models/Directory.ts";
+import { Directory } from "./models/directory.ts";
 
 const directory = new Directory({
   $HOME: HOME_DIR,
@@ -22,7 +22,6 @@ const directory = new Directory({
 
 directory.registerAlias("ls", "list");
 directory.registerAlias("o", "open");
-
 
 // Use raw args to keep categories and ids as strings
 const [command, ...args] = Deno.args;

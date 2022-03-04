@@ -2,10 +2,10 @@
  * Exports all commands and modules for use in other systems
  */
 
-export * from "./models/Directory.ts";
-export * from "./models/DirectoryCore.ts";
-export * from "./models/Location.ts";
-export * from "./models/LocationCore.ts";
+export * from "./models/directory.ts";
+export * from "./models/directory_core.ts";
+export * from "./models/location.ts";
+export * from "./models/location_core.ts";
 
-export * from "./utilities/logLocation.ts";
-export * from "./utilities/sortByLocation.ts";
+export * from "./utilities/log_location.ts";
+export * from "./utilities/sort_by_location.ts";

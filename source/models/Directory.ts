@@ -1,7 +1,7 @@
 import { basename, copySync, ensureDir, exists, join, walk } from "../deps.ts";
-import { logLocation } from "../utilities/logLocation.ts";
-import { DirectoryCore } from "./DirectoryCore.ts";
-import { Location } from "./Location.ts";
+import { logLocation } from "../utilities/log_location.ts";
+import { DirectoryCore } from "./directory_core.ts";
+import { Location } from "./location.ts";
 
 const options = Object.freeze({
   maxDepth: 3, // $JD_HOME/AREA/CATEGORY/ID -> 3
