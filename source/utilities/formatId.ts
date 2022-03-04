@@ -1,7 +1,5 @@
-export function getFormattedItemId(
-  { itemId }: { itemId?: string },
-): string {
-  return formatItemId(itemId);
+export function getFormattedItemId({ itemId }: { itemId: string }): string {
+  return formatItemId(Number(itemId));
 }
 
 export function getFormattedCategoryId(
@@ -9,7 +7,7 @@ export function getFormattedCategoryId(
 ): string {
   if (categoryId) return formatCategoryId(Number(categoryId));
   if (itemId) return formatCategoryId(Math.floor(Number(itemId)));
-  throw error("getFormattedCategoryId: no id given");
+  throw new Error("getFormattedCategoryId: no id given");
 }
 
 export function getFormattedAreaId(
@@ -21,8 +19,8 @@ export function getFormattedAreaId(
 ): string {
   if (areaId) return areaId;
   if (categoryId) return getAreaIdFromCategoryId(Number(categoryId));
-  if (itemId) return getAreaIdFromCategoryId(Math.floor(Number(item)));
-  throw error("getFormattedAreaId: no id given");
+  if (itemId) return getAreaIdFromCategoryId(Math.floor(Number(itemId)));
+  throw new Error("getFormattedAreaId: no id given");
 }
 
 function getAreaIdFromCategoryId(category: number): string {

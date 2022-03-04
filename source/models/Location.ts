@@ -1,4 +1,4 @@
-import { Location as LocationCore } from "../../core/models/Location.ts";
+import { LocationCore } from "./LocationCore.ts";
 
 export class Location extends LocationCore {
   async getContents(): Promise<Deno.DirEntry[]> {

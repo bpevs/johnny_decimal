@@ -6,13 +6,12 @@
  * export JD_DEFAULT_APP="Sublime Text"
  */
 import "https://deno.land/std/dotenv/load.ts";
-import { config } from "https://deno.land/std/dotenv/mod.ts";
-import { dirname, fromFileUrl, join } from "https://deno.land/std/path/mod.ts";
+import { config, dirname, fromFileUrl, join } from "./deps.ts";
 
 // ~/.jd is used for installation script
 export const HOME_DIR = Deno.env.get("HOME") || "~";
 
-export const JD_CONFIG_DIR = join(homeDir, ".jd") || "~";
+export const JD_CONFIG_DIR = join(HOME_DIR, ".jd") || "~";
 export const JD_DEFAULT_APP = Deno.env.get("JD_DEFAULT_APP") || "Finder";
 export const JD_FILESYSTEM_DIR = Deno.env.get("JD_HOME") || "~";
 

@@ -2,11 +2,10 @@
  * Exports all commands and modules for use in other systems
  */
 
-export * from "./modules/environment.ts";
-export * from "./modules/find.ts";
-export * from "./modules/getShallowFileList.ts";
-export * from "./modules/help.ts";
-export * from "./modules/Location.ts";
-export * from "./modules/log.ts";
-export * from "./modules/open.ts";
-export * from "./modules/sortByLocation.ts";
+export * from "./models/Directory.ts";
+export * from "./models/DirectoryCore.ts";
+export * from "./models/Location.ts";
+export * from "./models/LocationCore.ts";
+
+export * from "./utilities/logLocation.ts";
+export * from "./utilities/sortByLocation.ts";

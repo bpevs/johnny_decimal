@@ -1,9 +1,4 @@
-import {
-  isAreaFilename,
-  isCategoryFilename,
-  isItemFilename,
-  isLocationFilename,
-} from "./predicates.ts";
+import { Location } from "../models/Location.ts";
 
 /**
  * Sort used for ordering lists of Locations.
@@ -29,12 +24,12 @@ export function sortByLocation(a: Deno.DirEntry, b: Deno.DirEntry) {
 
   // If depth is different, sort by depth
   if (aDepth !== bDepth) {
-    if (isAreaFilename(a.name)) return -1;
-    if (isAreaFilename(b.name)) return 1;
-    if (isCategoryFilename(a.name)) return -1;
-    if (isCategoryFilename(b.name)) return 1;
-    if (isItemFilename(a.name)) return -1;
-    if (isItemFilename(b.name)) return 1;
+    if (Location.isAreaFilename(a.name)) return -1;
+    if (Location.isAreaFilename(b.name)) return 1;
+    if (Location.isCategoryFilename(a.name)) return -1;
+    if (Location.isCategoryFilename(b.name)) return 1;
+    if (Location.isItemFilename(a.name)) return -1;
+    if (Location.isItemFilename(b.name)) return 1;
   }
 
   const aLastTwo = Number(a.name.substring(3, 5));
