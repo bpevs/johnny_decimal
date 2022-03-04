@@ -1,7 +1,9 @@
-import { Location } from "../modules/Location.ts";
-
-const { isLocationString, isArea, isCategory, isId } = Location;
-const { AREA, CATEGORY, ID } = Location.TYPE;
+import {
+  isAreaFilename,
+  isCategoryFilename,
+  isItemFilename,
+  isLocationFilename,
+} from "./predicates.ts";
 
 /**
  * Sort used for ordering lists of Locations.
@@ -26,15 +28,13 @@ export function sortByLocation(a: Deno.DirEntry, b: Deno.DirEntry) {
   if (firstTwoSort) return firstTwoSort;
 
   // If depth is different, sort by depth
-  const aDepth = Location.fromFilename(a.name).depth;
-  const bDepth = Location.fromFilename(b.name).depth;
   if (aDepth !== bDepth) {
-    if (aDepth === AREA) return -1;
-    if (bDepth === AREA) return 1;
-    if (aDepth === CATEGORY) return -1;
-    if (bDepth === CATEGORY) return 1;
-    if (aDepth === ID) return -1;
-    if (bDepth === ID) return 1;
+    if (isAreaFilename(a.name)) return -1;
+    if (isAreaFilename(b.name)) return 1;
+    if (isCategoryFilename(a.name)) return -1;
+    if (isCategoryFilename(b.name)) return 1;
+    if (isItemFilename(a.name)) return -1;
+    if (isItemFilename(b.name)) return 1;
   }
 
   const aLastTwo = Number(a.name.substring(3, 5));

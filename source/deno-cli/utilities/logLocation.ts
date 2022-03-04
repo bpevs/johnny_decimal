@@ -1,11 +1,11 @@
 import { bold, red } from "https://deno.land/std/fmt/colors.ts";
-import { Location } from "./Location.ts";
+import { Location } from "../models/Location.ts";
 
 const { AREA, CATEGORY, ID } = Location.TYPE;
 const indent = "  ";
 
 // @todo: Include containing directories if including deep locations
-export function logFiles(
+export function logLocation(
   name: string,
   contents: Array<Deno.DirEntry>,
 ) {
