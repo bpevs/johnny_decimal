@@ -33,7 +33,9 @@ export class Directory extends DirectoryCore {
 
     for await (const { path, name } of matches) {
       if (name[0] === ".") continue;
-      results.push(new Location({ name, path }));
+      try {
+        results.push(new Location({ name, path }));
+      } catch(e) {}
     }
 
     return results;
@@ -48,7 +50,7 @@ export class Directory extends DirectoryCore {
   }
 
   listAllLocations() {
-    return this.findLocations([]);
+    return this.findLocations([new RegExp("")]);
   }
 
   commands = {
@@ -69,6 +71,13 @@ export class Directory extends DirectoryCore {
         "jd ls [<location>]": "List files in a location",
         "jd open <location>": "Open location, using $JD_DEFAULT_APP",
         "jd index": "Show all directories in your JD filesystem",
+      });
+    },
+
+    index: async () => {
+      const locations = await this.listAllLocations();
+      locations.forEach(location => {
+        console.log(location.name)
       });
     },
 
@@ -135,22 +144,11 @@ export class Directory extends DirectoryCore {
     },
 
     search: async ([str]: string[]) => {
-      const [location] = await this.findLocationsById(str);
-      const { path } = location;
+      const locations = await this.findLocationsByName(str);
 
-      if (!path || !await exists(path)) {
-        const locationPath = location ? location.toString() : "Directory";
-        throw new Error(`${locationPath} does not exist`);
-      }
-
-      await Deno.run({
-        cmd: ["open", "-a", this.defaultApp, path],
-        stdin: "piped",
-        stdout: "piped",
-        stderr: "piped",
-      }).status();
-
-      logLocation("Search Results", await location.getContents());
+      locations.forEach(location => {
+        console.log(location.name)
+      });
     },
 
     setup: async () => {

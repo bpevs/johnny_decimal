@@ -8,4 +8,4 @@ uninstall:
 	deno uninstall jd
 
 test:
-	deno test --allow-read
+	deno test --allow-env --allow-read

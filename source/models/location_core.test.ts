@@ -1,4 +1,8 @@
-import { assert, assertExists, assertEquals } from "https://deno.land/std/testing/asserts.ts";
+import {
+  assert,
+  assertEquals,
+  assertExists,
+} from "https://deno.land/std/testing/asserts.ts";
 import { LocationCore as Location } from "./location_core.ts";
 
 Deno.test("Should have static methods", () => {

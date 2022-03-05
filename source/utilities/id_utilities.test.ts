@@ -1,16 +1,21 @@
-import { assert, assertEquals, assertMatch, assertNotMatch } from "https://deno.land/std/testing/asserts.ts";
+import {
+  assert,
+  assertEquals,
+  assertMatch,
+  assertNotMatch,
+} from "https://deno.land/std/testing/asserts.ts";
 
 import {
-  regex,
-  parseId,
-  isAreaId,
-  isCategoryId,
-  isItemId,
-  isLocationId,
   isAreaFilename,
+  isAreaId,
   isCategoryFilename,
+  isCategoryId,
   isItemFilename,
-  isLocationFilename
+  isItemId,
+  isLocationFilename,
+  isLocationId,
+  parseId,
+  regex,
 } from "./id_utilities.ts";
 
 const itemId = "23.04";
