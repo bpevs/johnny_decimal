@@ -2,6 +2,7 @@ import { basename, copySync, ensureDir, exists, join, walk } from "../deps.ts";
 import { logLocation } from "../utilities/log_location.ts";
 import { DirectoryCore } from "./directory_core.ts";
 import { Location } from "./location.ts";
+import { sortByLocation } from "../utilities/sort_by_location.ts";
 
 const options = Object.freeze({
   maxDepth: 3, // $JD_HOME/AREA/CATEGORY/ID -> 3
@@ -109,8 +110,11 @@ export class Directory extends DirectoryCore {
         const [location] = await this.findLocationsById(id);
         logLocation(location.name, await location.getContents());
       } else {
-        const [location] = await this.findLocationsByName(dirName);
-        logLocation(location.name, await location.getContents());
+        const contents: Array<Deno.DirEntry> = [];
+        for await (const file of Deno.readDir(this.homeDir)) {
+          if (file.name[0] !== ".") contents.push(file);
+        }
+        logLocation("Home", contents);
       }
       Deno.exit(0);
     },

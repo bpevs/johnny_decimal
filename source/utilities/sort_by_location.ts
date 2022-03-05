@@ -1,4 +1,4 @@
-import { Location } from "../models/Location.ts";
+import { Location } from "../models/location.ts";
 
 /**
  * Sort used for ordering lists of Locations.
@@ -10,8 +10,8 @@ import { Location } from "../models/Location.ts";
  */
 export function sortByLocation(a: Deno.DirEntry, b: Deno.DirEntry) {
   // If not a location, sort to bottom.
-  const aIsLocation = isLocationString(a.name);
-  const bIsLocation = isLocationString(b.name);
+  const aIsLocation = Location.isLocationFilename(a.name);
+  const bIsLocation = Location.isLocationFilename(b.name);
   if (aIsLocation && !bIsLocation) return -1;
   if (!aIsLocation && bIsLocation) return 1;
   if (!aIsLocation && !bIsLocation) return a.name.localeCompare(b.name);
@@ -23,6 +23,8 @@ export function sortByLocation(a: Deno.DirEntry, b: Deno.DirEntry) {
   if (firstTwoSort) return firstTwoSort;
 
   // If depth is different, sort by depth
+  const aDepth = (new Location({ path: "", name: a.name })).depth;
+  const bDepth = (new Location({ path: "", name: b.name })).depth;
   if (aDepth !== bDepth) {
     if (Location.isAreaFilename(a.name)) return -1;
     if (Location.isAreaFilename(b.name)) return 1;
