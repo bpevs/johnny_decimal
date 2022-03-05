@@ -27,8 +27,8 @@ export class LocationCore {
   static readonly TYPE = LocationType;
   static format = {
     areaId: getFormattedAreaId,
-    category: getFormattedCategoryId,
-    item: getFormattedItemId,
+    categoryId: getFormattedCategoryId,
+    itemId: getFormattedItemId,
   };
   static regex = regex;
   static parseId = parseId;
@@ -81,7 +81,7 @@ export class LocationCore {
   }
 
   get id(): string {
-    const id = this.area || this.category || this.item;
+    const id = this.item || this.category || this.item;
     if (id) return id;
     throw new Error("No id");
   }

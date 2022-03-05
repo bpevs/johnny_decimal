@@ -19,8 +19,8 @@ export class DirectoryCore {
     this.commands[aliasName] = this.commands[commandName];
   }
 
-  registerCommand(command: any) {
-    this.commands[command.name] = command.bind(this);
+  registerCommand(name: string, command: any) {
+    this.commands[name] = command.bind(this);
 
     if (Array.isArray(command.alias)) {
       command.alias.forEach((alias: string) => {
