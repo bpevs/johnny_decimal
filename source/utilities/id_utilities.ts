@@ -15,7 +15,17 @@ export const regex = {
   },
 };
 
-export const parseId = (str: string = "") => str.split(" ")[0];
+export const parseId = (str: string = "") => {
+  const id = str.split(" ")[0];
+  if (
+    regex.area.test(id) ||
+    regex.category.test(id) ||
+    regex.item.test(id)
+  ) {
+    return id;
+  }
+  return "";
+};
 
 /**
  * ID Predicate Functions.

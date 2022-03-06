@@ -6,13 +6,17 @@
  * export JD_DEFAULT_APP="Sublime Text"
  */
 import "https://deno.land/std/dotenv/load.ts";
-import { config, dirname, fromFileUrl, join } from "./deps.ts";
+import { join } from "./deps.ts";
 
-// ~/.jd is used for installation script
-export const HOME_DIR = Deno.env.get("HOME") || "~";
+// Unix $HOME
+export const $HOME = (() => {
+  const home = Deno.env.get("HOME");
+  if (!home) throw new Error("$HOME is undefined");
+  return home;
+})();
 
-export const JD_CONFIG_DIR = join(HOME_DIR, ".jd") || "~";
-export const JD_DEFAULT_APP = Deno.env.get("JD_DEFAULT_APP") || "Finder";
-export const JD_FILESYSTEM_DIR = Deno.env.get("JD_HOME") || "~";
+// Johnny Decimal Configs, Shell Scripts, and Plugins are housed here
+export const $JD_DIR = Deno.env.get("JD_DIR") || join($HOME, ".jd");
 
-export const SH_DIR = join(dirname(fromFileUrl(import.meta.url)), "./shell");
+// The root of the Johnny Decimal Filesystem
+export const $JD_HOME = Deno.env.get("JD_HOME");

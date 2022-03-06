@@ -3,7 +3,7 @@ import {
   assertEquals,
   assertExists,
 } from "https://deno.land/std/testing/asserts.ts";
-import { LocationCore as Location } from "./location_core.ts";
+import { LocationCore as Location } from "../location_core.ts";
 
 Deno.test("Should have static methods", () => {
   assert(Location.TYPE.AREA === "AREA");

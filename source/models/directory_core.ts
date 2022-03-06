@@ -9,33 +9,42 @@
  */
 
 export class DirectoryCore {
-  commands: Record<string, any> = {};
+  // Holds functions that import commands.
+  private commands: Record<string, any> = {};
+
+  // The actual command executors. Only be referenced by "retreiveCommand".
+  private commandFuncs: Record<string, any> = {};
 
   hasCommand(name: string) {
     return this.commands[name] != null;
   }
 
-  registerAlias(aliasName: string, commandName: string) {
-    this.commands[aliasName] = this.commands[commandName];
+  registerAlias(commandName: string, aliasNames: string[]) {
+    aliasNames.forEach((aliasName) => {
+      this.commands[aliasName] = this.commands[commandName];
+    });
   }
 
-  registerCommand(name: string, command: any) {
-    this.commands[name] = command.bind(this);
-
-    if (Array.isArray(command.alias)) {
-      command.alias.forEach((alias: string) => {
-        this.commands[alias] = command;
-      });
-    }
+  registerCommand(commandName: string, commandImportFunc: any) {
+    this.commands[commandName] = commandImportFunc;
   }
 
-  runCommand(commandName: string, args: string[]) {
-    if (!commandName && this.commands.help) {
-      return this.commands.help(args);
+  private async retrieveCommand(commandName: string) {
+    const importCommand = this.commands[commandName];
+
+    if (!this.commandFuncs[commandName] && importCommand) {
+      const importtedCommand = (await importCommand()).default;
+      this.commandFuncs[commandName] = importtedCommand.bind(this);
     }
-    if (!this.commands[commandName]) {
-      throw new Error("Directory: No Command Registered!");
-    }
-    return this.commands[commandName](args);
+
+    return this.commandFuncs[commandName];
+  }
+
+  async runCommand(commandName: string, args: string[]) {
+    const command = await this.retrieveCommand(commandName);
+    if (command) return command(args);
+
+    const defaultCommand = await this.retrieveCommand("default");
+    if (defaultCommand) return defaultCommand(args);
   }
 }

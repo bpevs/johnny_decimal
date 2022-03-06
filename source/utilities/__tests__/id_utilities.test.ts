@@ -16,7 +16,7 @@ import {
   isLocationId,
   parseId,
   regex,
-} from "./id_utilities.ts";
+} from "../id_utilities.ts";
 
 const itemId = "23.04";
 const categoryId = "23";
