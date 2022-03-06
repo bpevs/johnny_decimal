@@ -1,132 +1,39 @@
 /**
  * CLI tool that can be used for interacting with a local filesystem
  */
-import { parse } from "https://deno.land/std/flags/mod.ts";
-import {
-  basename,
-  dirname,
-  fromFileUrl,
-  join,
-} from "https://deno.land/std/path/mod.ts";
-import { copySync, ensureDir, exists } from "https://deno.land/std/fs/mod.ts";
-import {
-  findFilesFromName,
-  findPathFromLocation,
-  getHome,
-  getShallowFileList,
-  help as displayHelp,
-  Location,
-  logFiles,
-  open as openLocation,
-} from "./mod.ts";
+import { parse } from "./deps.ts";
+import { $HOME, $JD_DIR, $JD_HOME } from "./constants.ts";
+import { Directory } from "./models/directory.ts";
+
+if ($HOME == null) throw new Error("No $HOME");
+if ($JD_HOME == null) throw new Error("No $JD_HOME");
+if ($JD_DIR == null) throw new Error("No $JD_DIR");
+
+const directory = new Directory({
+  $HOME: $HOME,
+  $JD_HOME: $JD_HOME,
+  $JD_DIR: $JD_DIR,
+});
+
+directory.registerCommand("default", () => import("./commands/default.ts"));
+directory.registerCommand("help", () => import("./commands/help.ts"));
+directory.registerCommand("index", () => import("./commands/index.ts"));
+directory.registerCommand("install", () => import("./commands/install.ts"));
+directory.registerCommand("list", () => import("./commands/list.ts"));
+directory.registerCommand("open", () => import("./commands/open.ts"));
+directory.registerCommand("search", () => import("./commands/search.ts"));
+directory.registerCommand("setup", () => import("./commands/setup.ts"));
+directory.registerCommand("uninstall", () => import("./commands/uninstall.ts"));
+
+directory.registerAlias("list", ["ls"]);
+directory.registerAlias("open", ["o"]);
 
 // Use raw args to keep categories and ids as strings
 const [command, ...args] = Deno.args;
+const { help } = parse(Deno.args);
 
-// Use parsed args for reading commands
-const { _, help } = parse(Deno.args);
-
-// ~/.jd is used for installation script
-const homeDir = Deno.env.get("HOME") || "~";
-const jdDir = join(homeDir, ".jd");
-const shDir = join(dirname(fromFileUrl(import.meta.url)), "shell");
-
-if (help && _.length === 0) {
-  displayHelp();
-  Deno.exit(0);
-}
-
-type CommandMap = { [name: string]: (name: string[]) => void };
-const commandMap: CommandMap = {
-  list,
-  ls: list,
-  o: open,
-  open,
-  search,
-  index,
-  install,
-  uninstall,
-};
-
-if (commandMap[command]) {
-  commandMap[command](args);
-} else {
-  if (!await exists(jdDir)) {
-    console.warn("This functionality requires installation of jd script");
-    if (confirm("Install now?")) {
-      await install();
-    } else {
-      console.log(
-        "\nYou can install at any time with `jd install`.\n" +
-          "The only functionality that depends on this is `cd`\n" +
-          "You can also manually install this script yourself by\n" +
-          "copying `source/shell/main.sh` file from the source code, and adding\n" +
-          "source ${PATH_TO_MAIN_JS}` to your bash profile.\n",
-      );
-    }
-  }
-  if (Location.isLocationString(command)) {
-    const location = Location.fromFilename(command);
-    const path = await findPathFromLocation(location);
-    if (!path) throw new Error("No Location Found");
-    Deno.exit(0);
-  }
-}
-
-// COMMANDS
-async function list([locationString]: string[]) {
-  if (Location.isLocationString(locationString)) {
-    const location = Location.fromFilename(locationString);
-    const path = await findPathFromLocation(location);
-    logFiles(basename(path), await getShallowFileList(path));
-    Deno.exit(0);
-  }
-
-  const dirName = basename(Deno.cwd());
-
-  if (Location.isLocationString(dirName)) {
-    const location = Location.fromFilename(dirName);
-    const path = await findPathFromLocation(location);
-    logFiles(basename(path), await getShallowFileList(path));
-  } else {
-    logFiles("Home", await getShallowFileList(getHome()));
-  }
-}
-
-async function open([locationString]: string[]) {
-  await openLocation(Location.fromFilename(locationString));
-}
-
-async function search([locationString]: string[]) {
-  logFiles("Search Results", await findFilesFromName(args[0]));
-}
-
-async function index([locationString]: string[]) {
-  logFiles("Search Results", await findFilesFromName(""));
-}
-
-async function install() {
-  console.log("Installing cd script into `~/.jd/main.sh`...");
-  await ensureDir(jdDir);
-  copySync(shDir, join(jdDir), { overwrite: true });
-
-  // Add source entry into existing .zshrc file
-  const rcFilepath = join(homeDir, ".zshrc");
-  const sourceText = "source $HOME/.jd/main.sh";
-  const contents = await Deno.readTextFile(rcFilepath);
-
-  if (!contents.includes(sourceText)) {
-    const data = (new TextEncoder()).encode("\n" + sourceText + "\n");
-    await Deno.writeFile(rcFilepath, data, { append: true });
-  }
-
-  console.log("`~/.jd/main.sh` is successfully added");
-  console.log("Please reload or re-source your terminal window");
-}
-
-async function uninstall() {
-  console.log("Deleting `~/.jd`...");
-  await Deno.remove(jdDir, { recursive: true });
-  console.log("~/.jd is successfully removed");
-  console.log("Please reload or re-source your terminal window");
+if (help) {
+  directory.runCommand("help", []);
+} else if (directory.hasCommand(command)) {
+  directory.runCommand(command, args);
 }

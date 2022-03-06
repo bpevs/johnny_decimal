@@ -6,3 +6,6 @@ install:
 
 uninstall:
 	deno uninstall jd
+
+test:
+	deno test --allow-env --allow-read
