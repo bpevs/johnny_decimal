@@ -18,5 +18,7 @@ export default async function help(this: Directory) {
     "jd ls [<location>]": "List files in a location",
     "jd open <location>": "Open location in Finder",
     "jd index": "Show all directories in your JD filesystem",
+    "jd install": "Install the `cd` script, and create plugin dir",
+    "jd uninstall": "Uninstall the `cd` script and plugin dir"
   });
 }

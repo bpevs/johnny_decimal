@@ -6,22 +6,36 @@ const jdDirContents = join(dirname(fromFileUrl(import.meta.url)), "../shell");
 export default async function install(this: Directory) {
   const { $HOME, $JD_DIR } = this;
 
-  console.log("Creating Johnny Decimal Directory at `$HOME/.jd/`...");
-  await ensureDir($JD_DIR);
-  copySync(jdDirContents, join($JD_DIR));
+  if (confirm(`Step 1: Create Johnny Decimal Directory at \`${$JD_DIR}\`?`)) {
+    try {
+      copySync(jdDirContents, join($JD_DIR));
+      console.log("Created!\n");
+    } catch (e) {
+      console.log("Failed! Maybe `.jd` already exists?");
+    }
+  } else {
+    console.log("Skipping...\n");
+  }
 
   // Add source entry into existing .zshrc file
   // @todo, work with whatever shell
-  console.log("Sourcing cd script `$HOME/.jd/main.sh` in `$HOME/.zshrc`");
   const rcFilepath = join($HOME, ".zshrc");
   const sourceText = "source $HOME/.jd/main.sh";
-  const contents = await Deno.readTextFile(rcFilepath);
+  if (confirm(`Step 2: Add "${sourceText}" to ${rcFilepath}?`)) {
+    const contents = await Deno.readTextFile(rcFilepath);
 
-  if (!contents.includes(sourceText)) {
-    const data = (new TextEncoder()).encode("\n" + sourceText + "\n");
-    await Deno.writeFile(rcFilepath, data, { append: true });
+    if (contents.includes(sourceText)) {
+      console.log("The source line already exists!\nSkipping...\n");
+      return;
+    }
+
+    if (confirm(`This will edit ${rcFilepath}. Are you sure?`)) {
+      console.log("Adding source line...");
+
+      const data = (new TextEncoder()).encode("\n" + sourceText + "\n");
+      await Deno.writeFile(rcFilepath, data, { append: true });
+      console.log("`~/.jd/main.sh` is successfully added");
+      console.log("Please reload or re-source your terminal window");
+    }
   }
-
-  console.log("`~/.jd/main.sh` is successfully added");
-  console.log("Please reload or re-source your terminal window");
 }
