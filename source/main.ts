@@ -28,6 +28,8 @@ directory.registerCommand("uninstall", () => import("./commands/uninstall.ts"));
 directory.registerAlias("list", ["ls"]);
 directory.registerAlias("open", ["o"]);
 
+await directory.loadPlugins();
+
 // Use raw args to keep categories and ids as strings
 const [command, ...args] = Deno.args;
 const { help } = parse(Deno.args);

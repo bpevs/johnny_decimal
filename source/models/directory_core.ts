@@ -10,7 +10,7 @@
 
 export class DirectoryCore {
   // Holds functions that import commands.
-  private commands: Record<string, any> = {};
+  commands: Record<string, any> = {};
 
   // The actual command executors. Only be referenced by "retreiveCommand".
   private commandFuncs: Record<string, any> = {};
@@ -33,7 +33,7 @@ export class DirectoryCore {
     const importCommand = this.commands[commandName];
 
     if (!this.commandFuncs[commandName] && importCommand) {
-      const importtedCommand = new (await importCommand()).default();
+      const importtedCommand = (await importCommand()).default;
       this.commandFuncs[commandName] = importtedCommand.fn.bind(this);
     }
 

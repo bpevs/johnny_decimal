@@ -1,8 +1,8 @@
 import { Directory } from "../models/directory.ts";
 import { Command } from "../models/command.ts";
 
-export default class DefaultCommand extends Command {
-  name = "default";
+export default const defaultCommand: Command = {
+  name: "default",
 
   async fn(this: Directory) {
     console.log("The default command");

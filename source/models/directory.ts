@@ -1,4 +1,4 @@
-import { walk } from "../deps.ts";
+import { join, walk } from "../deps.ts";
 import { DirectoryCore } from "./directory_core.ts";
 import { Location } from "./location.ts";
 
@@ -43,5 +43,22 @@ export class Directory extends DirectoryCore {
 
   listAllLocations() {
     return this.findLocations([new RegExp("")]);
+  }
+
+  async loadPlugins() {
+    try {
+      const plugins = walk(join(this.$JD_DIR, "plugins"), {
+        maxDepth: 3,
+        includeDirs: false,
+        match: [ /main\.ts$/gi ]
+      });
+
+      for await (const plugin of plugins) {
+        const command = await import(plugin.path);
+        this.registerCommand(command.default.name, () => command);
+      }
+    } catch(e) {
+      console.error(e);
+    }
   }
 }

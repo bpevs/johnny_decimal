@@ -2,8 +2,8 @@ import { Directory } from "../models/directory.ts";
 import { join } from "../deps.ts";
 import { Command } from "../models/command.ts";
 
-export default class UninstallCommand extends Command {
-  name = "uninstall";
+export default const uninstallCommand: Command = {
+  name: "uninstall",
 
   // @todo doesn't yet remove source text from bash_profile
   async fn(this: Directory) {

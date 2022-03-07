@@ -4,10 +4,10 @@ import { Command } from "../models/command.ts";
 
 const jdDirContents = join(dirname(fromFileUrl(import.meta.url)), "../shell");
 
-export default class InstallCommand extends Command {
-  name = "install";
-  usage = "jd install";
-  description = "Install the `cd` script, and create plugin dir";
+export default const installCommand: Commanmd = {
+  name: "install",
+  usage: "jd install",
+  description: "Install the `cd` script, and create plugin dir",
 
   async fn(this: Directory) {
     const { $HOME, $JD_DIR } = this;

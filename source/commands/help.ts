@@ -2,10 +2,10 @@ import { Directory } from "../models/directory.ts";
 import { logTitle } from "../utilities/log_utilities.ts";
 import { Command } from "../models/command.ts";
 
-export default class HelpCommand extends Command {
-  name = "help";
-  usage = "jd --help";
-  description = "Show this message";
+export default const helpCommand: Command = {
+  name: "help",
+  usage: "jd --help",
+  description: "Show this message",
 
   async fn(this: Directory) {
     logTitle("Johnny Decimal CLI");

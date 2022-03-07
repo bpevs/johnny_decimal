@@ -1,10 +1,10 @@
 import { Directory } from "../models/directory.ts";
 import { Command } from "../models/command.ts";
 
-export default class OpenCommand extends Command {
-  name = "open";
-  usage = "jd open <location>";
-  description = "Open location in Finder";
+export default const openCommand: Command = {
+  name: "open",
+  usage: "jd open <location>",
+  description: "Open location in Finder",
 
   async fn(this: Directory, [str]: string[]) {
     const [location] = await this.findLocationsById(str);

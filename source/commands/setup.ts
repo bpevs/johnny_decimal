@@ -2,8 +2,8 @@ import { Directory } from "../models/directory.ts";
 import Install from "./install.ts";
 import { Command } from "../models/command.ts";
 
-export default class SetupCommand extends Command {
-  name = "default";
+export default const setupCommand: Command = {
+  name: "default",
 
   async fn(this: Directory) {
     console.warn("This functionality requires installation of jd script");

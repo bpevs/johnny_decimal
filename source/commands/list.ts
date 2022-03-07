@@ -9,11 +9,11 @@ import { Command } from "../models/command.ts";
  * If NOT given a name, and in JD FS, list the contents of the current dir.
  * @todo If NOT given a name, and NOT in JD FS, list JD FS's home.
  */
-export default class ListCommand extends Command {
-  name = "list";
-  description = "List files in a location";
-  usage = "jd ls [<location>]";
-  alias = ["ls"];
+export default const listCommand: Command = {
+  name: "list",
+  description: "List files in a location",
+  usage: "jd ls [<location>]",
+  alias: ["ls"],
 
   async fn(this: Directory, [str]: string[]) {
     const currDirName = basename(Deno.cwd());
