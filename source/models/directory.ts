@@ -52,14 +52,14 @@ export class Directory extends DirectoryCore {
       const plugins = walk(join(this.$JD_DIR, "plugins"), {
         maxDepth: 3,
         includeDirs: false,
-        match: [ /main\.ts$/gi ]
+        match: [/main\.ts$/gi],
       });
 
       for await (const plugin of plugins) {
         const command = (await import(plugin.path)).default;
         this.registerCommand(command.name, command);
       }
-    } catch(e) {
+    } catch (e) {
       console.error(e);
     }
   }

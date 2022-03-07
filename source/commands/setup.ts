@@ -18,7 +18,7 @@ const setupCommand: Command = {
           "source ${PATH_TO_MAIN_JS}` to your bash profile.\n",
       );
     }
-  }
-}
+  },
+};
 
 export default setupCommand;

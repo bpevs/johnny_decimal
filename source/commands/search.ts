@@ -12,7 +12,7 @@ const searchCommand: Command = {
 
     logTitle("Search Results");
     logLocationFilenames(locations.map((location) => location.name));
-  }
-}
+  },
+};
 
 export default searchCommand;

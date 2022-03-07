@@ -6,8 +6,8 @@ const defaultCommand: Command = {
 
   async fn(this: Directory) {
     console.log("The default command");
-  }
-}
+  },
+};
 
 export default defaultCommand;
 

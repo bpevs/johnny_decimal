@@ -11,7 +11,7 @@ const indexCommand: Command = {
     const locations = await this.listAllLocations();
     const names = locations.map(({ name }) => name);
     logLocationFilenames(names);
-  }
-}
+  },
+};
 
 export default indexCommand;

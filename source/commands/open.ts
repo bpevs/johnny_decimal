@@ -15,7 +15,7 @@ const openCommand: Command = {
       stdout: "piped",
       stderr: "piped",
     }).status();
-  }
-}
+  },
+};
 
 export default openCommand;

@@ -40,7 +40,7 @@ const uninstallCommand: Command = {
         console.log("Please reload or re-source your terminal window");
       }
     }
-  }
-}
+  },
+};
 
 export default uninstallCommand;

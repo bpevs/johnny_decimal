@@ -28,7 +28,7 @@ const helpCommand: Command = {
         "Usage:",
     );
     console.table(commandsHelp);
-  }
-}
+  },
+};
 
 export default helpCommand;

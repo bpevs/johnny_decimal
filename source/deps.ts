@@ -10,7 +10,7 @@ import {
   fromFileUrl,
   join,
 } from "https://deno.land/std/path/mod.ts";
-import { bold, red } from "https://deno.land/std/fmt/colors.ts";
+import { bold, green, red } from "https://deno.land/std/fmt/colors.ts";
 import { parse } from "https://deno.land/std/flags/mod.ts";
 import { config } from "https://deno.land/std/dotenv/mod.ts";
 
@@ -23,6 +23,7 @@ export {
   ensureDir,
   exists,
   fromFileUrl,
+  green,
   join,
   parse,
   red,
