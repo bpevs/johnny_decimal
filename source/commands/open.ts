@@ -1,7 +1,7 @@
-import { Directory } from "../models/directory.ts";
 import { Command } from "../models/command.ts";
+import { Directory } from "../models/directory.ts";
 
-export default const openCommand: Command = {
+const openCommand: Command = {
   name: "open",
   usage: "jd open <location>",
   description: "Open location in Finder",
@@ -17,3 +17,5 @@ export default const openCommand: Command = {
     }).status();
   }
 }
+
+export default openCommand;

@@ -1,6 +1,7 @@
 export default {
-  name: "my-jd-plugin",
-  description: "name that appears in help",
+  name: "myplugin",
+  usage: "jd myplugin",
+  description: "logs a string",
   alias: [ "jdp" ],
   async fn() {
     console.log("hahaha this command logs a string");

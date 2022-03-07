@@ -1,7 +1,6 @@
-# Johnny Decimal Utilities
+# Johnny Decimal
 
-Utilities for interacting with a [Johnny Decimal](https://johnnydecimal.com/)
-filing system.
+Utilities built with Typescript, for interacting with a [Johnny Decimal](https://johnnydecimal.com/) filing system.
 
 See docs at https://ivebencrazy.github.io/johnny_decimal
 

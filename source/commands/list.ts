@@ -1,15 +1,15 @@
 import { basename } from "../deps.ts";
+import { Command } from "../models/command.ts";
 import { Directory } from "../models/directory.ts";
 import { Location } from "../models/location.ts";
 import { logLocationFilenames, logTitle } from "../utilities/log_utilities.ts";
-import { Command } from "../models/command.ts";
 
 /**
  * If given a name to list, find that location, and list the contents.
  * If NOT given a name, and in JD FS, list the contents of the current dir.
  * @todo If NOT given a name, and NOT in JD FS, list JD FS's home.
  */
-export default const listCommand: Command = {
+const listCommand: Command = {
   name: "list",
   description: "List files in a location",
   usage: "jd ls [<location>]",
@@ -37,3 +37,5 @@ export default const listCommand: Command = {
     Deno.exit(0);
   }
 }
+
+export default listCommand;

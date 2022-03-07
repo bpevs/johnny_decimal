@@ -2,7 +2,7 @@ import { Directory } from "../models/directory.ts";
 import { logLocationFilenames, logTitle } from "../utilities/log_utilities.ts";
 import { Command } from "../models/command.ts";
 
-export default const searchCommand: Command = {
+const searchCommand: Command = {
   name: "default",
   usage: "jd search [<string>]",
   description: "Search for files that match a string",
@@ -14,3 +14,5 @@ export default const searchCommand: Command = {
     logLocationFilenames(locations.map((location) => location.name));
   }
 }
+
+export default searchCommand;

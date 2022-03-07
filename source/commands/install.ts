@@ -1,10 +1,10 @@
 import { copySync, dirname, ensureDir, fromFileUrl, join } from "../deps.ts";
-import { Directory } from "../models/directory.ts";
 import { Command } from "../models/command.ts";
+import { Directory } from "../models/directory.ts";
 
 const jdDirContents = join(dirname(fromFileUrl(import.meta.url)), "../shell");
 
-export default const installCommand: Commanmd = {
+const installCommand: Command = {
   name: "install",
   usage: "jd install",
   description: "Install the `cd` script, and create plugin dir",
@@ -46,3 +46,5 @@ export default const installCommand: Commanmd = {
     }
   }
 }
+
+export default installCommand;

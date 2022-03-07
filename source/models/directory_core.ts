@@ -1,3 +1,5 @@
+import { Command } from "./command.ts";
+
 /**
  * The idea is that these core classes can be used in Deno AND as a buildable
  * web dependency. Mostly for if anyone wants to use the models and
@@ -12,39 +14,34 @@ export class DirectoryCore {
   // Holds functions that import commands.
   commands: Record<string, any> = {};
 
-  // The actual command executors. Only be referenced by "retreiveCommand".
-  private commandFuncs: Record<string, any> = {};
-
   hasCommand(name: string) {
     return this.commands[name] != null;
   }
 
-  registerAlias(commandName: string, aliasNames: string[]) {
+  registerAlias(commandName: string, aliasNames: string[] = []) {
     aliasNames.forEach((aliasName) => {
       this.commands[aliasName] = this.commands[commandName];
     });
   }
 
-  registerCommand(commandName: string, commandImportFunc: any) {
-    this.commands[commandName] = commandImportFunc;
+  registerCommand(commandName: string, command: Command) {
+    this.commands[commandName] = command;
+    if (Array.isArray(command.alias)) {
+      command.alias.forEach((alias) => {
+        this.commands[alias] = command;
+      });
+    }
   }
 
-  private async retrieveCommand(commandName: string) {
-    const importCommand = this.commands[commandName];
-
-    if (!this.commandFuncs[commandName] && importCommand) {
-      const importtedCommand = (await importCommand()).default;
-      this.commandFuncs[commandName] = importtedCommand.fn.bind(this);
-    }
-
-    return this.commandFuncs[commandName];
+  private retrieveCommand(commandName: string) {
+    return this.commands[commandName].fn.bind(this);
   }
 
   async runCommand(commandName: string, args: string[]) {
-    const command = await this.retrieveCommand(commandName);
+    const command = this.retrieveCommand(commandName);
     if (command) return command(args);
 
-    const defaultCommand = await this.retrieveCommand("default");
+    const defaultCommand = this.retrieveCommand("default");
     if (defaultCommand) return defaultCommand(args);
   }
 }

@@ -1,4 +1,5 @@
 import { join, walk } from "../deps.ts";
+import { Command } from "./command.ts";
 import { DirectoryCore } from "./directory_core.ts";
 import { Location } from "./location.ts";
 
@@ -11,6 +12,7 @@ export class Directory extends DirectoryCore {
   $HOME: string;
   $JD_DIR: string;
   $JD_HOME: string;
+  commands: Record<string, Command> = {};
 
   constructor({ $HOME, $JD_DIR, $JD_HOME }: Record<string, string>) {
     super();
@@ -54,8 +56,8 @@ export class Directory extends DirectoryCore {
       });
 
       for await (const plugin of plugins) {
-        const command = await import(plugin.path);
-        this.registerCommand(command.default.name, () => command);
+        const command = (await import(plugin.path)).default;
+        this.registerCommand(command.name, command);
       }
     } catch(e) {
       console.error(e);

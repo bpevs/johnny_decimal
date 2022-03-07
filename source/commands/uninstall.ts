@@ -2,8 +2,10 @@ import { Directory } from "../models/directory.ts";
 import { join } from "../deps.ts";
 import { Command } from "../models/command.ts";
 
-export default const uninstallCommand: Command = {
+const uninstallCommand: Command = {
   name: "uninstall",
+  usage: "jd uninstall",
+  description: "Uninstall the `cd` script and plugin dir",
 
   // @todo doesn't yet remove source text from bash_profile
   async fn(this: Directory) {
@@ -40,3 +42,5 @@ export default const uninstallCommand: Command = {
     }
   }
 }
+
+export default uninstallCommand;

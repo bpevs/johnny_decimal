@@ -1,14 +1,14 @@
 import { Directory } from "../models/directory.ts";
-import Install from "./install.ts";
+import install from "./install.ts";
 import { Command } from "../models/command.ts";
 
-export default const setupCommand: Command = {
+const setupCommand: Command = {
   name: "default",
 
   async fn(this: Directory) {
     console.warn("This functionality requires installation of jd script");
     if (confirm("Install now?")) {
-      await (new Install()).fn.call(this);
+      await install.fn.call(this, []);
     } else {
       console.log(
         "\nYou can install at any time with `jd install`.\n" +
@@ -20,3 +20,5 @@ export default const setupCommand: Command = {
     }
   }
 }
+
+export default setupCommand;
