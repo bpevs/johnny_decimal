@@ -1,37 +1,58 @@
-## Welcome to GitHub Pages
+## Johnny Decimal CLI and Javascript Modules
 
-You can use the [editor on GitHub](https://github.com/ivebencrazy/johnny_decimal/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+This code is both a CLI for Johnny Decimal, as well as a set of portable Javascript for use in building your own Johnny Decimal Javascript applications.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### CLI
 
-### Markdown
+This Johnny Decimal CLI is built using [Deno](https://deno.land/).  If you don't know about Deno yet, it's basically a secure JavaScript/TypeScript runtime made in Rust. You can think of it like the next iteration of Node.js
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+#### Setup
 
-```markdown
-Syntax highlighted code block
+The setup for using this CLI tool is simple.
 
-# Header 1
-## Header 2
-### Header 3
+1. Install [Deno](https://deno.land/#installation)
+2. Run `deno install --allow-read --allow-write --allow-env --allow-run --name=jd https://deno.land/x/johnny_decimal/main.ts`
 
-- Bulleted
-- List
+This installs the johnny_decimal application under the namespace "jd".
+It allows for reading and writing to the filesystem, as well as reading environment variables and running commands. Yes, it is a lot of permissions. I will update this document shortly on what all of these individual permissions are being used for, once I organize this document into a more substantial piece of documentation.
 
-1. Numbered
-2. List
+You can then optionally install the `cd` command by running
 
-**Bold** and _Italic_ and `Code` text
+- `jd install`
 
-[Link](url) and ![Image](src)
-```
+This will add a shell script to your bash profile.  I will also add an explanation for this one when I update docs.  You can always uninstall this script by running `jd uninstall`.
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
 
-### Jekyll Themes
+### Deno Modules
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/ivebencrazy/johnny_decimal/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+Currently, these are more useful for being used in a specifically Deno environment. All modules are being used in the CLI tool [main.js](https://github.com/ivebencrazy/johnny_decimal/blob/main/source/main.ts)
 
-### Support or Contact
+There are mainly two entities to import:
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+`import { Location, Directory } from "https://deno.land/x/johnny_decimal/mod.ts"`
+
+#### Directory
+
+This is the main tool you interact with to use JD utilities.
+
+```js
+const directory = new Directory({
+  $HOME: $HOME,
+  $JD_HOME: $JD_HOME,
+  $JD_DIR: $JD_DIR,
+});
+
+directory.registerCommand("help", () => import("./commands/help.ts"));
+
+// Note, use Deno.args without parsing.
+// Otherwise it will parse numbers and you can't tell the difference
+// between the category `20`, and the item `20.00`
+directory.runCommand("help", Deno.args);
+````
+
+#### Location
+
+This describes a location in the JD filesystem. It includes 3 separate ids for `Area`, `Category`, and `Item`.
+
+
+
