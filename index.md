@@ -1,4 +1,4 @@
-## Johnny Decimal CLI and Javascript Modules
+## Johnny Decimal CLI
 
 This code is both a CLI for Johnny Decimal, as well as a set of portable Javascript for use in building your own Johnny Decimal Javascript applications.
 
