@@ -10,7 +10,7 @@ export default async function uninstall(this: Directory) {
       await Deno.remove($JD_DIR, { recursive: true });
       console.log(`${$JD_DIR} is successfully removed`);
     } catch (e) {
-      console.log("Failed! Did you already remove `.jd`?\n")
+      console.log("Failed! Did you already remove `.jd`?\n");
     }
   }
 
