@@ -33,8 +33,8 @@ export class DirectoryCore {
     const importCommand = this.commands[commandName];
 
     if (!this.commandFuncs[commandName] && importCommand) {
-      const importtedCommand = (await importCommand()).default;
-      this.commandFuncs[commandName] = importtedCommand.bind(this);
+      const importtedCommand = new (await importCommand()).default();
+      this.commandFuncs[commandName] = importtedCommand.fn.bind(this);
     }
 
     return this.commandFuncs[commandName];

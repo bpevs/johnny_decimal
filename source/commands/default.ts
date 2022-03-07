@@ -1,8 +1,14 @@
 import { Directory } from "../models/directory.ts";
+import { Command } from "../models/command.ts";
 
-export default async function defaultCommand(this: Directory) {
-  console.log("The default command");
+export default class DefaultCommand extends Command {
+  name = "default";
+
+  async fn(this: Directory) {
+    console.log("The default command");
+  }
 }
+
 // else {
 //   if (!await exists(jdDir)) {
 //     setup();
