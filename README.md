@@ -3,8 +3,7 @@
 Utilities for interacting with a [Johnny Decimal](https://johnnydecimal.com/)
 filing system.
 
-**Still very early. CLI is pre-release. Modules are not yet published. Use at
-your own risk**
+See docs at https://ivebencrazy.github.io/johnny_decimal
 
 ## Modules
 
