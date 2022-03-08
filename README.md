@@ -15,7 +15,7 @@ Utilizes all the modules to create a johnny decimal cli tool.
 Install the script using Deno.
 
 ```sh
-deno install --allow-env --allow-read --allow-run --allow-write --name=jd https://deno.land/x/johnny_decimal
+deno install --allow-env --allow-read --allow-run --allow-write --name=jd https://deno.land/x/johnny_decimal@0.1.3/main.ts
 
 ```
 
