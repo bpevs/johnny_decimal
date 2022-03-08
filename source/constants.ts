@@ -19,4 +19,4 @@ export const $HOME = (() => {
 export const $JD_DIR = Deno.env.get("JD_DIR") || join($HOME, ".jd");
 
 // The root of the Johnny Decimal Filesystem
-export const $JD_HOME = Deno.env.get("JD_HOME");
+export const $JD_HOME = Deno.env.get("JD_HOME") || "";

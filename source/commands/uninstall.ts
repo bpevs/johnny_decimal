@@ -1,6 +1,23 @@
-import { Directory } from "../models/directory.ts";
-import { join } from "../deps.ts";
+import { bold, green, join, red } from "../deps.ts";
 import { Command } from "../models/command.ts";
+import { Directory } from "../models/directory.ts";
+
+const jdHomeText = 'export JD_HOME="{JD_HOME}"';
+const sourceText = "source $HOME/.jd/main.sh";
+
+const step1 = `
+${bold(green("Step 1 of 2"))}
+{JD_HOME} contains settings, scripts, and plugins.
+`;
+
+const step2 = `
+${bold(green("Step 2 of 2"))}
+To delete JD CLI, please remove the following lines from {config}:
+
+  ${red("-")} ${jdHomeText}
+  ${red("-")} ${sourceText}
+
+`;
 
 const uninstallCommand: Command = {
   name: "uninstall",
@@ -9,37 +26,54 @@ const uninstallCommand: Command = {
 
   // @todo doesn't yet remove source text from bash_profile
   async fn(this: Directory) {
-    const { $HOME, $JD_DIR } = this;
-    if (confirm(`Step 1: Remove ${$JD_DIR}? This removes all settings.`)) {
+    const { $HOME, $JD_HOME, $JD_DIR } = this;
+
+    console.log(step1.replace("{JD_HOME}", $JD_HOME));
+    if (confirm(`Would you like to delete \`~/.jd\` automatically?`)) {
       console.log(`Deleting ${$JD_DIR}...`);
       try {
         await Deno.remove($JD_DIR, { recursive: true });
-        console.log(`${$JD_DIR} is successfully removed`);
+        console.log(green(`${$JD_DIR} is successfully removed!`));
       } catch (e) {
-        console.log("Failed! Did you already remove `.jd`?\n");
+        console.log(red("Failed! Did you already remove `.jd`?\n"));
       }
     }
 
     const rcFilepath = join($HOME, ".zshrc");
-    const sourceText = "source $HOME/.jd/main.sh";
-    if (confirm(`Step 2: Remove "${sourceText}" from ${rcFilepath}?`)) {
-      const contents = await Deno.readTextFile(rcFilepath);
 
-      if (!contents.includes(sourceText)) {
-        console.log("Cannot find sounce line!  Did you already remove it?");
-        return;
-      }
+    const jdHome = $JD_HOME.replace($HOME, "$HOME");
 
-      if (confirm(`This will edit the file ${rcFilepath}. Are you sure?`)) {
-        const textToRemove = "\n" + sourceText;
-        const filteredContents = contents.replace(textToRemove, "");
-        await Deno.writeTextFile(rcFilepath, filteredContents);
+    console.log(
+      step2.replace("{config}", rcFilepath).replace("{JD_HOME}", jdHome),
+    );
+    if (confirm("Would you like us to make these changes automatically?")) {
+      let contents = await Deno.readTextFile(rcFilepath);
+
+      if (contents.includes(sourceText)) {
+        contents = contents.replace("\n" + sourceText, "");
+      } else {
         console.log(
-          `${sourceText}" successfully removed from \`${rcFilepath}\``,
+          red(`Cannot find \`${sourceText}\`!  Did you already remove it?\n`),
         );
-        console.log("Please reload or re-source your terminal window");
       }
+
+      const actualJdHomeText = jdHomeText.replace("{JD_HOME}", jdHome);
+      if (contents.includes(actualJdHomeText)) {
+        contents = contents.replace("\n" + actualJdHomeText, "");
+      } else {
+        console.log(
+          red(
+            `Cannot find \`${actualJdHomeText}\`!  Did you already remove it?\n`,
+          ),
+        );
+      }
+
+      await Deno.writeTextFile(rcFilepath, contents);
     }
+
+    console.log(green("Complete!"));
+    console.log("Please run `deno uninstall jd` to remove this script");
+    console.log("Please reload or re-source your terminal window");
   },
 };
 

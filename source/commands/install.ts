@@ -2,7 +2,6 @@ import {
   bold,
   copySync,
   dirname,
-  ensureDir,
   fromFileUrl,
   green,
   join,
@@ -13,7 +12,7 @@ import { Directory } from "../models/directory.ts";
 
 const jdDirContents = join(dirname(fromFileUrl(import.meta.url)), "../shell");
 
-const jdHomeText = "export JD_HOME={JD_HOME}";
+const jdHomeText = 'export JD_HOME="{JD_HOME}"';
 const sourceText = "source $HOME/.jd/main.sh";
 
 const intro = bold(`
@@ -26,7 +25,7 @@ https://ivebencrazy.github.io/johnny_decimal`;
 
 const step1 = `
 ${bold(green("Step 1 of 3"))}
-JD needs to create a directory for storing settings, plugins, and scripts.
+JD CLI needs to create a directory for storing settings, plugins, and scripts.
 To start, this will only contain our "cd" script (~/.jd/main.sh)
 `;
 
@@ -36,7 +35,7 @@ const step2 = bold(green("\nStep 2 of 3\n")) +
 
 const step3 = `
 ${bold(green("Step 3 of 3"))}
-JD needs the following lines to be added to {config}:
+JD CLI needs the following lines to be added to {config}:
 
   ${green("+")} ${jdHomeText}
   ${green("+")} ${sourceText}
@@ -76,7 +75,7 @@ const installCommand: Command = {
       "\nWhere is your Johnny Decimal filesystem's home?",
     );
     const homeDirAnswer = prompt(homeDirPrompt, $HOME) || $HOME;
-    const $JD_HOME = homeDirAnswer.replace("~", $HOME);
+    const $JD_HOME = homeDirAnswer.replace("~", $HOME).replace($HOME, "$HOME");
 
     const explainer = step3
       .replace("{config}", rcFilepath)
@@ -105,13 +104,12 @@ const installCommand: Command = {
 
       const data = (new TextEncoder()).encode("\n" + newContents);
       await Deno.writeFile(rcFilepath, data, { append: true });
-      console.log(green("`~/.jd/main.sh` is successfully added"));
-      console.log("Please reload or re-source your terminal window\n");
     } else {
       console.log(skipText);
     }
 
     console.log(bold(green("Setup Complete!\n")));
+    console.log("Please reload or re-source your terminal window.");
     console.log("You can undo changes done by this setup script later.");
     console.log("Just run: `jd uninstall`\n");
   },

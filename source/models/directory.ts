@@ -1,4 +1,4 @@
-import { join, walk } from "../deps.ts";
+import { exists, join, walk } from "../deps.ts";
 import { Command } from "./command.ts";
 import { DirectoryCore } from "./directory_core.ts";
 import { Location } from "./location.ts";
@@ -48,8 +48,12 @@ export class Directory extends DirectoryCore {
   }
 
   async loadPlugins() {
+    const pluginsDir = join(this.$JD_DIR, "plugins");
+
+    if (!await exists(pluginsDir)) return;
+
     try {
-      const plugins = walk(join(this.$JD_DIR, "plugins"), {
+      const plugins = walk(pluginsDir, {
         maxDepth: 3,
         includeDirs: false,
         match: [/main\.ts$/gi],
@@ -60,7 +64,7 @@ export class Directory extends DirectoryCore {
         this.registerCommand(command.name, command);
       }
     } catch (e) {
-      console.error(e);
+      console.log(e);
     }
   }
 }

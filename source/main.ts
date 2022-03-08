@@ -1,7 +1,7 @@
 /**
  * CLI tool that can be used for interacting with a local filesystem
  */
-import { parse } from "./deps.ts";
+import { exists, parse } from "./deps.ts";
 import { $HOME, $JD_DIR, $JD_HOME } from "./constants.ts";
 import { Directory } from "./models/directory.ts";
 
@@ -12,11 +12,9 @@ import installCommand from "./commands/install.ts";
 import listCommand from "./commands/list.ts";
 import openCommand from "./commands/open.ts";
 import searchCommand from "./commands/search.ts";
-import setupCommand from "./commands/setup.ts";
 import uninstallCommand from "./commands/uninstall.ts";
 
 if ($HOME == null) throw new Error("No $HOME");
-if ($JD_HOME == null) throw new Error("No $JD_HOME");
 if ($JD_DIR == null) throw new Error("No $JD_DIR");
 
 const directory = new Directory({
@@ -32,8 +30,12 @@ directory.registerCommand("install", installCommand);
 directory.registerCommand("list", listCommand);
 directory.registerCommand("open", openCommand);
 directory.registerCommand("search", searchCommand);
-directory.registerCommand("setup", setupCommand);
 directory.registerCommand("uninstall", uninstallCommand);
+
+if (!await exists($JD_DIR)) {
+  await directory.runCommand("install", []);
+  Deno.exit(0);
+}
 
 await directory.loadPlugins();
 
