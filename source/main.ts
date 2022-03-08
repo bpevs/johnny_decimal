@@ -2,17 +2,20 @@
  * CLI tool that can be used for interacting with a local filesystem
  */
 import { exists, parse } from "./deps.ts";
-import { $HOME, $JD_DIR, $JD_HOME } from "./constants.ts";
-import { Directory } from "./models/directory.ts";
-
-import defaultCommand from "./commands/default.ts";
-import helpCommand from "./commands/help.ts";
-import indexCommand from "./commands/index.ts";
-import installCommand from "./commands/install.ts";
-import listCommand from "./commands/list.ts";
-import openCommand from "./commands/open.ts";
-import searchCommand from "./commands/search.ts";
-import uninstallCommand from "./commands/uninstall.ts";
+import {
+  $HOME,
+  $JD_DIR,
+  $JD_HOME,
+  defaultCommand,
+  Directory,
+  helpCommand,
+  indexCommand,
+  installCommand,
+  listCommand,
+  openCommand,
+  searchCommand,
+  uninstallCommand,
+} from "./mod.ts";
 
 if ($HOME == null) throw new Error("No $HOME");
 if ($JD_DIR == null) throw new Error("No $JD_DIR");

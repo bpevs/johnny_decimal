@@ -2,6 +2,8 @@
  * Exports all commands and modules for use in other systems
  */
 
+export * from "./constants.ts";
+
 export { default as defaultCommand } from "./commands/default.ts";
 export { default as helpCommand } from "./commands/help.ts";
 export { default as indexCommand } from "./commands/index.ts";
@@ -9,7 +11,6 @@ export { default as installCommand } from "./commands/install.ts";
 export { default as listCommand } from "./commands/list.ts";
 export { default as openCommand } from "./commands/open.ts";
 export { default as searchCommand } from "./commands/search.ts";
-export { default as setupCommand } from "./commands/setup.ts";
 export { default as uninstallCommand } from "./commands/uninstall.ts";
 
 export * from "./models/command.ts";
