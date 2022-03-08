@@ -22,7 +22,7 @@ Three steps.
 1. Install javascript cli tool :
 
 ```sh
-deno install --allow-read --allow-env --allow-run --name=jd -f source/main.ts
+deno install --allow-env --allow-read --allow-run --allow-write --name=jd -f source/main.ts
 ```
 
 2. Copy or source [cli.sh](./source/cli.sh) in your .bash_profile or .zshrc
