@@ -3,41 +3,37 @@
 Utilities built with Typescript, for interacting with a
 [Johnny Decimal](https://johnnydecimal.com/) filing system.
 
-See docs at https://ivebencrazy.github.io/johnny_decimal
-
-## Modules
-
-This repo is not yet hosted anywhere, so this code is not quite accessible yet.
+See docs for this repo at https://ivebencrazy.github.io/johnny_decimal
 
 ## CLI
 
 Utilizes all the modules to create a johnny decimal cli tool.
 
-### Installation
-
-This is still a bit awkward. TODO is to clean up the install process.
-
-Three steps.
-
-1. Install javascript cli tool :
-
-```sh
-deno install --allow-env --allow-read --allow-run --allow-write --name=jd -f source/main.ts
-```
-
-2. Copy or source [cli.sh](./source/cli.sh) in your .bash_profile or .zshrc
-
-3. Add environment variables to .bash_profile or .zshrc or .zprofile
-
-```sh
-export JD_HOME="$HOME/Root"
-export JD_DEFAULT_APP="Sublime Text"
-```
 
 ### Usage
 
-See help command:
+Install the script using Deno.
+
+```sh
+deno install --allow-env --allow-read --allow-run --allow-write --name=jd https://deno.land/x/johnny_decimal
+
+```
+
+The first time your run the command `jd`, the Johnny Decimal CLI will guide you through setup!
+After that, you can see a description of the commands using:
 
 ```sh
 jd --help
 ```
+
+## Modules
+
+You can import the utilities used in the CLI from deno.land:
+
+```js
+
+import { Location, Directory } from "https://deno.land/x/johnny_decimal";
+
+```
+
+More API Docs to come...
