@@ -1,16 +1,7 @@
-import {
-  bold,
-  copySync,
-  dirname,
-  fromFileUrl,
-  green,
-  join,
-  red,
-} from "../deps.ts";
+import { bold, green, join, red } from "../deps.ts";
 import { Command } from "../models/command.ts";
 import { Directory } from "../models/directory.ts";
-
-const jdDirContents = join(dirname(fromFileUrl(import.meta.url)), "../shell");
+import createJdDir from "../utilities/create_jd_dir.ts";
 
 const jdHomeText = 'export JD_HOME="{JD_HOME}"';
 const sourceText = "source $HOME/.jd/main.sh";
@@ -61,7 +52,7 @@ const installCommand: Command = {
       confirm(bold(`Let us create directory \`${$JD_DIR}\` automatically?`))
     ) {
       try {
-        copySync(jdDirContents, join($JD_DIR));
+        await createJdDir(join($JD_DIR));
         console.log(green("Created!"));
       } catch (e) {
         console.log(red("\nFailed! Maybe `.jd` already exists?"));

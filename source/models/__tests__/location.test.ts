@@ -1,4 +1,4 @@
-import { dirname, fromFileUrl, join } from "../../deps.ts";
+import { dirname, fromFileUrl, join } from "https://deno.land/std/path/mod.ts";
 import {
   assert,
   assertArrayIncludes,
