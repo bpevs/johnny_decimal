@@ -7,7 +7,7 @@ const searchCommand: Command = {
   usage: "jd search [<string>]",
   description: "Search for files that match a string",
 
-  async fn(this: Directory, [str]: string[]) {
+  async fn(this: Directory, [str]: string[] = []) {
     const locations = await this.findLocationsByName(str);
 
     logTitle("Search Results");

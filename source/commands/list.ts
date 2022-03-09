@@ -15,7 +15,7 @@ const listCommand: Command = {
   usage: "jd ls [<location>]",
   alias: ["ls"],
 
-  async fn(this: Directory, [str]: string[]) {
+  async fn(this: Directory, [str]: string[] = []) {
     const currDirName = basename(Deno.cwd());
     const id = Location.parseId(str) || Location.parseId(currDirName);
 

@@ -6,7 +6,7 @@ const openCommand: Command = {
   usage: "jd open <location>",
   description: "Open location in Finder",
 
-  async fn(this: Directory, [str]: string[]) {
+  async fn(this: Directory, [str]: string[] = []) {
     const [location] = await this.findLocationsById(str);
 
     await Deno.run({

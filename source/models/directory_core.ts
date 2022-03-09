@@ -1,19 +1,34 @@
 import { Command } from "./command.ts";
 
 /**
- * The idea is that these core classes can be used in Deno AND as a buildable
- * web dependency. Mostly for if anyone wants to use the models and
- * infrastructure to organize a web client for, say, a cms or email server or
- * something.
+ * @description
+ * DirectoryCore is a structure to build accessors for a JD system. The key
+ * feature of this is structure is the binding of commands to the directory.
+ * This way, we can pass a common context to all our commands, allowing for
+ * easy plugin extensibility.
  *
- * In practice, this is primarily based around `Location`, which is a class
- * that we expect to override for various platforms.
+ * Separating this from the `Directory` class is a choice. Since it is not
+ * unlikely we will want to use this class for dealing with JD in a web context,
+ * it is preferred the infrastructure is pure JS, and is not using Deno methods
+ * for things like data access. Separating this out into DirectoryCore lets
+ * consumers create their own directory opinions.
+ *
+ * @example
+ * class Directory extends DirectoryCore {
+ *   constructor($JD_HOME){ this.$JD_HOME = $JD_HOME; }
+ * }
+ * const directory = new DirectoryCore()
+ * directory.registerCommand("log-home", () => {
+ *   console.log(this.$JD_HOME)
+ * });
+ * directory.runCommand("log-home");
  */
-
 export class DirectoryCore {
   // Holds functions that import commands.
   commands: Record<string, any> = {};
 
+  /**
+   */
   hasCommand(name: string) {
     return this.commands[name] != null;
   }

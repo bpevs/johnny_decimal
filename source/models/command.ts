@@ -5,5 +5,5 @@ export interface Command {
   description?: string;
   usage?: string;
   alias?: string[];
-  fn: (this: Directory, args: string[]) => Promise<any>;
+  fn: (this: Directory, args?: string[]) => Promise<any>;
 }

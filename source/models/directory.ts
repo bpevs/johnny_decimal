@@ -8,11 +8,20 @@ const walkOptions = Object.freeze({
   includeFiles: false,
 });
 
+/**
+ * @description
+ * Directory is a Deno context-specific usage of DirectoryCore. This represents
+ * the source of truth for our Johnny Decimal System.
+ */
 export class Directory extends DirectoryCore {
-  $HOME: string;
-  $JD_DIR: string;
-  $JD_HOME: string;
   commands: Record<string, Command> = {};
+
+  /* User's Home directory (~) */
+  $HOME: string;
+  /* ~/.jd directory where we house settings, plugins,scripts. */
+  $JD_DIR: string;
+  /* The root of the user's Johnny Decimal System */
+  $JD_HOME: string;
 
   constructor({ $HOME, $JD_DIR, $JD_HOME }: Record<string, string>) {
     super();
