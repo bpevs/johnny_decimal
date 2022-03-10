@@ -13,6 +13,7 @@ import {
   installCommand,
   listCommand,
   openCommand,
+  pluginCommand,
   searchCommand,
   uninstallCommand,
 } from "./mod.ts";
@@ -32,6 +33,7 @@ directory.registerCommand("index", indexCommand);
 directory.registerCommand("install", installCommand);
 directory.registerCommand("list", listCommand);
 directory.registerCommand("open", openCommand);
+directory.registerCommand("plugins", pluginCommand);
 directory.registerCommand("search", searchCommand);
 directory.registerCommand("uninstall", uninstallCommand);
 

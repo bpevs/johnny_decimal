@@ -10,6 +10,7 @@ export { default as indexCommand } from "./commands/index.ts";
 export { default as installCommand } from "./commands/install.ts";
 export { default as listCommand } from "./commands/list.ts";
 export { default as openCommand } from "./commands/open.ts";
+export { default as pluginCommand } from "./commands/plugin.ts";
 export { default as searchCommand } from "./commands/search.ts";
 export { default as uninstallCommand } from "./commands/uninstall.ts";
 

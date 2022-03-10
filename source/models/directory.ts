@@ -1,4 +1,4 @@
-import { exists, join, walk } from "../deps.ts";
+import { exists, join, parseYAML, stringifyYAML, walk } from "../deps.ts";
 import { Command } from "./command.ts";
 import { DirectoryCore } from "./directory_core.ts";
 import { Location } from "./location.ts";
@@ -14,6 +14,7 @@ const walkOptions = Object.freeze({
  * the source of truth for our Johnny Decimal System.
  */
 export class Directory extends DirectoryCore {
+  config: any = {};
   commands: Record<string, Command> = {};
 
   /* User's Home directory (~) */
@@ -52,6 +53,14 @@ export class Directory extends DirectoryCore {
     return this.findLocations([new RegExp(name, "i")]);
   }
 
+  async getConfig(name: string):Promise<any> {
+    try {
+      const configPath = join(this.$JD_DIR, "config.yaml");
+      this.config = parseYAML(await Deno.readTextFile(configPath));
+      return this.config[name];
+    } catch(e) {}
+  }
+
   listAllLocations() {
     return this.findLocations([new RegExp("")]);
   }
@@ -59,7 +68,10 @@ export class Directory extends DirectoryCore {
   async loadPlugins() {
     const pluginsDir = join(this.$JD_DIR, "plugins");
 
-    if (!await exists(pluginsDir)) return;
+    if (
+      !await exists(pluginsDir) ||
+      !await this.getConfig("pluginsEnabled")
+    ) return;
 
     try {
       const plugins = walk(pluginsDir, {
@@ -74,6 +86,23 @@ export class Directory extends DirectoryCore {
       }
     } catch (e) {
       console.log(e);
+    }
+  }
+
+  async setConfig(name: string, value: any) {
+    if (!name || value == null || (this.config[name] === value)) return;
+
+    this.config[name] = value;
+
+    const configPath = join(this.$JD_DIR, "config.yaml");
+    await Deno.writeTextFile(
+      configPath,
+      stringifyYAML(this.config),
+      { create: true }
+    );
+
+    if (name === "pluginsEnabled") {
+      await this.loadPlugins();
     }
   }
 }
