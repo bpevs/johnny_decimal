@@ -5,11 +5,15 @@ Deno.test("can add and run commands", async () => {
   const directory = new Directory();
 
   let val = 0;
-  const myCommand = ([toAdd]: string[]) => val += Number(toAdd);
-  const getCommand = async () => ({ default: myCommand });
+  const myCommand = {
+    name: "my-command",
+    fn: async ([toAdd]: string[] = []) => {
+      return val += Number(toAdd);
+    },
+    alias: ["mc"]
+  }
 
-  directory.registerCommand("my-command", getCommand);
-  directory.registerAlias("my-command", ["mc"]);
+  directory.registerCommand("my-command", myCommand);
 
   assert(directory.hasCommand("my-command"), "has command");
 

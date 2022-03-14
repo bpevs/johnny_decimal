@@ -66,7 +66,7 @@ Deno.test("findLocations", async (t) => {
     name: "listAllLocations",
     fn: async () => {
       const locations = await directory.listAllLocations();
-      assertEquals(locations.length, 11);
+      assertEquals(locations.length, 7);
     },
   });
 });
