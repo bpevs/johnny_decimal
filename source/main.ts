@@ -50,6 +50,6 @@ const { help } = parse(Deno.args);
 
 if (help) {
   directory.runCommand("help", []);
-} else if (directory.hasCommand(command)) {
+} else {
   directory.runCommand(command, args);
 }

@@ -49,14 +49,15 @@ export class DirectoryCore {
   }
 
   private retrieveCommand(commandName: string) {
-    return this.commands[commandName].fn.bind(this);
+    if (this.commands[commandName]) {
+      return this.commands[commandName].fn.bind(this);
+    }
   }
 
   async runCommand(commandName: string, args: string[]) {
     const command = this.retrieveCommand(commandName);
     if (command) return command(args);
-
     const defaultCommand = this.retrieveCommand("default");
-    if (defaultCommand) return defaultCommand(args);
+    if (defaultCommand) return defaultCommand([ commandName, ...args ]);
   }
 }

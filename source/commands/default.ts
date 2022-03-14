@@ -1,24 +1,20 @@
+import { red } from "../deps.ts";
 import { Command } from "../models/command.ts";
 import { Directory } from "../models/directory.ts";
+import { Location } from "../models/location.ts";
 
 const defaultCommand: Command = {
   name: "default",
 
-  async fn(this: Directory) {
-    console.log("The default command");
+  async fn(this: Directory, [command, ...args] = []) {
+    if (Location.isLocationFilename(command)) {
+      const locations = await this.findLocationsById(command);
+      if (!locations.length) {
+        console.error(red(`No Location Found for: "${command}"`));
+      }
+      Deno.exit(0);
+    }
   },
 };
 
 export default defaultCommand;
-
-// else {
-//   if (!await exists(jdDir)) {
-//     setup();
-//   }
-//   if (Location.isLocationString(command)) {
-//     const location = Location.fromFilename(command);
-//     const path = await findPathFromLocation(location);
-//     if (!path) throw new Error("No Location Found");
-//     Deno.exit(0);
-//   }
-// }

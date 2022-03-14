@@ -11,7 +11,7 @@ import { logLocationFilenames, logTitle } from "../utilities/log_utilities.ts";
  */
 const listCommand: Command = {
   name: "list",
-  description: "List files in a location",
+  description: "List files in a location. If none given, use current location",
   usage: "jd ls [<location>]",
   alias: ["ls"],
 
