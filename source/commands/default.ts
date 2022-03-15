@@ -7,12 +7,12 @@ const defaultCommand: Command = {
   name: "default",
 
   async fn(this: Directory, [command, ...args] = []) {
-    if (Location.isLocationFilename(command)) {
-      const locations = await this.findLocationsById(command);
+    const locationName = command === "default" ? args[0] : command;
+    if (Location.isLocationFilename(locationName)) {
+      const locations = await this.findLocationsById(locationName);
       if (!locations.length) {
-        console.error(red(`No Location Found for: "${command}"`));
+        console.error(red(`No Location Found for: "${locationName}"`));
       }
-      Deno.exit(0);
     }
   },
 };
