@@ -5,7 +5,7 @@ import { join } from "../../deps.ts";
 import { Directory } from "../../models/directory.ts";
 import openCommand from "../open.ts";
 
-Deno.test("open command runs", async (t) => {
+Deno.test("Open Command", async (t) => {
   const testHome = join(Deno.cwd(), "test");
 
   const directory = new Directory({
@@ -14,18 +14,21 @@ Deno.test("open command runs", async (t) => {
     $JD_DIR: join(testHome, ".jd"),
   });
 
+  directory.registerCommand("open", openCommand);
+
   sinon.stub(Deno, "run").callsFake((...args: any[]) => {
     const resp: any = { status: () => args };
     return resp;
   });
 
-  await t.step("Run command", async () => {
-    directory.registerCommand("open", openCommand);
+  const run: any = Deno.run;
+
+  await t.step("Runs Open command", async () => {
     await directory.runCommand("open", ["12.01"]);
 
-    assertEquals((Deno.run as any).called, true);
-    assertEquals((Deno.run as any).getCalls().length, 1);
+    assertEquals(run.called, true);
+    assertEquals(run.getCalls().length, 1);
   });
 
-  (Deno.run as any).restore();
+  run.restore();
 });

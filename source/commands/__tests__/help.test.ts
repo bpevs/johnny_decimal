@@ -30,7 +30,7 @@ Deno.test("Help Command", async (t) => {
     description: "my command does things",
   });
 
-  await t.step("Does nothing if location exists", async () => {
+  await t.step("Logs help text", async () => {
     await directory.runCommand("help", []);
 
     assertEquals(log.getCalls().length, 2);
@@ -47,5 +47,6 @@ Deno.test("Help Command", async (t) => {
     });
   });
 
+  log.restore();
   table.restore();
 });
