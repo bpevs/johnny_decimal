@@ -27,8 +27,7 @@ export class DirectoryCore {
   // Holds functions that import commands.
   commands: Record<string, any> = {};
 
-  /**
-   */
+  /** */
   hasCommand(name: string) {
     return this.commands[name] != null;
   }
@@ -58,6 +57,6 @@ export class DirectoryCore {
     const command = this.retrieveCommand(commandName);
     if (command) return command(args);
     const defaultCommand = this.retrieveCommand("default");
-    if (defaultCommand) return defaultCommand([ commandName, ...args ]);
+    if (defaultCommand) return defaultCommand([commandName, ...args]);
   }
 }

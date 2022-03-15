@@ -1,4 +1,7 @@
-import { Command, Directory } from "https://deno.land/x/johnny_decimal@0.1.3/mod.ts";
+import {
+  Command,
+  Directory,
+} from "https://deno.land/x/johnny_decimal@0.1.3/mod.ts";
 
 const sublCommand: Command = {
   name: "subl",

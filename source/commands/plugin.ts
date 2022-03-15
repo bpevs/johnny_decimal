@@ -7,7 +7,7 @@ const pluginCommand: Command = {
   usage: "jd plugins [ enable | disable ]",
   description: "Enable or disable the usage of JD Plugins",
 
-  async fn(this: Directory, [ arg ] = []) {
+  async fn(this: Directory, [arg] = []) {
     if (arg === "enable") {
       await this.setConfig("pluginsEnabled", true);
       console.log("Plugins Enabled!");

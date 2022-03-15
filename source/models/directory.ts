@@ -53,12 +53,12 @@ export class Directory extends DirectoryCore {
     return this.findLocations([new RegExp(name, "i")]);
   }
 
-  async getConfig(name: string):Promise<any> {
+  async getConfig(name: string): Promise<any> {
     try {
       const configPath = join(this.$JD_DIR, "config.yaml");
       this.config = parseYAML(await Deno.readTextFile(configPath));
       return this.config[name];
-    } catch(e) {}
+    } catch (e) {}
   }
 
   listAllLocations() {
@@ -71,7 +71,9 @@ export class Directory extends DirectoryCore {
     if (
       !await exists(pluginsDir) ||
       !await this.getConfig("pluginsEnabled")
-    ) return;
+    ) {
+      return;
+    }
 
     try {
       const plugins = walk(pluginsDir, {
@@ -98,7 +100,7 @@ export class Directory extends DirectoryCore {
     await Deno.writeTextFile(
       configPath,
       stringifyYAML(this.config),
-      { create: true }
+      { create: true },
     );
 
     if (name === "pluginsEnabled") {

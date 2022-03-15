@@ -14,7 +14,7 @@ Deno.test("Default Command", async (t) => {
     $JD_DIR: join(testHome, ".jd"),
   });
 
-  sinon.stub(console, "error")
+  sinon.stub(console, "error");
   const error: any = console.error;
 
   directory.registerCommand("default", defaultCommand);

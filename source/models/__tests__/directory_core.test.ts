@@ -10,8 +10,8 @@ Deno.test("can add and run commands", async () => {
     fn: async ([toAdd]: string[] = []) => {
       return val += Number(toAdd);
     },
-    alias: ["mc"]
-  }
+    alias: ["mc"],
+  };
 
   directory.registerCommand("my-command", myCommand);
 
