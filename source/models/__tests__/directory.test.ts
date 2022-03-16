@@ -14,6 +14,10 @@ const directory = new Directory({
   $JD_DIR: join(testHome, ".jd"),
 });
 
+/**
+ * @todo add config tests
+ */
+
 Deno.test("Initialization", (t) => {
   assertEquals(directory.$HOME, testHome);
   assertEquals(directory.$JD_HOME, join(testHome, "home"));
