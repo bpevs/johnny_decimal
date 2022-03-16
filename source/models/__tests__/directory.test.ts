@@ -2,7 +2,7 @@ import {
   assertEquals,
   assertExists,
   assertStringIncludes,
-} from "https://deno.land/std/testing/asserts.ts";
+} from "../../deps_test.ts";
 import { join } from "../../deps.ts";
 import { Directory } from "../directory.ts";
 

@@ -34,7 +34,6 @@ const listCommand: Command = {
 
       logLocationFilenames(contents.map((dir) => dir.name));
     }
-    Deno.exit(0);
   },
 };
 

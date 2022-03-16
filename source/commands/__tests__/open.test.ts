@@ -1,5 +1,4 @@
-import sinon from "https://cdn.skypack.dev/sinon@11.1.2?dts";
-import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+import { assertEquals, sinon } from "../../deps_test.ts";
 
 import { join } from "../../deps.ts";
 import { Directory } from "../../models/directory.ts";

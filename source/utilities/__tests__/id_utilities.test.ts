@@ -3,7 +3,7 @@ import {
   assertEquals,
   assertMatch,
   assertNotMatch,
-} from "https://deno.land/std/testing/asserts.ts";
+} from "../../deps_test.ts";
 
 import {
   isAreaFilename,

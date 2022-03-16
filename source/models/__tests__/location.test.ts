@@ -1,9 +1,5 @@
 import { dirname, fromFileUrl, join } from "https://deno.land/std/path/mod.ts";
-import {
-  assert,
-  assertArrayIncludes,
-  assertExists,
-} from "https://deno.land/std/testing/asserts.ts";
+import { assert, assertArrayIncludes, assertExists } from "../../deps_test.ts";
 import { Location } from "../location.ts";
 
 Deno.test("get contents", async () => {

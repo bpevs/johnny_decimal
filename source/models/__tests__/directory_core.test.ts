@@ -1,4 +1,4 @@
-import { assert, assertEquals } from "https://deno.land/std/testing/asserts.ts";
+import { assert, assertEquals } from "../../deps_test.ts";
 import { DirectoryCore as Directory } from "../directory_core.ts";
 
 Deno.test("can add and run commands", async () => {

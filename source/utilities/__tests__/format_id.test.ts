@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+import { assertEquals } from "../../deps_test.ts";
 import {
   getFormattedAreaId,
   getFormattedCategoryId,

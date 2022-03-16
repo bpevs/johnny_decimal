@@ -1,9 +1,4 @@
-import sinon from "https://cdn.skypack.dev/sinon@11.1.2?dts";
-import {
-  assertEquals,
-  assertStringIncludes,
-} from "https://deno.land/std/testing/asserts.ts";
-
+import { assertEquals, assertStringIncludes, sinon } from "../../deps_test.ts";
 import { join } from "../../deps.ts";
 import { Directory } from "../../models/directory.ts";
 import helpCommand from "../help.ts";
