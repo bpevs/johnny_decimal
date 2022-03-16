@@ -4,7 +4,7 @@ import { join } from "../../deps.ts";
 import { Directory } from "../../models/directory.ts";
 import searchCommand from "../search.ts";
 
-Deno.test("search Command", async (t) => {
+Deno.test("Search Command", async (t) => {
   const testHome = join(Deno.cwd(), "test");
 
   const directory = new Directory({
