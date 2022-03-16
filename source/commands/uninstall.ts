@@ -71,7 +71,7 @@ const uninstallCommand: Command = {
       await Deno.writeTextFile(rcFilepath, contents);
     }
 
-    console.log(green("Complete!"));
+    console.log(green("Completed!"));
     console.log("Please run `deno uninstall jd` to remove this script");
     console.log("Please reload or re-source your terminal window");
   },

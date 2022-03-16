@@ -4,11 +4,6 @@ import { exists, join } from "../../deps.ts";
 import { Directory } from "../../models/directory.ts";
 import installCommand from "../install.ts";
 
-/**
- * @todo
- * - test: install working dir
- * - test: install Home
- */
 Deno.test("install Command", async (t) => {
   const testHome = join(Deno.cwd(), "test");
   const $JD_DIR = join(testHome, ".jd");
