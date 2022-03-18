@@ -1,35 +1,50 @@
 # Johnny Decimal
 
-Utilities built with Typescript, for interacting with a
+Importable utilities built with Typescript, for interacting with a
 [Johnny Decimal](https://johnnydecimal.com/) filing system.
 
-See docs for this repo at https://ivebencrazy.github.io/johnny_decimal
+This document is geared for development using our modules, and NOT the CLI.
 
-## CLI
+**For a guide on the Johnny Decimal CLI, use our guide: https://johnny.bpev.me**
 
-Utilizes all the modules to create a johnny decimal cli tool.
+This guide also includes documentation on [creating plugins for Johnny Decimal CLI](https://johnny.bpev.me/guide/plugins/plugin_development.html).
 
-### Usage
+## API Documentation
 
-Install the script using Deno.
+Mostly, the code comments should be sufficient; these are used to generate our [Deno Docs](https://doc.deno.land/https/deno.land/x/johnny_decimal/mod.ts)
 
-```sh
-deno install --allow-env --allow-read --allow-run --allow-write --name=jd https://deno.land/x/johnny_decimal@0.1.3/main.ts
-```
-
-The first time your run the command `jd`, the Johnny Decimal CLI will guide you
-through setup! After that, you can see a description of the commands using:
-
-```sh
-jd --help
-```
-
-## Modules
+## Getting Started
 
 You can import the utilities used in the CLI from deno.land:
 
 ```js
-import { Directory, Location } from "https://deno.land/x/johnny_decimal";
-```
+import {
+  // Directory and Location are Deno-specific imports are good for fs usecases
+  Directory,
+  Location,
 
-More API Docs to come...
+  // LocationCore and DirectoryCore are much more bare, but are pure javascript.
+  // Better when aiming to compile for web
+  LocationCore,
+  DirectoryCore,
+
+  // Commands exported from johnny_decimal are all Deno-specific.
+  // These are the apis used for the Johnny Decimal CLI
+  helpCommand,
+  openCommand,
+} from "https://deno.land/x/johnny_decimal/mod.ts";
+
+const directory = new Directory({
+  $HOME: $HOME,
+  $JD_HOME: $JD_HOME,
+  $JD_DIR: $JD_DIR,
+});
+
+// DirectoryCore still includes command-management functionality.
+directory.registerCommand("default", defaultCommand);
+
+// LocationCore still includes lots of utility functions
+console.log(LocationCore.isAreaId("21.04")) // false
+
+directory.runCommand("default", []);
+```

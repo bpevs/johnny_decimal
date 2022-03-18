@@ -3,3 +3,8 @@
 .Spotlight-V100
 .Trashes
 ._*
+
+# Ignore `docs` files
+.vuepress
+node_modules
+
