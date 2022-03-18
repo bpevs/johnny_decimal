@@ -12,7 +12,7 @@ export default function getDefaultShellName($HOME: string): string {
   }
 
   if ($SHELL.includes("bash")) {
-    return join($HOME, ".profile");
+    return join($HOME, ".bashrc");
   }
 
   throw new Error(`Did not recognize default shell: ${$SHELL}`);
