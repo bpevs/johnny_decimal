@@ -3,7 +3,7 @@
 Importable utilities built with Typescript, for interacting with a
 [Johnny Decimal](https://johnnydecimal.com/) filing system.
 
-**This document is geared for development using our modules, and NOT the CLI. For a guide on the Johnny Decimal CLI, or Plugin Development, use our CLI guide: https://johnny.bpev.me**
+This document is geared for using our modules for your own Johnny Decimal javascript applications. **For CLI usage and Plugin Development information, use our [CLI guide](https://johnny.bpev.me)**
 
 ## API Documentation
 
