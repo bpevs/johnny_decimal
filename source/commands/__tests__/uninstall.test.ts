@@ -20,8 +20,8 @@ Deno.test("uninstall Command", async (t) => {
   // Add lines to .zshrc to imitate installed state
   await Deno.writeTextFile(
     join(testHome, ".zshrc"),
-    "\nexport JD_HOME=\"$HOME/home\"\nsource $HOME/.jd/main.sh",
-    { append: true }
+    '\nexport JD_HOME="$HOME/home"\nsource $HOME/.jd/main.sh',
+    { append: true },
   );
 
   const directory = new Directory({
@@ -38,7 +38,7 @@ Deno.test("uninstall Command", async (t) => {
   directory.registerCommand("uninstall", uninstallCommand);
 
   await t.step("Skips all", async () => {
-    confirmFunc.returns(false)
+    confirmFunc.returns(false);
 
     await directory.runCommand("uninstall", []);
 
@@ -46,7 +46,7 @@ Deno.test("uninstall Command", async (t) => {
     assertStringIncludes(logs[0].firstArg, "Step 1 of 2");
     assertStringIncludes(confirmFunc.getCalls()[0].firstArg, "automatically");
     assertStringIncludes(logs[1].firstArg, "Step 2 of 2");
-    assertStringIncludes(logs[1].firstArg, "JD_HOME=\"$HOME/home\"");
+    assertStringIncludes(logs[1].firstArg, 'JD_HOME="$HOME/home"');
     assertStringIncludes(logs[1].firstArg, "source $HOME/.jd/main.sh");
     assertStringIncludes(confirmFunc.getCalls()[1].firstArg, "automatically?");
     assertStringIncludes(logs[2].firstArg, "Completed!");
@@ -56,7 +56,7 @@ Deno.test("uninstall Command", async (t) => {
   confirmFunc.reset();
 
   await t.step("Confirm All", async () => {
-    confirmFunc.returns(true)
+    confirmFunc.returns(true);
 
     assertEquals(await exists(`${testHome}/.jd`), true);
     await directory.runCommand("uninstall", []);
@@ -68,7 +68,7 @@ Deno.test("uninstall Command", async (t) => {
     assertStringIncludes(logs[1].firstArg, "Deleting");
     assertStringIncludes(logs[2].firstArg, "successfully removed!");
     assertStringIncludes(logs[3].firstArg, "Step 2 of 2");
-    assertStringIncludes(logs[3].firstArg, "JD_HOME=\"$HOME/home\"");
+    assertStringIncludes(logs[3].firstArg, 'JD_HOME="$HOME/home"');
     assertStringIncludes(logs[3].firstArg, "source $HOME/.jd/main.sh");
     assertStringIncludes(confirmFunc.getCalls()[1].firstArg, "automatically?");
     assertStringIncludes(logs[4].firstArg, "Completed!");

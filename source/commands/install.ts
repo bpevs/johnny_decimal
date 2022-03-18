@@ -2,6 +2,7 @@ import { bold, green, join, red } from "../deps.ts";
 import { Command } from "../models/command.ts";
 import { Directory } from "../models/directory.ts";
 import createJdDir from "../utilities/create_jd_dir.ts";
+import getDefaultShellName from "../utilities/get_default_shell_config.ts";
 
 const jdHomeText = 'export JD_HOME="{JD_HOME}"';
 const sourceText = "source $HOME/.jd/main.sh";
@@ -45,7 +46,7 @@ const installCommand: Command = {
     console.log(introLink);
 
     const { $HOME, $JD_DIR } = this;
-    const rcFilepath = join($HOME, ".zshrc");
+    const rcFilepath = getDefaultShellName($HOME);
 
     console.log(step1);
     if (

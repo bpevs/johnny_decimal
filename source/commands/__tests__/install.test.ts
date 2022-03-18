@@ -28,8 +28,8 @@ Deno.test("install Command", async (t) => {
   directory.registerCommand("install", installCommand);
 
   await t.step("Skips all", async () => {
-    confirmFunc.returns(false)
-    promptFunc.returns("")
+    confirmFunc.returns(false);
+    promptFunc.returns("");
 
     await directory.runCommand("install", []);
 
@@ -53,8 +53,8 @@ Deno.test("install Command", async (t) => {
   promptFunc.reset();
 
   await t.step("Confirm all", async () => {
-    confirmFunc.returns(true)
-    promptFunc.returns("~")
+    confirmFunc.returns(true);
+    promptFunc.returns("~");
 
     assertEquals(await exists(join($JD_DIR, "main.sh")), false);
     await directory.runCommand("install", []);
@@ -83,8 +83,8 @@ Deno.test("install Command", async (t) => {
   promptFunc.reset();
 
   await t.step("Confirm all - Already Existing", async () => {
-    confirmFunc.returns(true)
-    promptFunc.returns("~")
+    confirmFunc.returns(true);
+    promptFunc.returns("~");
 
     await directory.runCommand("install", []);
 
@@ -107,7 +107,6 @@ Deno.test("install Command", async (t) => {
 
   // Restore .zshrc
   await Deno.writeTextFile(join(testHome, ".zshrc"), zshrcContents);
-
 
   log.restore();
   confirmFunc.restore();

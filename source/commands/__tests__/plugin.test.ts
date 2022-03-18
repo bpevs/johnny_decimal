@@ -24,7 +24,7 @@ Deno.test("Plugin Command", async (t) => {
   await t.step("enables plugins", async () => {
     await directory.runCommand("plugins", ["enable"]);
 
-    const [ key, value ] = setConfig.getCalls()[0].args;
+    const [key, value] = setConfig.getCalls()[0].args;
     assertEquals(key, "pluginsEnabled");
     assertEquals(value, true);
 
@@ -37,7 +37,7 @@ Deno.test("Plugin Command", async (t) => {
   await t.step("disables plugins", async () => {
     await directory.runCommand("plugins", ["disable"]);
 
-    const [ key, value ] = setConfig.getCalls()[0].args;
+    const [key, value] = setConfig.getCalls()[0].args;
     assertEquals(key, "pluginsEnabled");
     assertEquals(value, false);
 
