@@ -112,8 +112,8 @@ export class Directory extends DirectoryCore {
       });
 
       for await (const plugin of plugins) {
-        const path = `file://${plugin.path}`;
-        const command = (await import(plugin.path)).default;
+        const pluginPath = `file://${plugin.path}`;
+        const command = (await import(pluginPath)).default;
         this.registerCommand(command);
       }
     } catch (e) {
