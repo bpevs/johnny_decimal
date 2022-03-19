@@ -18,8 +18,11 @@ import { Command } from "./command.ts";
  *   constructor($JD_HOME){ this.$JD_HOME = $JD_HOME; }
  * }
  * const directory = new DirectoryCore()
- * directory.registerCommand("log-home", () => {
- *   console.log(this.$JD_HOME)
+ * directory.registerCommand({
+ *   name: "log-home",
+ *   fn: () => {
+ *     console.log(this.$JD_HOME)
+ *   }
  * });
  * directory.runCommand("log-home");
  */
@@ -27,19 +30,35 @@ export class DirectoryCore {
   // Holds functions that import commands.
   commands: Record<string, any> = {};
 
-  /** */
-  hasCommand(name: string) {
+  /**
+   * @description checks if a command is registered
+   * @example directory.hasCommand("my-command");
+   */
+  hasCommand(name: string): boolean {
     return this.commands[name] != null;
   }
 
-  registerAlias(commandName: string, aliasNames: string[] = []) {
+  /**
+   * @description registers an alias for an existing command.
+   * @example
+   * directory.registerAlias("my-command", [ "mc" ]);
+   * directory.runAlias("mc"); // Runs the command "my-command"
+   */
+  registerAlias(commandName: string, aliasNames: string[] = []): void {
     aliasNames.forEach((aliasName) => {
       this.commands[aliasName] = this.commands[commandName];
     });
   }
 
-  registerCommand(commandName: string, command: Command) {
-    this.commands[commandName] = command;
+  /**
+   * @description registers a command to be run later.
+   * @example directory.registerAlias({
+   *   name: "my-command",
+   *   fn() { return "hello" }
+   * });
+   */
+  registerCommand(command: Command): void {
+    this.commands[command.name] = command;
     if (Array.isArray(command.alias)) {
       command.alias.forEach((alias) => {
         this.commands[alias] = command;
@@ -47,12 +66,20 @@ export class DirectoryCore {
     }
   }
 
+  /**
+   * @description retreives a command function, and prepares it to be invoked.
+   */
   private retrieveCommand(commandName: string) {
     if (this.commands[commandName]) {
       return this.commands[commandName].fn.bind(this);
     }
   }
 
+  /**
+   * @description run a command. If none is found, try to run the default
+   * command (a command registered with the id "default").
+   * @example directory.runCommand("my-command");
+   */
   async runCommand(commandName: string, args: string[]) {
     const command = this.retrieveCommand(commandName);
     if (command) return command(args);

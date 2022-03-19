@@ -15,7 +15,7 @@ Deno.test("Default Command", async (t) => {
   sinon.stub(console, "error");
   const error: any = console.error;
 
-  directory.registerCommand("default", defaultCommand);
+  directory.registerCommand(defaultCommand);
 
   await t.step("Does nothing if location exists", async () => {
     await directory.runCommand("12.01", []);

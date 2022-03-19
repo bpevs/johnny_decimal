@@ -4,8 +4,7 @@ import { Location } from "../location.ts";
 
 Deno.test("get contents", async () => {
   const location = new Location({
-    id: "12.02",
-    name: "models",
+    name: "12.02 models",
     path: dirname(fromFileUrl(import.meta.url)),
   });
 

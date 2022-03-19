@@ -20,11 +20,11 @@ Deno.test("Should have static methods", () => {
   assertExists(Location.isLocationFilename);
 });
 
-Deno.test("Initializes", () => {
+Deno.test("Should initialize", () => {
   const path = "~/20-29 Area/21 Category/21.02 My Item";
   const id = "21.02";
-  const name = "My Item";
-  const location = new Location({ path, id, name });
+  const name = "21.02 My Item";
+  const location = new Location({ path, name });
   assertEquals(location.name, name, "name");
   assertEquals(location.path, path, "path");
   assertEquals(location.id, id, "id");

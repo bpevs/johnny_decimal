@@ -13,7 +13,7 @@ Deno.test("Plugin Command", async (t) => {
     $JD_DIR: join(testHome, ".jd"),
   });
 
-  directory.registerCommand("plugins", pluginCommand);
+  directory.registerCommand(pluginCommand);
 
   sinon.stub(console, "log");
   sinon.stub(directory, "setConfig");

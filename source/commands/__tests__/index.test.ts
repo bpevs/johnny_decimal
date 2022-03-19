@@ -15,7 +15,7 @@ Deno.test("index Command", async (t) => {
   sinon.stub(console, "log");
   const log: any = console.log;
 
-  directory.registerCommand("index", indexCommand);
+  directory.registerCommand(indexCommand);
 
   await t.step("Logs index", async () => {
     await directory.runCommand("index", []);

@@ -35,7 +35,7 @@ Deno.test("uninstall Command", async (t) => {
   const confirmFunc: any = confirm;
   const log: any = console.log;
 
-  directory.registerCommand("uninstall", uninstallCommand);
+  directory.registerCommand(uninstallCommand);
 
   await t.step("Skips all", async () => {
     confirmFunc.returns(false);

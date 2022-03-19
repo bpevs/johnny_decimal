@@ -21,7 +21,7 @@ Deno.test("list Command", async (t) => {
   sinon.stub(console, "log");
   const log: any = console.log;
 
-  directory.registerCommand("list", listCommand);
+  directory.registerCommand(listCommand);
 
   await t.step("Logs area", async () => {
     await directory.runCommand("list", ["10-19"]);

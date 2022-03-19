@@ -17,8 +17,8 @@ Deno.test("Help Command", async (t) => {
   const log: any = console.log;
   const table: any = console.table;
 
-  directory.registerCommand("help", helpCommand);
-  directory.registerCommand("my-command", {
+  directory.registerCommand(helpCommand);
+  directory.registerCommand({
     fn: async () => {},
     name: "my-command",
     usage: "jd my-command",

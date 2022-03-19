@@ -13,7 +13,7 @@ Deno.test("can add and run commands", async () => {
     alias: ["mc"],
   };
 
-  directory.registerCommand("my-command", myCommand);
+  directory.registerCommand(myCommand);
 
   assert(directory.hasCommand("my-command"), "has command");
 

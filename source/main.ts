@@ -27,15 +27,15 @@ const directory = new Directory({
   $JD_DIR: $JD_DIR,
 });
 
-directory.registerCommand("default", defaultCommand);
-directory.registerCommand("help", helpCommand);
-directory.registerCommand("index", indexCommand);
-directory.registerCommand("install", installCommand);
-directory.registerCommand("list", listCommand);
-directory.registerCommand("open", openCommand);
-directory.registerCommand("plugins", pluginCommand);
-directory.registerCommand("search", searchCommand);
-directory.registerCommand("uninstall", uninstallCommand);
+directory.registerCommand(defaultCommand);
+directory.registerCommand(helpCommand);
+directory.registerCommand(indexCommand);
+directory.registerCommand(installCommand);
+directory.registerCommand(listCommand);
+directory.registerCommand(openCommand);
+directory.registerCommand(pluginCommand);
+directory.registerCommand(searchCommand);
+directory.registerCommand(uninstallCommand);
 
 if (!await exists($JD_DIR)) {
   await directory.runCommand("install", []);

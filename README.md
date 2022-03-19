@@ -38,7 +38,7 @@ const directory = new Directory({
 });
 
 // DirectoryCore still includes command-management functionality.
-directory.registerCommand("default", defaultCommand);
+directory.registerCommand(defaultCommand);
 
 // LocationCore still includes lots of utility functions
 console.log(LocationCore.isAreaId("21.04")); // false

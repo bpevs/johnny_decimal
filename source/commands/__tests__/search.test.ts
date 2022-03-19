@@ -16,7 +16,7 @@ Deno.test("Search Command", async (t) => {
   sinon.stub(console, "log");
   const log: any = console.log;
 
-  directory.registerCommand("search", searchCommand);
+  directory.registerCommand(searchCommand);
 
   await t.step("Logs area", async () => {
     await directory.runCommand("search", ["returns"]);

@@ -25,7 +25,7 @@ Deno.test("install Command", async (t) => {
   const promptFunc: any = prompt;
   const log: any = console.log;
 
-  directory.registerCommand("install", installCommand);
+  directory.registerCommand(installCommand);
 
   await t.step("Skips all", async () => {
     confirmFunc.returns(false);

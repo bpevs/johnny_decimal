@@ -31,6 +31,9 @@ export class Directory extends DirectoryCore {
     this.$JD_HOME = $JD_HOME;
   }
 
+  /**
+   * @returns a list of locations matching a set of regex.
+   */
   async findLocations(match: RegExp[] = []): Promise<Location[]> {
     const results: Array<Location> = [];
     const matches = walk(this.$JD_HOME, { ...walkOptions, match });
@@ -45,14 +48,32 @@ export class Directory extends DirectoryCore {
     return results;
   }
 
+  /**
+   * @description
+   * Finds all the locations matching a specific id. This can be an area,
+   * category, or item id. This is meant to be used more like a "I know where
+   * this is" kinds of usecases. Hopefully this is a single-item list.
+   * @returns a list of locations
+   */
   findLocationsById(id: string): Promise<Location[]> {
     return this.findLocations([Location.regex.matchId(id)]);
   }
 
+  /**
+   * @description
+   * Finds all the locations matching a name. Based on a case-insensitive regex.
+   * This is meant to be used for more "search" kinds of usecases.
+   * @returns a list of locations
+   */
   findLocationsByName(name: string): Promise<Location[]> {
     return this.findLocations([new RegExp(name, "i")]);
   }
 
+  /**
+   * @description gets the content of `~/.jd/config.yaml`. In the CLI, this is
+   * currently only used for `arePluginsEnabled`;
+   * @returns Basically anything. Define your own config structure.
+   */
   async getConfig(name: string): Promise<any> {
     try {
       const configPath = join(this.$JD_DIR, "config.yaml");
@@ -61,10 +82,18 @@ export class Directory extends DirectoryCore {
     } catch (e) {}
   }
 
-  listAllLocations() {
+  /**
+   *  @description lists all the locations in the Johnny Decimal root
+   */
+  listAllLocations(): Promise<Location[]> {
     return this.findLocations([new RegExp("")]);
   }
 
+  /**
+   * @description
+   * IF plugins are enabled, this imports all commands from `~/.jd/plugins`,
+   * and registers them as commands.
+   */
   async loadPlugins() {
     const pluginsDir = join(this.$JD_DIR, "plugins");
 
@@ -83,14 +112,17 @@ export class Directory extends DirectoryCore {
       });
 
       for await (const plugin of plugins) {
-        const command = (await import(plugin.path)).default;
-        this.registerCommand(command.name, command);
+        this.registerCommand((await import(plugin.path)).default);
       }
     } catch (e) {
       console.log(e);
     }
   }
 
+  /**
+   * @description set the content of `~/.jd/config.yaml`
+   * If we have just enabled plugins, load them.
+   */
   async setConfig(name: string, value: any) {
     if (!name || value == null || (this.config[name] === value)) return;
 

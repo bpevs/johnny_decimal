@@ -13,7 +13,7 @@ Deno.test("Open Command", async (t) => {
     $JD_DIR: join(testHome, ".jd"),
   });
 
-  directory.registerCommand("open", openCommand);
+  directory.registerCommand(openCommand);
 
   sinon.stub(Deno, "run").callsFake((...args: any[]) => {
     const resp: any = { status: () => args };
