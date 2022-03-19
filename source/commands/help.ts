@@ -2,6 +2,12 @@ import { Command } from "../models/command.ts";
 import { Directory } from "../models/directory.ts";
 import { logTitle } from "../utilities/log_utilities.ts";
 
+/**
+ * @name HelpCommand
+ *
+ * @description
+ * Logs information about each registered command
+ */
 const helpCommand: Command = {
   name: "help",
   usage: "jd --help",

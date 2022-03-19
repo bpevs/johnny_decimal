@@ -1,5 +1,10 @@
 import { join } from "../deps.ts";
 
+/**
+ * @description
+ * Attempts to get the default shell of the user. This is primarily for use in
+ * the `install` and `uninstall` commands, where we edit a user's config.
+ */
 export default function getDefaultShellName($HOME: string): string {
   const $SHELL = Deno.env.get("SHELL") || "";
 

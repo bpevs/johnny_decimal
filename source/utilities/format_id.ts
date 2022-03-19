@@ -1,7 +1,12 @@
+/** @description Ensure itemId is formatted correctly ("10.00") */
 export function getFormattedItemId({ itemId }: { itemId: string }): string {
   return formatItemId(Number(itemId));
 }
 
+/**
+ * @description
+ * Given values for item OR categoryId, correctly format a categoryId ("10")
+ */
 export function getFormattedCategoryId(
   { itemId, categoryId }: { itemId?: string; categoryId?: string },
 ): string {
@@ -10,6 +15,10 @@ export function getFormattedCategoryId(
   throw new Error("getFormattedCategoryId: no id given");
 }
 
+/**
+ * @description
+ * Given values for itemId OR categoryId OR areaId, correctly format an areaId
+ */
 export function getFormattedAreaId(
   { itemId, categoryId, areaId }: {
     itemId?: string;

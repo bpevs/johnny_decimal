@@ -28,6 +28,14 @@ jd() {
 }
 `;
 
+/**
+ * @description
+ * Writes the Johnny Decimal CD script to a file.  This is used because Deno
+ * is run in a subprocess, so `cd` commands do not persist outside of the
+ * script. This workaround adds the script as a shell script that can run
+ * call our Javascript. Johnny Decimal Javascript CLI doesn't technically
+ * have awareness into whether that script is running.
+ */
 export default async function writeJdDir(pathToInstall: string) {
   // Create $HOME/.jd/plugins
   await ensureDir(join(pathToInstall, "plugins"));

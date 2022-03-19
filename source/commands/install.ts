@@ -36,6 +36,15 @@ JD CLI needs the following lines to be added to {config}:
 
 const skipText = "\n  Skipping...";
 
+/**
+ * @name InstallCommand
+ *
+ * @description
+ * Guided script for setting up Johnny Decimal CLI. This includes:
+ * 1. Creating `$HOME/.jd`
+ * 2. Registering a user's Johnny Decimal Filesystem
+ * 3. Adding the `cd` shell script and environment variables to user's config.
+ */
 const installCommand: Command = {
   name: "install",
   usage: "jd install",

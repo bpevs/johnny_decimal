@@ -5,11 +5,20 @@ import sortByLocationFilename from "./sort_by_location_filename.ts";
 const { AREA, CATEGORY, ITEM } = Location.TYPE;
 const indent = "  ";
 
-export function logTitle(name: string) {
+/**
+ * @description Just logs a title for CLI output.
+ */
+export function logTitle(name: string): void {
   console.log(`\n${bold(name)}\n${bold(name.replace(/./g, "="))}`);
 }
 
-export function logLocationFilenames(filenames: string[]) {
+/**
+ * @description
+ * Logs a pretty list of filenames, based on their locations.
+ * - Sorts by ID, pushing non-JD filenames to the bottom.
+ * - Indents based on location, so more specific are more indented.
+ */
+export function logLocationFilenames(filenames: string[]): void {
   const numMaxIndents = filenames.reduce((prev, name) => {
     const [area, category, item] = prev;
     try {

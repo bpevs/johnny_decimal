@@ -5,6 +5,7 @@ import { Location } from "../models/location.ts";
 import { logLocationFilenames, logTitle } from "../utilities/log_utilities.ts";
 
 /**
+ * @description
  * If given a name to list, find that location, and list the contents.
  * If NOT given a name, and in JD FS, list the contents of the current dir.
  * @todo If NOT given a name, and NOT in JD FS, list JD FS's home.

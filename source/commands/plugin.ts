@@ -2,6 +2,11 @@ import { Command } from "../models/command.ts";
 import { Directory } from "../models/directory.ts";
 import { logLocationFilenames } from "../utilities/log_utilities.ts";
 
+/**
+ * @description
+ * Enable/Disable usage of plugins in Johnny Decimal CLI. We do this by writing
+ * `pluginsEnabled: true|false` to `$HOME/.jd/config.yaml`
+ */
 const pluginCommand: Command = {
   name: "plugins",
   usage: "jd plugins [ enable | disable ]",

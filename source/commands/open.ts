@@ -1,6 +1,10 @@
 import { Command } from "../models/command.ts";
 import { Directory } from "../models/directory.ts";
 
+/**
+ * @description Opens a location using the default file explorer
+ * @todo make this work in windows.
+ */
 const openCommand: Command = {
   name: "open",
   usage: "jd open <location>",

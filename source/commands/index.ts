@@ -2,6 +2,12 @@ import { Command } from "../models/command.ts";
 import { Directory } from "../models/directory.ts";
 import { logLocationFilenames } from "../utilities/log_utilities.ts";
 
+/**
+ * @name IndexCommand
+ *
+ * @description
+ * Logs all the directories in our JD Filesystem
+ */
 const indexCommand: Command = {
   name: "index",
   usage: "jd index",

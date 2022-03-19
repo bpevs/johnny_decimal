@@ -20,6 +20,15 @@ To delete JD CLI, please remove the following lines from {config}:
 
 `;
 
+/**
+ * @name UninstallCommand
+ *
+ * @description
+ * Guided script for tearing down Johnny Decimal CLI (opposite of
+ * InstallCommand). This includes:
+ * 1. Removing `$HOME/.jd`
+ * 2. Removing the `cd` shell script and env variables from the user's config
+ */
 const uninstallCommand: Command = {
   name: "uninstall",
   usage: "jd uninstall",
