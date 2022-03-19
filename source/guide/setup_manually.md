@@ -55,7 +55,7 @@ deno install --name=jd --allow-env https://deno.land/x/johnny_decimal@0.1.3/main
 As an example, probably the most locked-down install of Johnny Decimal CLI would probably look something like this:
 
 ```
-deno install --name=jd --allow-env=HOME,JD_HOME,JD_DIR --allow-read=$JD_HOME,$HOME/.jd --allow-net=https://deno.land https://deno.land/x/johnny_decimal@0.1.3/main.ts
+deno install --name=jd --allow-env=HOME,JD_HOME,JD_DIR --allow-read=$JD_HOME,$HOME/.jd --allow-net=https://deno.land https://deno.land/x/johnny_decimal@1.0.0/main.ts
 ```
 
 ^ This install command has all the core functionality except for `jd open` (which requires `--allow-run`) and plugins (which can require a variety of permissions)
