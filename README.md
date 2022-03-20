@@ -28,7 +28,6 @@ import {
   // LocationCore and DirectoryCore are much more bare, but are pure javascript.
   // Better when aiming to compile for web
   LocationCore,
-  openCommand,
 } from "https://deno.land/x/johnny_decimal/mod.ts";
 
 const directory = new Directory({

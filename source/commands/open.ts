@@ -7,8 +7,6 @@ import { Directory } from "../models/directory.ts";
  */
 const openCommand: Command = {
   name: "open",
-  usage: "jd open <location>",
-  description: "Open location in Finder",
 
   async fn(this: Directory, [str]: string[] = []) {
     const [location] = await this.findLocationsById(str);
