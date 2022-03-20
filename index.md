@@ -11,7 +11,7 @@ This Johnny Decimal CLI is built using [Deno](https://deno.land/).  If you don't
 The setup for using this CLI tool is simple.
 
 1. Install [Deno](https://deno.land/#installation)
-2. Run `deno install --allow-read --allow-write --allow-env --allow-run --name=jd https://deno.land/x/johnny_decimal/main.ts`
+2. Run `deno install --allow-env --allow-read --allow-write --name=jd https://deno.land/x/johnny_decimal/main.ts`
 
 This installs the johnny_decimal application under the namespace "jd".
 It allows for reading and writing to the filesystem, as well as reading environment variables and running commands. Yes, it is a lot of permissions. I will update this document shortly on what all of these individual permissions are being used for, once I organize this document into a more substantial piece of documentation.

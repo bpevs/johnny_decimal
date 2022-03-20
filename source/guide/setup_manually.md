@@ -43,22 +43,20 @@ Now that our manual setup is done, we will never need to use `jd install`. This 
 The core of this command is still:
 
 ```
-deno install --name=jd https://deno.land/x/johnny_decimal@1.0.2/main.ts
+deno install --name=jd https://deno.land/x/johnny_decimal@1.0.3/main.ts
 ```
 
 We will want to tag on permissions as necessary:
 
 ```
-deno install --name=jd --allow-env https://deno.land/x/johnny_decimal@1.0.2/main.ts
+deno install --name=jd --allow-env https://deno.land/x/johnny_decimal@1.0.3/main.ts
 ```
 
 As an example, probably the most locked-down install of Johnny Decimal CLI would probably look something like this:
 
 ```
-deno install --name=jd --allow-env=HOME,JD_HOME,JD_DIR --allow-read=$JD_HOME,$HOME/.jd --allow-net=https://deno.land https://deno.land/x/johnny_decimal@1.0.2/main.ts
+deno install --name=jd --allow-env=HOME,JD_HOME,JD_DIR --allow-read=$JD_HOME,$HOME/.jd https://deno.land/x/johnny_decimal@1.0.3/main.ts
 ```
-
-^ This install command has all the core functionality except for `jd open` (which requires `--allow-run`) and plugins (which can require a variety of permissions)
 
 And we're done! Setup Complete!
 
@@ -87,9 +85,9 @@ This is required, and is used for reading files in your Johnny Decimal directory
 
 Here, we allow reading our Johnny Decimal Filesystem Root ($JD_HOME), and the directory where Johnny Decimal CLI is storing both settings and plugins (.jd) 
 
-### --allow-net (required, but soon-to-be-optional)
+### --allow-net (optional)
 
-This is used for downloading dependencies of plugins. It currently is required, but this is a bug. In the future this will NOT be necessary if either:
+This is used for downloading dependencies of plugins. It is not necessary if either:
 
 a. You don't use plugins
 b. Your plugins do not have any dependencies
