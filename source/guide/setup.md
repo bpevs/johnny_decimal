@@ -12,7 +12,7 @@ To install Johnny Decimal CLI, we just need to run the `deno install` command:
 deno install --allow-env --allow-read --allow-write --name=jd https://deno.land/x/johnny_decimal@1.0.3/main.ts
 ```
 
-You'll notice the `install` permissions are pretty broad here! Depending on what you want to do, and how much manual setup you're willing to do, these are not all necessary. You can see more explanations on what each of these are used for in our [manual installation guide](./setup_manually).
+You'll notice the `install` permissions are pretty broad here! Depending on what you want to do, and how much manual setup you're willing to do, these are not all necessary. You can see more explanations on what each of these are used for in our [manual installation guide](./setup_manually). You might also need to include `--allow-net` or `allow-run` if you are using [external plugins](https://johnny.bpev.me/guide/plugins/plugin_usage.html#enabling-plugins). Be careful you trust any plugins you are running!
 
 Once Johnny Decimal CLI is installed, we have an installation script that will help you set everything up!
 
