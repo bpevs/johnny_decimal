@@ -17,7 +17,7 @@ Before developing your own plugins, you'll want to read how to [install plugins]
 
 ## Basic Structure
 
-The easiest way to understand how plugin command works is to see an example. You can code plugins in both Javascript and Typescript. Here is an example using Javascript (or look at the released [typescript version](https://github.com/ivebencrazy/jd_plugin_sublime/blob/main/main.ts)):
+The easiest way to understand how plugin command works is to see an example. You can code plugins in both Javascript and Typescript. Here is an example using Javascript (or look at the released [typescript version](https://github.com/ivebencrazy/jd_plugins/tree/main/jd_plugin_sublime)):
 
 ```js
 /**
