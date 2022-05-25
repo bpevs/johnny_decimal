@@ -89,8 +89,8 @@ Here, we allow reading our Johnny Decimal Filesystem Root ($JD_HOME), and the di
 
 This is used for downloading dependencies of plugins. It is not necessary if either:
 
-a. You don't use plugins
-b. Your plugins do not have any dependencies
+1. You don't use plugins
+2. Your plugins do not have any dependencies
 
 Most strict version allowed currently is: `--allow-net=https://deno.land`.
 
