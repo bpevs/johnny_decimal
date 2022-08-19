@@ -2,10 +2,26 @@ import { bold, green, join, red } from "../deps.ts";
 import { Command } from "../models/command.ts";
 import { Directory } from "../models/directory.ts";
 import createJdDir from "../utilities/create_jd_dir.ts";
-import getDefaultShellName from "../utilities/get_default_shell_config.ts";
+import { SHELL, getShellName, getShellConfigPath } from "../utilities/get_default_shell_config.ts";
 
-const jdHomeText = 'export JD_HOME="{JD_HOME}"';
-const sourceText = "source $HOME/.jd/main.sh";
+const shellName = getShellName();
+const shellConfigPath = getShellConfigPath($HOME);
+
+const JD_HOME_TEXT = {
+  [SHELL.BASH]: 'export JD_HOME="{JD_HOME}"',
+  [SHELL.ZSH]: 'export JD_HOME="{JD_HOME}"',
+  [SHELL.FISH]: 'set -l JD_HOME "{JD_HOME}"',
+}
+
+const SOURCE_TEXT = {
+  [SHELL.BASH]: "source $HOME/.jd/main.sh",
+  [SHELL.ZSH]: "source $HOME/.jd/main.sh",
+  [SHELL.FISH]: "source $HOME/.jd/main.sh",
+}
+
+const jdHomeText = JD_HOME_TEXT[shellName];
+const sourceText = SOURCE_TEXT[shellName];
+if (!jdHomeText || !sourceText) throw new Error(`Unsupported Shell: ${shellName}`)
 
 const intro = bold(`
 Thanks for using Johnny Decimal CLI!
@@ -55,7 +71,6 @@ const installCommand: Command = {
     console.log(introLink);
 
     const { $HOME, $JD_DIR } = this;
-    const rcFilepath = getDefaultShellName($HOME);
 
     console.log(step1);
     if (
@@ -79,21 +94,35 @@ const installCommand: Command = {
     const $JD_HOME = homeDirAnswer.replace("~", $HOME).replace($HOME, "$HOME");
 
     const explainer = step3
-      .replace("{config}", rcFilepath)
+      .replace("{config}", shellConfigPath)
       .replace("{JD_HOME}", $JD_HOME);
 
     console.log(explainer);
 
     if (confirm(bold("Would you like us to add these automatically?"))) {
-      const contents = await Deno.readTextFile(rcFilepath);
+      const contents = await Deno.readTextFile(shellConfigPath);
+
       let newContents = "";
 
-      if (contents.includes("export JD_HOME=")) {
-        console.log(red("\n`export JD_HOME=` already exists!"));
-        console.log(skipText);
-      } else {
-        const completeJdHomeText = jdHomeText.replace("{JD_HOME}", $JD_HOME);
-        newContents += completeJdHomeText + "\n";
+      switch (shellName) {
+        case SHELL.FISH:
+          if (contents.includes("")) {
+
+          } else {
+            const completeJdHomeText = jdHomeText.replace("{JD_HOME}", $JD_HOME);
+          }
+
+        case SHELL.BASH:
+        case SHELL.ZSH:
+        default: {
+          if (contents.includes("export JD_HOME=")) {
+            console.log(red("\n`export JD_HOME=` already exists!"));
+            console.log(skipText);
+          } else {
+            const completeJdHomeText = jdHomeText.replace("{JD_HOME}", $JD_HOME);
+            newContents += completeJdHomeText + "\n";
+          }
+        }
       }
 
       if (contents.includes(sourceText)) {
@@ -104,7 +133,7 @@ const installCommand: Command = {
       }
 
       const data = (new TextEncoder()).encode("\n" + newContents);
-      await Deno.writeFile(rcFilepath, data, { append: true });
+      await Deno.writeFile(shellConfigPath, data, { append: true });
     } else {
       console.log(skipText);
     }

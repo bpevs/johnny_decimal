@@ -1,8 +1,8 @@
 start:
-	deno run --allow-read --allow-write --allow-env source/main.ts
+	deno run -A source/main.ts
 
 install:
-	deno install --allow-read --allow-write --allow-env --name=jd source/main.ts
+	deno install -A -f --name=jd source/main.ts
 
 uninstall:
 	deno uninstall jd
