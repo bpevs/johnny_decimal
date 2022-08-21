@@ -2,55 +2,87 @@ import { bold, green, join, red } from "../deps.ts";
 import { Command } from "../models/command.ts";
 import { Directory } from "../models/directory.ts";
 import createJdDir from "../utilities/create_jd_dir.ts";
-import { SHELL, getShellName, getShellConfigPath } from "../utilities/get_default_shell_config.ts";
-
-const shellName = getShellName();
-const shellConfigPath = getShellConfigPath($HOME);
+import {
+  getShellConfigPath,
+  getShellName,
+  SHELL,
+} from "../utilities/get_default_shell_config.ts";
+const { FISH, ZSH, BASH } = SHELL;
 
 const JD_HOME_TEXT = {
-  [SHELL.BASH]: 'export JD_HOME="{JD_HOME}"',
-  [SHELL.ZSH]: 'export JD_HOME="{JD_HOME}"',
-  [SHELL.FISH]: 'set -l JD_HOME "{JD_HOME}"',
-}
+  [BASH]: 'export JD_HOME="{JD_HOME}"',
+  [ZSH]: 'export JD_HOME="{JD_HOME}"',
+  [FISH]: 'set -l JD_HOME "{JD_HOME}"',
+};
 
 const SOURCE_TEXT = {
-  [SHELL.BASH]: "source $HOME/.jd/main.sh",
-  [SHELL.ZSH]: "source $HOME/.jd/main.sh",
-  [SHELL.FISH]: "source $HOME/.jd/main.sh",
+  [BASH]: "source $HOME/.jd/main.sh",
+  [ZSH]: "source $HOME/.jd/main.sh",
+  [FISH]: "source $HOME/.jd/main.sh",
+};
+
+const shellName = getShellName();
+const jdHomeTemplate = JD_HOME_TEXT[shellName];
+const sourceText = SOURCE_TEXT[shellName];
+
+if (!jdHomeTemplate || !sourceText) {
+  throw new Error(`Unsupported Shell: ${shellName}`);
 }
 
-const jdHomeText = JD_HOME_TEXT[shellName];
-const sourceText = SOURCE_TEXT[shellName];
-if (!jdHomeText || !sourceText) throw new Error(`Unsupported Shell: ${shellName}`)
+const log = {
+  intro: () =>
+    console.log(bold(
+      "\n" +
+        "Thanks for using Johnny Decimal CLI!\n" +
+        "This is a short (3 step) setup guide!\n" +
+        "More detailed instructions are in the online docs:\n" +
+        "https://ivebencrazy.github.io/johnny_decimal\n",
+    )),
 
-const intro = bold(`
-Thanks for using Johnny Decimal CLI!
-This is a short (3 step) setup guide!`);
+  step1: {
+    intro: () =>
+      console.log(
+        bold(green("\nStep 1 of 3")) + "\nJD CLI needs to create " +
+          "a directory for storing settings, plugins, and scripts." +
+          'To start, this will only contain our "cd" script (~/.jd/main.sh)',
+      ),
+    query: ($JD_DIR: string) =>
+      confirm(bold(`Let us create directory \`${$JD_DIR}\` automatically?`)),
+    complete: () => console.log(green("Created!")),
+    failed: () => console.log(red("\nFailed! Maybe `.jd` already exists?")),
+  },
 
-const introLink = `
-More detailed instructions are in the online docs:
-https://ivebencrazy.github.io/johnny_decimal`;
+  step2: {
+    intro: (): string =>
+      console.log(
+        bold(green("\nStep 2 of 3\n")) +
+          "We need to know where your JD filesystem is located!\n" +
+          "This is the directory that contains all your JD Areas.",
+      ),
+    query: ($HOME: string) =>
+      prompt(bold("\nWhere is your Johnny Decimal filesystem's home?"), $HOME),
+  },
 
-const step1 = `
-${bold(green("Step 1 of 3"))}
-JD CLI needs to create a directory for storing settings, plugins, and scripts.
-To start, this will only contain our "cd" script (~/.jd/main.sh)
-`;
+  step3: {
+    intro: ($JD_HOME: string, shellConfigPath: string, sourceText: string) =>
+      console.log(
+        `\n${bold(green("Step 3 of 3"))}\n` +
+          `JD CLI needs the following lines to be added to ${shellConfigPath}:\n` +
+          `\n      ${green("+")} ${$JD_HOME}` +
+          `\n      ${green("+")} ${sourceText}`,
+      ),
+    query: () => confirm(bold("Would you like us to add these automatically?")),
+  },
 
-const step2 = bold(green("\nStep 2 of 3\n")) +
-  "We need to know where your JD filesystem is located!\n" +
-  "This is the directory that contains all your JD Areas.";
+  outro: () => {
+    console.log(bold(green("Setup Complete!\n")));
+    console.log("Please reload or re-source your terminal window.");
+    console.log("You can undo changes done by this setup script later.");
+    console.log("Just run: `jd uninstall`\n");
+  },
 
-const step3 = `
-${bold(green("Step 3 of 3"))}
-JD CLI needs the following lines to be added to {config}:
-
-  ${green("+")} ${jdHomeText}
-  ${green("+")} ${sourceText}
-
-`;
-
-const skipText = "\n  Skipping...";
+  skip: () => console.log("\n  Skipping..."),
+};
 
 /**
  * @name InstallCommand
@@ -67,81 +99,64 @@ const installCommand: Command = {
   description: "Install the `cd` script, and create plugin dir",
 
   async fn(this: Directory) {
-    console.log(intro);
-    console.log(introLink);
-
     const { $HOME, $JD_DIR } = this;
+    const shellConfigPath = getShellConfigPath($HOME);
 
-    console.log(step1);
-    if (
-      confirm(bold(`Let us create directory \`${$JD_DIR}\` automatically?`))
-    ) {
+    log.intro();
+
+    // Create .jd
+    log.step1.intro();
+
+    if (log.step1.query($JD_DIR)) {
       try {
         await createJdDir(join($JD_DIR));
-        console.log(green("Created!"));
+        log.step1.complete();
       } catch (e) {
-        console.log(red("\nFailed! Maybe `.jd` already exists?"));
+        log.step1.failed();
       }
     } else {
-      console.log(skipText);
+      log.skip();
     }
 
-    console.log(step2);
-    const homeDirPrompt = bold(
-      "\nWhere is your Johnny Decimal filesystem's home?",
-    );
-    const homeDirAnswer = prompt(homeDirPrompt, $HOME) || $HOME;
-    const $JD_HOME = homeDirAnswer.replace("~", $HOME).replace($HOME, "$HOME");
+    // Get JD Home Dir
+    log.step2.intro();
 
-    const explainer = step3
-      .replace("{config}", shellConfigPath)
-      .replace("{JD_HOME}", $JD_HOME);
+    const $JD_HOME = (log.step2.query($HOME) || $HOME)
+      .replace("~", $HOME)
+      .replace($HOME, "$HOME");
+    const jdHomeText = jdHomeTemplate.replace("{JD_HOME}", $JD_HOME);
 
-    console.log(explainer);
+    // Edit sh config
+    log.step3.intro($JD_HOME, shellConfigPath, sourceText);
 
-    if (confirm(bold("Would you like us to add these automatically?"))) {
-      const contents = await Deno.readTextFile(shellConfigPath);
+    if (log.step3.query()) {
+      const config = await Deno.readTextFile(shellConfigPath);
+      let nextConfig = "";
 
-      let newContents = "";
-
-      switch (shellName) {
-        case SHELL.FISH:
-          if (contents.includes("")) {
-
-          } else {
-            const completeJdHomeText = jdHomeText.replace("{JD_HOME}", $JD_HOME);
-          }
-
-        case SHELL.BASH:
-        case SHELL.ZSH:
-        default: {
-          if (contents.includes("export JD_HOME=")) {
-            console.log(red("\n`export JD_HOME=` already exists!"));
-            console.log(skipText);
-          } else {
-            const completeJdHomeText = jdHomeText.replace("{JD_HOME}", $JD_HOME);
-            newContents += completeJdHomeText + "\n";
-          }
-        }
-      }
-
-      if (contents.includes(sourceText)) {
-        console.log(red(`\n\`${sourceText}\` already exists!`));
-        console.log(skipText);
+      if (
+        (shellName === FISH && config.includes("set -l JD_HOME")) ||
+        ([BASH, ZSH].includes(shellName) && config.includes("export JD_HOME="))
+      ) {
+        console.log(red("\n`export JD_HOME=` already exists!"));
+        log.skip();
       } else {
-        newContents += sourceText + "\n";
+        nextConfig += jdHomeText + "\n";
       }
 
-      const data = (new TextEncoder()).encode("\n" + newContents);
+      if (config.includes(sourceText)) {
+        console.log(red(`\n\`${sourceText}\` already exists!`));
+        log.skip();
+      } else {
+        nextConfig += sourceText + "\n";
+      }
+
+      const data = (new TextEncoder()).encode("\n" + nextConfig);
       await Deno.writeFile(shellConfigPath, data, { append: true });
     } else {
-      console.log(skipText);
+      log.skip();
     }
 
-    console.log(bold(green("Setup Complete!\n")));
-    console.log("Please reload or re-source your terminal window.");
-    console.log("You can undo changes done by this setup script later.");
-    console.log("Just run: `jd uninstall`\n");
+    log.outro();
   },
 };
 

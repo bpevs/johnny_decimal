@@ -1,5 +1,5 @@
-// Contributed by https://github.com/brandonpittman
-// https://github.com/bpevs/johnny_decimal/issues/7
+# Contributed by https://github.com/brandonpittman
+# https://github.com/bpevs/johnny_decimal/issues/7
 
 function jd
   set -l SEARCH $argv[1]
@@ -18,6 +18,9 @@ function jd
     test -z "$ID" && cd $JD_HOME && return 1
 
     cd $ID
+  else if count $argv > /dev/null
+    # If there is a non-cd arg, run deno script
+    $DENO_DIR/bin/jd $argv
   else
     # No arg for cd. Navigate to root.
     cd $JD_HOME 2>/dev/null;

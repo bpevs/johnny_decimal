@@ -1,7 +1,7 @@
 import { bold, green, join, red } from "../deps.ts";
 import { Command } from "../models/command.ts";
 import { Directory } from "../models/directory.ts";
-import getDefaultShellName from "../utilities/get_default_shell_config.ts";
+import { getShellConfigPath } from "../utilities/get_default_shell_config.ts";
 
 const jdHomeText = 'export JD_HOME="{JD_HOME}"';
 const sourceText = "source $HOME/.jd/main.sh";
@@ -49,7 +49,7 @@ const uninstallCommand: Command = {
       }
     }
 
-    const rcFilepath = getDefaultShellName($HOME);
+    const rcFilepath = getShellConfigPath($HOME);
 
     const jdHome = $JD_HOME.replace($HOME, "$HOME");
 
