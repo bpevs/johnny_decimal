@@ -29,23 +29,21 @@ jd() {
 
 // Copy of shell/main.fish
 const fishText = `\
-function jd
+set _jd_area_regex '^(?<categoryA>[0-9]{2})-(?<categoryB>[0-9]{2})$'
+set _jd_category_regex '^(?<category>[0-9]{2})$'
+set _jd_id_regex '^(?<category>[0-9]{2})\\.(?<id>[0-9]{2,4})$'
+
+function jd -d "Johnny Decimal CLI"
   set -l SEARCH $argv[1]
 
-  if string match -rq '^(?<category>[0-9]{2})$' $SEARCH
+  if string match -rq $_jd_area_regex $SEARCH
+    # Matches id regex: \`dd-dd\`. Navigate to id
+    cd (find -E $JD_HOME -regex "$JD_HOME/$argv.*" -depth 1 -type d);
+  else if string match -rq $_jd_category_regex $SEARCH
     # Matches category regex: \`dd\`. Navigate to category
-    set -l CATEGORY (find -E $JD_HOME -regex ".*/$SEARCH .*" -depth 2 -type d) 2>/dev/null;
-
-    test -z "$CATEGORY" && cd $JD_HOME && return 1
-    cd $CATEGORY
-  else if string match -rq '^(?<category>[0-9]{2})\.(?<id>[0-9]{2,4})$' $SEARCH
-    # Matches id regex: \`dd.dd\`. Navigate to id
-    set -l CATEGORY (find -E $JD_HOME -regex ".*/$category .*" -depth 2 -type d) 2>/dev/null;
-    set -l ID (find -E $CATEGORY -regex ".*/$id ?.*" -type d ) 2>/dev/null;
-
-    test -z "$ID" && cd $JD_HOME && return 1
-
-    cd $ID
+    cd (find -E $JD_HOME -regex "$JD_HOME/.*/$argv.*" -depth 2 -type d);
+  else if string match -rq $_jd_id_regex $SEARCH
+    cd (find -E $JD_HOME -regex "$JD_HOME/.*/.*/$argv.*" -depth 3 -type d);
   else if count $argv > /dev/null
     # If there is a non-cd arg, run deno script
     $DENO_DIR/bin/jd $argv

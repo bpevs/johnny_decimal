@@ -64,11 +64,11 @@ const log = {
   },
 
   step3: {
-    intro: ($JD_HOME: string, shellConfigPath: string, sourceText: string) =>
+    intro: (jdHomeText: string, shellConfigPath: string, sourceText: string) =>
       console.log(
         `\n${bold(green("Step 3 of 3"))}\n` +
           `JD CLI needs the following lines to be added to ${shellConfigPath}:\n` +
-          `\n      ${green("+")} ${$JD_HOME}` +
+          `\n      ${green("+")} ${jdHomeText}` +
           `\n      ${green("+")} ${sourceText}`,
       ),
     query: () => confirm(bold("Would you like us to add these automatically?")),
@@ -127,7 +127,7 @@ const installCommand: Command = {
     const jdHomeText = jdHomeTemplate.replace("{JD_HOME}", $JD_HOME);
 
     // Edit sh config
-    log.step3.intro($JD_HOME, shellConfigPath, sourceText);
+    log.step3.intro(jdHomeText, shellConfigPath, sourceText);
 
     if (log.step3.query()) {
       const config = await Deno.readTextFile(shellConfigPath);
