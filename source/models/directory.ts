@@ -36,7 +36,6 @@ export class Directory extends DirectoryCore {
    */
   async findLocations(match: RegExp[] = []): Promise<Location[]> {
     const results: Array<Location> = [];
-    console.log(this.$JD_HOME);
     const matches = walk(this.$JD_HOME, { ...walkOptions, match });
     for await (const { path, name } of matches) {
       if (name[0] === ".") continue;

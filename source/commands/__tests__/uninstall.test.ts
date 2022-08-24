@@ -44,12 +44,13 @@ Deno.test("uninstall Command", async (t) => {
 
     const logs = log.getCalls();
     assertStringIncludes(logs[0].firstArg, "Step 1 of 2");
+    assertStringIncludes(logs[1].firstArg, "contains settings");
     assertStringIncludes(confirmFunc.getCalls()[0].firstArg, "automatically");
-    assertStringIncludes(logs[1].firstArg, "Step 2 of 2");
-    assertStringIncludes(logs[1].firstArg, 'JD_HOME="$HOME/home"');
-    assertStringIncludes(logs[1].firstArg, "source $HOME/.jd/main.sh");
+    assertStringIncludes(logs[2].firstArg, "Step 2 of 2");
+    assertStringIncludes(logs[2].firstArg, 'JD_HOME="$HOME/home"');
+    assertStringIncludes(logs[2].firstArg, "source $HOME/.jd/main.sh");
     assertStringIncludes(confirmFunc.getCalls()[1].firstArg, "automatically?");
-    assertStringIncludes(logs[2].firstArg, "Completed!");
+    assertStringIncludes(logs[3].firstArg, "Completed!");
   });
 
   log.reset();
@@ -64,14 +65,15 @@ Deno.test("uninstall Command", async (t) => {
 
     const logs = log.getCalls();
     assertStringIncludes(logs[0].firstArg, "Step 1 of 2");
+    assertStringIncludes(logs[1].firstArg, "contains settings");
     assertStringIncludes(confirmFunc.getCalls()[0].firstArg, "automatically");
-    assertStringIncludes(logs[1].firstArg, "Deleting");
-    assertStringIncludes(logs[2].firstArg, "successfully removed!");
-    assertStringIncludes(logs[3].firstArg, "Step 2 of 2");
-    assertStringIncludes(logs[3].firstArg, 'JD_HOME="$HOME/home"');
-    assertStringIncludes(logs[3].firstArg, "source $HOME/.jd/main.sh");
+    assertStringIncludes(logs[2].firstArg, "Deleting");
+    assertStringIncludes(logs[3].firstArg, "successfully removed!");
+    assertStringIncludes(logs[4].firstArg, "Step 2 of 2");
+    assertStringIncludes(logs[4].firstArg, 'JD_HOME="$HOME/home"');
+    assertStringIncludes(logs[4].firstArg, "source $HOME/.jd/main.sh");
     assertStringIncludes(confirmFunc.getCalls()[1].firstArg, "automatically?");
-    assertStringIncludes(logs[4].firstArg, "Completed!");
+    assertStringIncludes(logs[5].firstArg, "Completed!");
   });
 
   // Restore .jd dir

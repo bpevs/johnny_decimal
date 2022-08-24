@@ -66,8 +66,6 @@ const log = {
     console.log("Please run `deno uninstall jd` to remove this cli tool");
     console.log("Please reload or re-source your terminal window");
   },
-
-  skip: () => console.log("\n  Skipping..."),
 };
 
 /**
