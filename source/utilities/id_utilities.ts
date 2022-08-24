@@ -21,7 +21,7 @@ export const regex = {
  * @description parse the id from a string. Meant for use in names, NOT paths.
  * @param str - any string
  */
-export const parseId = (str: string = ""): string => {
+export const parseId = (str = ""): string => {
   const id = str.split(" ")[0];
   if (
     regex.area.test(id) ||

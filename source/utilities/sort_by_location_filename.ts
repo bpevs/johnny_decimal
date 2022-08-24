@@ -38,8 +38,8 @@ export default function sortByLocationFilename(a: string, b: string) {
 
   const aLastTwo = Number(a.substring(3, 5));
   const bLastTwo = Number(b.substring(3, 5));
-  if (aLastTwo && bLastTwo === NaN) return -1;
-  if (aLastTwo === NaN && bLastTwo) return 1;
+  if (aLastTwo && isNaN(bLastTwo)) return -1;
+  if (isNaN(aLastTwo) && bLastTwo) return 1;
 
   return a.localeCompare(b);
 }

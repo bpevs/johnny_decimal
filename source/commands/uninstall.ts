@@ -1,7 +1,6 @@
-import { bold, green, join, red } from "../deps.ts";
+import { bold, green, red } from "../deps.ts";
 import { Command } from "../models/command.ts";
 import { Directory } from "../models/directory.ts";
-import { logTitle } from "../utilities/log_utilities.ts";
 import {
   getShellConfigPath,
   getShellName,

@@ -1,5 +1,5 @@
 import { assertEquals, assertStringIncludes, sinon } from "../../deps_test.ts";
-import { bold, green, exists, join } from "../../deps.ts";
+import { exists, join } from "../../deps.ts";
 import { Directory } from "../../models/directory.ts";
 import installCommand from "../install.ts";
 
