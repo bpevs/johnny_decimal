@@ -12,13 +12,13 @@ const { FISH, ZSH, BASH } = SHELL;
 const JD_HOME_TEXT = {
   [BASH]: 'export JD_HOME="{JD_HOME}"',
   [ZSH]: 'export JD_HOME="{JD_HOME}"',
-  [FISH]: 'set -l JD_HOME "{JD_HOME}"',
+  [FISH]: 'set -x JD_HOME "{JD_HOME}"',
 };
 
 const SOURCE_TEXT = {
   [BASH]: "source $HOME/.jd/main.sh",
   [ZSH]: "source $HOME/.jd/main.sh",
-  [FISH]: "source $HOME/.jd/main.sh",
+  [FISH]: "source $HOME/.jd/main.fish",
 };
 
 const shellName = getShellName();
@@ -53,12 +53,13 @@ const log = {
   },
 
   step2: {
-    intro: (): string =>
+    intro: () => {
       console.log(
         bold(green("\nStep 2 of 3\n")) +
           "We need to know where your JD filesystem is located!\n" +
           "This is the directory that contains all your JD Areas.",
-      ),
+      );
+    },
     query: ($HOME: string) =>
       prompt(bold("\nWhere is your Johnny Decimal filesystem's home?"), $HOME),
   },

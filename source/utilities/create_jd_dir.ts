@@ -1,6 +1,6 @@
 import { ensureDir, join } from "../deps.ts";
 
-import.meta.resolve("./foo.js")
+import.meta.resolve("./foo.js");
 // Copy of shell/main.sh
 const shText = `\
 jd() {

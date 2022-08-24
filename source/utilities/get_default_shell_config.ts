@@ -26,5 +26,5 @@ export function getShellConfigPath($HOME: string): string {
   if (shellName === SHELL.FISH) return join($HOME, ".config/fish/config.fish");
   if (shellName === SHELL.BASH) return join($HOME, ".bashrc");
 
-  throw new Error(`Did not recognize default shell: ${$SHELL}`);
+  throw new Error(`Did not recognize default shell: ${shellName}`);
 }

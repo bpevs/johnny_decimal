@@ -38,6 +38,7 @@ directory.registerCommand(searchCommand);
 directory.registerCommand(uninstallCommand);
 
 if (!await exists($JD_DIR)) {
+  console.log("JD CLI is not setup!  Running install script!");
   await directory.runCommand("install", []);
   Deno.exit(0);
 }
