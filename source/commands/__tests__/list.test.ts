@@ -1,4 +1,4 @@
-import { assertEquals, assertStringIncludes, sinon } from "../../deps_test.ts";
+import { assertStringIncludes, sinon } from "../../deps_test.ts";
 
 import { join } from "../../deps.ts";
 import { Directory } from "../../models/directory.ts";

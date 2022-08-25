@@ -1,6 +1,5 @@
 import { Command } from "../models/command.ts";
 import { Directory } from "../models/directory.ts";
-import { logLocationFilenames } from "../utilities/log_utilities.ts";
 
 /**
  * @description

@@ -1,5 +1,4 @@
 import { assertEquals, assertStringIncludes, sinon } from "../../deps_test.ts";
-
 import { exists, join } from "../../deps.ts";
 import { Directory } from "../../models/directory.ts";
 import installCommand from "../install.ts";
@@ -35,17 +34,17 @@ Deno.test("install Command", async (t) => {
 
     const logs = log.getCalls();
     assertStringIncludes(logs[0].firstArg, "Thanks for using Johnny Decimal");
-    assertStringIncludes(logs[1].firstArg, "github.io/johnny_decimal");
-    assertStringIncludes(logs[2].firstArg, "Step 1 of 3");
     assertStringIncludes(confirmFunc.getCalls()[0].firstArg, "Let us create");
-    assertStringIncludes(logs[3].firstArg, "Skipping...");
-    assertStringIncludes(logs[4].firstArg, "Step 2 of 3");
+    assertStringIncludes(logs[1].firstArg, "Step 1 of 3");
+    assertStringIncludes(logs[2].firstArg, "Skipping...");
+    assertStringIncludes(logs[3].firstArg, "Step 2 of 3");
     assertStringIncludes(promptFunc.getCalls()[0].firstArg, "Where is");
-    assertStringIncludes(logs[5].firstArg, ".zshrc");
-    assertStringIncludes(logs[5].firstArg, `JD_HOME="$HOME"`);
+    assertStringIncludes(logs[4].firstArg, "Step 3 of 3");
+    assertStringIncludes(logs[4].firstArg, ".zshrc");
+    assertStringIncludes(logs[4].firstArg, `JD_HOME="$HOME"`);
     assertStringIncludes(confirmFunc.getCalls()[1].firstArg, "automatically?");
-    assertStringIncludes(logs[6].firstArg, "Skipping...");
-    assertStringIncludes(logs[7].firstArg, "Setup Complete!");
+    assertStringIncludes(logs[5].firstArg, "Skipping...");
+    assertStringIncludes(logs[6].firstArg, "Setup Complete!");
   });
 
   log.reset();
@@ -66,16 +65,16 @@ Deno.test("install Command", async (t) => {
 
     const logs = log.getCalls();
     assertStringIncludes(logs[0].firstArg, "Thanks for using Johnny Decimal");
-    assertStringIncludes(logs[1].firstArg, "github.io/johnny_decimal");
-    assertStringIncludes(logs[2].firstArg, "Step 1 of 3");
+    assertStringIncludes(logs[1].firstArg, "Step 1 of 3");
     assertStringIncludes(confirmFunc.getCalls()[0].firstArg, "Let us create");
-    assertStringIncludes(logs[3].firstArg, "Created!");
-    assertStringIncludes(logs[4].firstArg, "Step 2 of 3");
+    assertStringIncludes(logs[2].firstArg, "Created!");
+    assertStringIncludes(logs[3].firstArg, "Step 2 of 3");
     assertStringIncludes(promptFunc.getCalls()[0].firstArg, "Where is");
-    assertStringIncludes(logs[5].firstArg, ".zshrc");
-    assertStringIncludes(logs[5].firstArg, `JD_HOME="$HOME"`);
+    assertStringIncludes(logs[4].firstArg, "Step 3 of 3");
+    assertStringIncludes(logs[4].firstArg, ".zshrc");
+    assertStringIncludes(logs[4].firstArg, `JD_HOME="$HOME"`);
     assertStringIncludes(confirmFunc.getCalls()[1].firstArg, "automatically?");
-    assertStringIncludes(logs[6].firstArg, "Setup Complete!");
+    assertStringIncludes(logs[5].firstArg, "Setup Complete!");
   });
 
   log.reset();
@@ -90,16 +89,16 @@ Deno.test("install Command", async (t) => {
 
     const logs = log.getCalls();
     assertStringIncludes(logs[0].firstArg, "Thanks for using Johnny Decimal");
-    assertStringIncludes(logs[1].firstArg, "github.io/johnny_decimal");
-    assertStringIncludes(logs[2].firstArg, "Step 1 of 3");
+    assertStringIncludes(logs[1].firstArg, "Step 1 of 3");
     assertStringIncludes(confirmFunc.getCalls()[0].firstArg, "Let us create");
-    assertStringIncludes(logs[3].firstArg, "Created!");
-    assertStringIncludes(logs[4].firstArg, "Step 2 of 3");
+    assertStringIncludes(logs[2].firstArg, "Created!");
+    assertStringIncludes(logs[3].firstArg, "Step 2 of 3");
     assertStringIncludes(promptFunc.getCalls()[0].firstArg, "Where is");
-    assertStringIncludes(logs[5].firstArg, ".zshrc");
-    assertStringIncludes(logs[5].firstArg, `JD_HOME="$HOME"`);
+    assertStringIncludes(logs[4].firstArg, "Step 3 of 3");
+    assertStringIncludes(logs[4].firstArg, ".zshrc");
+    assertStringIncludes(logs[4].firstArg, `JD_HOME="$HOME"`);
     assertStringIncludes(confirmFunc.getCalls()[1].firstArg, "automatically?");
-    assertStringIncludes(logs[6].firstArg, "already exists!");
+    assertStringIncludes(logs[5].firstArg, "already exists!");
   });
 
   // Remove generated main.sh

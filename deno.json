@@ -1,0 +1,15 @@
+{
+  "lint": {
+    "files": {
+      "exclude": ["test"]
+    },
+    "rules": {
+      "exclude": [
+        "no-explicit-any",
+        "require-await",
+        "no-empty",
+        "no-unused-vars"
+      ]
+    }
+  }
+}
