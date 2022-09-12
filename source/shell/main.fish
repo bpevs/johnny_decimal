@@ -5,13 +5,13 @@ set _jd_id_regex '^(?<category>[0-9]{2})\.(?<id>[0-9]{2,4})$'
 function jd -d "Johnny Decimal CLI"
   set -l SEARCH $argv[1]
 
-  if string match -rq $_jd_area_regex $SEARCH
+  if string match -rq -- $_jd_area_regex $SEARCH
     # Matches id regex: `dd-dd`. Navigate to id
     cd (find -E $JD_HOME -regex "$JD_HOME/$argv.*" -depth 1 -type d);
-  else if string match -rq $_jd_category_regex $SEARCH
+  else if string match -rq -- $_jd_category_regex $SEARCH
     # Matches category regex: `dd`. Navigate to category
     cd (find -E $JD_HOME -regex "$JD_HOME/.*/$argv.*" -depth 2 -type d);
-  else if string match -rq $_jd_id_regex $SEARCH
+  else if string match -rq -- $_jd_id_regex $SEARCH
     cd (find -E $JD_HOME -regex "$JD_HOME/.*/.*/$argv.*" -depth 3 -type d);
   else if count $argv > /dev/null
     # If there is a non-cd arg, run deno script
