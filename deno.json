@@ -11,5 +11,16 @@
         "no-unused-vars"
       ]
     }
+  },
+  "tasks": {
+    "start": "deno run -A source/main.ts",
+    "install": "deno install -A -f --name=jd source/main.ts",
+    "uninstall": "deno uninstall jd",
+    "test": "deno fmt && deno task check && deno lint && deno task test:unit",
+    "test:unit": "deno test -A ./source",
+    "test:update": "deno test -A -- --update source",
+    "check": "deno task check:main && deno task check:mod",
+    "check:main": "deno check ./source/main.ts",
+    "check:mod": "deno check ./source/mod.ts"
   }
 }
