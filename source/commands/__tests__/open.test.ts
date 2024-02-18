@@ -15,12 +15,12 @@ Deno.test("Open Command", async (t) => {
 
   directory.registerCommand(openCommand);
 
-  sinon.stub(Deno, "run").callsFake((...args: any[]) => {
+  sinon.stub(Deno.Command.prototype, "spawn").callsFake((...args: any[]) => {
     const resp: any = { status: () => args };
     return resp;
   });
 
-  const run: any = Deno.run;
+  const run: any = Deno.Command.prototype.spawn;
 
   await t.step("Runs Open command", async () => {
     await directory.runCommand("open", ["12.01"]);

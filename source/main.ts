@@ -1,7 +1,7 @@
 /**
  * CLI tool that can be used for interacting with a local filesystem
  */
-import { exists, parse } from "./deps.ts";
+import { exists, parseArgs } from "./deps.ts";
 import {
   $HOME,
   $JD_DIR,
@@ -47,7 +47,7 @@ await directory.loadPlugins();
 
 // Use raw args to keep categories and ids as strings
 const [command, ...args] = Deno.args;
-const { help } = parse(Deno.args);
+const { help } = parseArgs(Deno.args);
 
 if (help) {
   directory.runCommand("help", []);

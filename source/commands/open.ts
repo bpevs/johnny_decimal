@@ -10,13 +10,19 @@ const openCommand: Command = {
 
   async fn(this: Directory, [str]: string[] = []) {
     const [location] = await this.findLocationsById(str);
-
-    await Deno.run({
-      cmd: ["open", "-a", "Finder", location.path],
+    const command = new Deno.Command(Deno.execPath(), {
+      args: [
+        "open",
+        "-a",
+        "Finder",
+        location.path,
+      ],
       stdin: "piped",
       stdout: "piped",
       stderr: "piped",
-    }).status();
+    });
+    const child = command.spawn();
+    await child.status;
   },
 };
 

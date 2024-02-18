@@ -15,9 +15,16 @@ function jd -d "Johnny Decimal CLI"
     cd (find -E $JD_HOME -regex "$JD_HOME/.*/.*/$argv.*" -depth 3 -type d);
   else if count $argv > /dev/null
     # If there is a non-cd arg, run deno script
-    $DENO_DIR/bin/jd $argv
+    if test -e "$DENO_INSTALL_ROOT/jd"
+      $DENO_INSTALL_ROOT/jd $argv;
+    else if test -e "$DENO_DIR/bin/jd"
+      $HOME/.deno/bin/jd $argv;
+    else
+      johnny_decimal $argv;
+    end
   else
     # No arg for cd. Navigate to root.
     cd $JD_HOME 2>/dev/null;
   end
 end
+

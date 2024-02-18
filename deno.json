@@ -21,6 +21,10 @@
     "test:update": "deno test -A -- --update source",
     "check": "deno task check:main && deno task check:mod",
     "check:main": "deno check ./source/main.ts",
-    "check:mod": "deno check ./source/mod.ts"
+    "check:mod": "deno check ./source/mod.ts",
+    "compile": "deno task compile:macos-arm && deno task compile:macos-intel && deno task compile:windows && deno task compile:linux",
+    "compile:macos-arm": "deno compile -A --output ./build/jd-mac --target aarch64-apple-darwin source/main.ts",
+    "compile:windows": "deno compile -A --output ./build/jd-win --target x86_64-pc-windows-msvc source/main.ts",
+    "compile:linux": "deno compile -A --output ./build/jd-linux --target x86_64-unknown-linux-gnu source/main.ts"
   }
 }

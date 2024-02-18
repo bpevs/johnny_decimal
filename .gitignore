@@ -8,3 +8,5 @@
 .vuepress
 node_modules
 
+# Ignore build dir
+build

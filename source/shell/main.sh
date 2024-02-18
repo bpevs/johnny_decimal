@@ -21,7 +21,14 @@ jd() {
   else
     # Not cd, so run deno script
     # Don't run in other case for performance reasons;
-    # loses error handle this way, though
-    $DENO_DIR/bin/jd $*
+    # loses error handling this way, though
+    if test -f "$DENO_INSTALL_ROOT/jd"; then
+      $DENO_INSTALL_ROOT/jd $argv;
+    elif test -f "$DENO_DIR/bin/jd"; then
+      $HOME/.deno/bin/jd $argv;
+    else
+      johnny_decimal $argv
+    fi
   fi
 }
+
