@@ -4,10 +4,6 @@
 
 This is preferred when you want to give Johnny Decimal less permissions.
 
-## Install Deno
-
-This step is still the same! Head to the [Deno homepage](https://deno.land)!
-
 ## Setup Johnny Decimal CLI
 
 ### Create `.jd` Directory
@@ -32,13 +28,18 @@ First, we need to add our environment variables. This can be added in a variety 
 ```
 export JD_HOME="$HOME/Root" # Your Johnny Decimal Root
 source $HOME/.jd/main.sh    # Source our cd script
+# Also, if you want to install via Binary, you should add `johnny_decimal` to your PATH
 ```
 
 And that's it!  Our setup is done!
 
 ## Install Johnny Decimal CLI
 
-Now that our manual setup is done, we will never need to use `jd install`. This allows us to ignore a bit of the otherwise-required permissions.
+Now that our manual setup is done, we will never need to use `jd install`. This allows us to ignore a bit of the otherwise-required permissions. From here, we can either install the jd binary, or the package from Deno.
+
+### Install jd via Deno
+
+This step is still the same! Head to the [Deno homepage](https://deno.land)!
 
 The core of this command is still:
 
@@ -57,6 +58,11 @@ As an example, probably the most locked-down install of Johnny Decimal CLI would
 ```
 deno install --name=jd --allow-env=HOME,JD_HOME,JD_DIR --allow-read=$JD_HOME,$HOME/.jd https://deno.land/x/johnny_decimal@1.0.3/main.ts
 ```
+
+## Install via Binary
+
+1. Download the [latest release](https://github.com/bpevs/johnny_decimal/releases)
+2. Rename the release to `johnny_decimal`, and make sure it is referenced in your `path` (for example, I have it placed in `~/.apps/bin/johnny_decimal`, and have `$HOME/.apps/bin:` added to the PATH var in my `.zprofile`).
 
 And we're done! Setup Complete!
 
