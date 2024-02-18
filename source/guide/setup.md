@@ -1,12 +1,10 @@
 # Easy Setup
 
-## Install Deno
+## Install via Deno
+
+The Deno installation is simpler, but the script runs a bit slower than running via binary.
 
 Haven't installed Deno yet? Head to the [website](https://deno.land/#installation), its just about running a single command! 
-
-## Install Johnny Decimal CLI
-
-### via Deno
 
 To install Johnny Decimal CLI, we just need to run the `deno install` command:
 
@@ -23,7 +21,7 @@ jd install
 ```
 
 
-### via Binary
+## Install via Binary
 
 Sooooooo while binaries exist for mac, linux, and windows, I only have macOS at the moment, so these instructions are for that.
 
