@@ -6,6 +6,8 @@ Haven't installed Deno yet? Head to the [website](https://deno.land/#installatio
 
 ## Install Johnny Decimal CLI
 
+### via Deno
+
 To install Johnny Decimal CLI, we just need to run the `deno install` command:
 
 ```
@@ -14,11 +16,22 @@ deno install --allow-env --allow-read --allow-write --name=jd https://deno.land/
 
 You'll notice the `install` permissions are pretty broad here! Depending on what you want to do, and how much manual setup you're willing to do, these are not all necessary. You can see more explanations on what each of these are used for in our [manual installation guide](./setup_manually). You might also need to include `--allow-net` or `allow-run` if you are using [external plugins](https://johnny.bpev.me/guide/plugins/plugin_usage.html#enabling-plugins). Be careful you trust any plugins you are running!
 
-Once Johnny Decimal CLI is installed, we have an installation script that will help you set everything up!
+Once Johnny Decimal CLI is installed via deno or binary, we have an installation script that will help you set everything up!
 
 ```
 jd install
 ```
+
+
+### via Binary
+
+Sooooooo while binaries exist for mac, linux, and windows, I only have macOS at the moment, so these instructions are for that.
+
+1. Download the [latest release](https://github.com/bpevs/johnny_decimal/releases)
+2. Rename the release to `johnny_decimal`, and reference it from your `path` (for example, I have it placed in `~/.apps/bin/johnny_decimal`, and have `$HOME/.apps/bin:` added to the PATH var in my `.zprofile`).
+3. Run `johnny_decimal install`. This is the javascript package. It will also setup the `jd` alias, so everything past this point should be the same as via Deno.
+
+## Done!
 
 And that's it!  You're all done! You should be able to use the Johnny Decimal!  List all the commands you can use with `jd --help`!
 
