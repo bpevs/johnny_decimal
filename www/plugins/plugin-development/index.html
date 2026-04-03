@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plugin Development | Johnny Decimal CLI</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"
+    >
+    <style>
+      :root {
+        --primary-color: #3eaf7c;
+        --primary-color-light: #4abf8a;
+        --text-color: #2c3e50;
+        --background-color: #ffffff;
+        --border-color: #eaecef;
+        --code-bg-color: #282c34;
+        --sidebar-bg: #f8f9fa;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme]) {
+          --text-color: #e2e8f0;
+          --background-color: #111827;
+          --border-color: #374151;
+          --code-bg-color: #282c34;
+          --sidebar-bg: #1f2937;
+        }
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+          Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+          sans-serif;
+        line-height: 1.6;
+        color: var(--text-color) !important;
+        background-color: var(--background-color) !important;
+        margin: 0;
+        padding: 0;
+        max-width: 1000px;
+      }
+
+      .container {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        width: 280px;
+        background-color: var(--sidebar-bg);
+        border-right: 1px solid var(--border-color);
+        padding: 1.5rem 0;
+        position: fixed;
+        height: 100vh;
+        overflow-y: auto;
+      }
+
+      .sidebar h2 {
+        margin: 0 1.5rem 1rem 1.5rem;
+        color: var(--text-color);
+        font-size: 1.2rem;
+        font-weight: 600;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .theme-toggle {
+        background: none;
+        border: 1px solid var(--border-color);
+        color: var(--text-color);
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        transition: all 0.15s ease;
+      }
+
+      .theme-toggle:hover {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+      }
+
+      .sidebar nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .sidebar nav li {
+        margin: 0;
+      }
+
+      .sidebar nav a {
+        display: block;
+        padding: 0.5rem 1.5rem;
+        color: var(--text-color);
+        text-decoration: none;
+        transition: all 0.15s ease;
+        border-left: 3px solid transparent;
+      }
+
+      .sidebar nav a:hover {
+        color: var(--primary-color);
+        background-color: rgba(62, 175, 124, 0.1);
+        border-left-color: var(--primary-color);
+      }
+
+      .sidebar nav a.active {
+        color: var(--primary-color);
+        font-weight: 600;
+        border-left-color: var(--primary-color);
+        background-color: rgba(62, 175, 124, 0.1);
+      }
+
+      .sidebar nav .nav-group {
+        margin-bottom: 1rem;
+        margin-left: 0.5rem;
+      }
+
+      .sidebar nav .nav-group-title {
+        padding: 0.25rem 1.5rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #777;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: block;
+      }
+
+      .sidebar nav .nav-group-title.clickable {
+        color: var(--text-color);
+        text-decoration: none;
+        transition: all 0.15s ease;
+        border-left: 3px solid transparent;
+        text-transform: none;
+      }
+
+      .sidebar nav .nav-group-title.clickable:hover {
+        color: var(--primary-color);
+        background-color: rgba(62, 175, 124, 0.1);
+        border-left-color: var(--primary-color);
+      }
+
+      .sidebar nav .nav-group-title.clickable.active {
+        color: var(--primary-color);
+        font-weight: 600;
+        border-left-color: var(--primary-color);
+        background-color: rgba(62, 175, 124, 0.1);
+      }
+
+      .content {
+        flex: 1;
+        margin-left: 280px;
+        padding: 2rem 3rem;
+        max-width: calc(100% - 200px);
+      }
+
+      .content h1 {
+        color: var(--text-color);
+        font-size: 2.2rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 0.75rem;
+      }
+
+      .content h2 {
+        color: var(--text-color);
+        font-size: 1.6rem;
+        font-weight: 600;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-color);
+      }
+
+      .content h3 {
+        color: var(--text-color);
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-top: 1.5rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .content code {
+        color: #bdbfc5;
+        background-color: var(--code-bg-color);
+        padding: 0.2rem 0.4rem;
+        border-radius: 3px;
+        font-family:
+          source-code-pro, Menlo, Monaco, Consolas, Courier New, monospace;
+        font-size: 0.85em;
+      }
+
+      .content pre {
+        background-color: var(--code-bg-color);
+        padding: 1rem;
+        border-radius: 6px;
+        overflow-x: auto;
+        line-height: 1.45;
+      }
+
+      .content pre code {
+        background-color: transparent;
+        padding: 0;
+      }
+
+      .content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 6px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 1rem 0;
+      }
+
+      .content a {
+        color: var(--primary-color);
+        text-decoration: none;
+      }
+
+      .content a:hover {
+        text-decoration: underline;
+      }
+
+      .content blockquote {
+        border-left: 4px solid var(--primary-color);
+        padding-left: 1rem;
+        margin-left: 0;
+        font-style: italic;
+        color: #666;
+      }
+
+      /* Mobile responsiveness */
+      @media (max-width: 768px) {
+        .sidebar {
+          display: none;
+        }
+
+        .content {
+          margin-left: 0;
+          max-width: 100%;
+          padding: 1rem;
+        }
+
+        .mobile-nav-toggle {
+          display: block;
+          position: fixed;
+          top: 1rem;
+          left: 1rem;
+          z-index: 1000;
+          background: var(--primary-color);
+          color: white;
+          border: none;
+          padding: 0.5rem;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+      }
+
+      .mobile-nav-toggle {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="sidebar">
+        <h2>
+          Johnny•Decimal•JS
+        </h2>
+        <nav>
+          <ul>
+            <li><a href="/johnny/">Home</a></li>
+            <li class="nav-group">
+              <div class="nav-group-title">Plugins</div>
+              <ul>
+                <li>
+                  <a href="/johnny/plugins/plugin-development/"
+                  >Plugin Development</a>
+                </li>
+                <li>
+                  <a href="/johnny/plugins/plugin-usage/">Plugin Usage</a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-group">
+              <div class="nav-group-title">Setup</div>
+              <ul>
+                <li><a href="/johnny/setup/easy-setup/">Easy Setup</a></li>
+                <li><a href="/johnny/setup/manual-setup/">Manual Setup</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <main class="content">
+        <h1 id="plugin-development">Plugin Development</h1>
+        <h2 id="introduction">
+          Introduction <a href="#introduction" class="heading-anchor">#</a>
+        </h2>
+        <p>So you want to make a plugin for JD CLI?</p>
+        <p>
+          Plugins are imported directly by the CLI, so you have the full power
+          of the Deno ecosystem.
+        </p>
+        <p>
+          If you have never used <a
+            href="https://deno.land/"
+            target="_blank"
+            rel="nofollow noopener noreferrer"
+          >Deno</a> before, you might want to consider reading <a
+            href="https://deno.land/manual"
+            target="_blank"
+            rel="nofollow noopener noreferrer"
+          >Deno Manual</a> and a gentle introduction to the runtime and it’s
+          features.
+        </p>
+        <p>
+          Before developing your own plugins, you’ll want to read how to <a
+            href="./plugin_usage"
+          >install plugins</a>.
+        </p>
+        <blockquote>
+          <p>
+            <strong>ALL</strong> Johnny Decimal CLI Commands (except the <code
+            >cd</code> command) are plugins. Even the built-in ones! You can <a
+              href="https://github.com/ivebencrazy/johnny_decimal/tree/main/source/commands"
+              target="_blank"
+              rel="nofollow noopener noreferrer"
+            >look at the built-in commands’ source code for reference</a> (or
+            even override our existing commands by using the same <code
+            >name</code>)!
+          </p>
+        </blockquote>
+        <h2 id="basic-structure">
+          Basic Structure <a href="#basic-structure" class="heading-anchor"
+          >#</a>
+        </h2>
+        <p>
+          The easiest way to understand how plugin command works is to see an
+          example. You can code plugins in both Javascript and Typescript. Here
+          is an example using Javascript (or look at the released <a
+            href="https://github.com/ivebencrazy/jd_plugins/tree/main/jd_plugin_sublime"
+            target="_blank"
+            rel="nofollow noopener noreferrer"
+          >typescript version</a>):
+        </p>
+        <pre>
+<code class="language-js">/**
+ * .jd/plugins/sublime/main.js
+ *
+ * Opens a location in Sublime Text!
+ * `jd sublime 20.21`
+ * `jd subl 20.21`
+ */
+const sublimeCommand = {
+  name: 'sublime',
+  alias: ['subl'],
+  usage: 'jd subl &lt;location&gt;',
+  description: 'Open location in Sublime',
+
+  async fn([str] = []) {
+    const [location] = await this.findLocationsById(str)
+
+    // Logs the location our command is using
+    console.log(location.path)
+
+    // Runs a global sh command `open -a "Sublime Text" {location.path}`
+    await Deno.run({
+      cmd: ['open', '-a', 'Sublime Text', location.path],
+      stdin: 'piped',
+      stdout: 'piped',
+      stderr: 'piped',
+    }).status()
+  },
+}
+
+export default sublimeCommand
+</code></pre>
+        <p>The structure of this Plugin Command is something like this:</p>
+        <table>
+          <tbody>
+            <tr>
+              <th>property</th>
+              <th>description</th>
+            </tr>
+            <tr>
+              <td><code>name</code></td>
+              <td>
+                Basically the key used for registering the plugin. So for this
+                example, JD CLI will run this command if the user inputs `jd
+                sublime`.
+              </td>
+            </tr>
+            <tr>
+              <td><code>alias</code></td>
+              <td>
+                An array of other names you can use to call this command. So
+                this plugin can also be used by running `jd subl`
+              </td>
+            </tr>
+            <tr>
+              <td><code>usage</code></td>
+              <td>
+                Logged in JD CLI's internal `help` command. You will see these
+                if you run `jd --help`.
+              </td>
+            </tr>
+            <tr>
+              <td><code>description</code></td>
+              <td>
+                Logged in JD CLI's internal `help` command. You will see these
+                if you run `jd --help`.
+              </td>
+            </tr>
+            <tr>
+              <td><code>fn</code></td>
+              <td>
+                The actual command functionality. Notice the call to `this`.
+                `fn` is bound to the JD Directory context. This is how we make
+                it easy to interact with the JD filesystem.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h2 id="using-directory-and-location">
+          Using Directory and Location <a
+            href="#using-directory-and-location"
+            class="heading-anchor"
+          >#</a>
+        </h2>
+        <p>
+          The core of making command plugins in JD CLI is understanding the
+          usage of Directory and Location.
+        </p>
+        <h3 id="directory">Directory</h3>
+        <p>
+          In our Sublime Plugin, you’ll notice the context call <code>await
+            this.findLocationsById</code>. This is using the Johnny Decimal
+          <code>Directory</code>. For all plugins, <code>this</code> is bound to
+          the context of the <code>fn</code> method.
+        </p>
+        <p>This is the main tool you interact with to use JD utilities.</p>
+        <h3 id="location">Location</h3>
+        <p>
+          This describes a location in the JD filesystem. It includes 3 separate
+          ids for <code>Area</code>, <code>Category</code>, and <code
+          >Item</code>.
+        </p>
+        <p>There are mainly two entities to import:</p>
+        <p>
+          <code>import { Location, Directory } from
+            "https://deno.land/x/johnny_decimal/mod.ts"</code>
+        </p>
+      </main>
+    </div>
+    <button class="mobile-nav-toggle" onclick="toggleSidebar()">☰</button>
+
+    <script>
+      function toggleSidebar() {
+        const sidebar = document.querySelector(".sidebar");
+        sidebar.style.display = sidebar.style.display === "block"
+          ? "none"
+          : "block";
+      }
+    </script>
+  </body>
+</html>

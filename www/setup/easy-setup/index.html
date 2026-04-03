@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easy Setup | Johnny Decimal CLI</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"
+    >
+    <style>
+      :root {
+        --primary-color: #3eaf7c;
+        --primary-color-light: #4abf8a;
+        --text-color: #2c3e50;
+        --background-color: #ffffff;
+        --border-color: #eaecef;
+        --code-bg-color: #282c34;
+        --sidebar-bg: #f8f9fa;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme]) {
+          --text-color: #e2e8f0;
+          --background-color: #111827;
+          --border-color: #374151;
+          --code-bg-color: #282c34;
+          --sidebar-bg: #1f2937;
+        }
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+          Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+          sans-serif;
+        line-height: 1.6;
+        color: var(--text-color) !important;
+        background-color: var(--background-color) !important;
+        margin: 0;
+        padding: 0;
+        max-width: 1000px;
+      }
+
+      .container {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        width: 280px;
+        background-color: var(--sidebar-bg);
+        border-right: 1px solid var(--border-color);
+        padding: 1.5rem 0;
+        position: fixed;
+        height: 100vh;
+        overflow-y: auto;
+      }
+
+      .sidebar h2 {
+        margin: 0 1.5rem 1rem 1.5rem;
+        color: var(--text-color);
+        font-size: 1.2rem;
+        font-weight: 600;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .theme-toggle {
+        background: none;
+        border: 1px solid var(--border-color);
+        color: var(--text-color);
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        transition: all 0.15s ease;
+      }
+
+      .theme-toggle:hover {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+      }
+
+      .sidebar nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .sidebar nav li {
+        margin: 0;
+      }
+
+      .sidebar nav a {
+        display: block;
+        padding: 0.5rem 1.5rem;
+        color: var(--text-color);
+        text-decoration: none;
+        transition: all 0.15s ease;
+        border-left: 3px solid transparent;
+      }
+
+      .sidebar nav a:hover {
+        color: var(--primary-color);
+        background-color: rgba(62, 175, 124, 0.1);
+        border-left-color: var(--primary-color);
+      }
+
+      .sidebar nav a.active {
+        color: var(--primary-color);
+        font-weight: 600;
+        border-left-color: var(--primary-color);
+        background-color: rgba(62, 175, 124, 0.1);
+      }
+
+      .sidebar nav .nav-group {
+        margin-bottom: 1rem;
+        margin-left: 0.5rem;
+      }
+
+      .sidebar nav .nav-group-title {
+        padding: 0.25rem 1.5rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #777;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: block;
+      }
+
+      .sidebar nav .nav-group-title.clickable {
+        color: var(--text-color);
+        text-decoration: none;
+        transition: all 0.15s ease;
+        border-left: 3px solid transparent;
+        text-transform: none;
+      }
+
+      .sidebar nav .nav-group-title.clickable:hover {
+        color: var(--primary-color);
+        background-color: rgba(62, 175, 124, 0.1);
+        border-left-color: var(--primary-color);
+      }
+
+      .sidebar nav .nav-group-title.clickable.active {
+        color: var(--primary-color);
+        font-weight: 600;
+        border-left-color: var(--primary-color);
+        background-color: rgba(62, 175, 124, 0.1);
+      }
+
+      .content {
+        flex: 1;
+        margin-left: 280px;
+        padding: 2rem 3rem;
+        max-width: calc(100% - 200px);
+      }
+
+      .content h1 {
+        color: var(--text-color);
+        font-size: 2.2rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 0.75rem;
+      }
+
+      .content h2 {
+        color: var(--text-color);
+        font-size: 1.6rem;
+        font-weight: 600;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-color);
+      }
+
+      .content h3 {
+        color: var(--text-color);
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-top: 1.5rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .content code {
+        color: #bdbfc5;
+        background-color: var(--code-bg-color);
+        padding: 0.2rem 0.4rem;
+        border-radius: 3px;
+        font-family:
+          source-code-pro, Menlo, Monaco, Consolas, Courier New, monospace;
+        font-size: 0.85em;
+      }
+
+      .content pre {
+        background-color: var(--code-bg-color);
+        padding: 1rem;
+        border-radius: 6px;
+        overflow-x: auto;
+        line-height: 1.45;
+      }
+
+      .content pre code {
+        background-color: transparent;
+        padding: 0;
+      }
+
+      .content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 6px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 1rem 0;
+      }
+
+      .content a {
+        color: var(--primary-color);
+        text-decoration: none;
+      }
+
+      .content a:hover {
+        text-decoration: underline;
+      }
+
+      .content blockquote {
+        border-left: 4px solid var(--primary-color);
+        padding-left: 1rem;
+        margin-left: 0;
+        font-style: italic;
+        color: #666;
+      }
+
+      /* Mobile responsiveness */
+      @media (max-width: 768px) {
+        .sidebar {
+          display: none;
+        }
+
+        .content {
+          margin-left: 0;
+          max-width: 100%;
+          padding: 1rem;
+        }
+
+        .mobile-nav-toggle {
+          display: block;
+          position: fixed;
+          top: 1rem;
+          left: 1rem;
+          z-index: 1000;
+          background: var(--primary-color);
+          color: white;
+          border: none;
+          padding: 0.5rem;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+      }
+
+      .mobile-nav-toggle {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="sidebar">
+        <h2>
+          Johnny•Decimal•JS
+        </h2>
+        <nav>
+          <ul>
+            <li><a href="/johnny/">Home</a></li>
+            <li class="nav-group">
+              <div class="nav-group-title">Plugins</div>
+              <ul>
+                <li>
+                  <a href="/johnny/plugins/plugin-development/"
+                  >Plugin Development</a>
+                </li>
+                <li>
+                  <a href="/johnny/plugins/plugin-usage/">Plugin Usage</a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-group">
+              <div class="nav-group-title">Setup</div>
+              <ul>
+                <li><a href="/johnny/setup/easy-setup/">Easy Setup</a></li>
+                <li><a href="/johnny/setup/manual-setup/">Manual Setup</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <main class="content">
+        <h1 id="easy-setup">Easy Setup</h1>
+        <h2 id="install-via-deno">
+          Install via Deno <a href="#install-via-deno" class="heading-anchor"
+          >#</a>
+        </h2>
+        <p>
+          The Deno installation is simpler, but the script runs a bit slower
+          than running via binary.
+        </p>
+        <p>
+          Haven’t installed Deno yet? Head to the <a
+            href="https://deno.land/#installation"
+            target="_blank"
+            rel="nofollow noopener noreferrer"
+          >website</a>, its just about running a single command!
+        </p>
+        <p>
+          To install Johnny Decimal CLI, we just need to run the <code>deno
+            install</code> command:
+        </p>
+        <pre>
+<code>deno install --allow-env --allow-read --allow-write --name=jd https://deno.land/x/johnny_decimal/main.ts
+</code></pre>
+        <p>
+          You’ll notice the <code>install</code> permissions are pretty broad
+          here! Depending on what you want to do, and how much manual setup
+          you’re willing to do, these are not all necessary. You can see more
+          explanations on what each of these are used for in our <a
+            href="./setup_manually"
+          >manual installation guide</a>. You might also need to include <code
+          >--allow-net</code> or <code>allow-run</code> if you are using <a
+            href="https://johnny.bpev.me/guide/plugins/plugin_usage.html#enabling-plugins"
+            target="_blank"
+            rel="nofollow noopener noreferrer"
+          >external plugins</a>. Be careful you trust any plugins you are
+          running!
+        </p>
+        <p>
+          Once Johnny Decimal CLI is installed via deno or binary, we have an
+          installation script that will help you set everything up!
+        </p>
+        <pre>
+<code>jd install
+</code></pre>
+        <h2 id="install-via-binary">
+          Install via Binary <a
+            href="#install-via-binary"
+            class="heading-anchor"
+          >#</a>
+        </h2>
+        <p>
+          Sooooooo while binaries exist for mac, linux, and windows, I only have
+          macOS at the moment, so these instructions are for that.
+        </p>
+        <ol>
+          <li>
+            Download the <a
+              href="https://github.com/bpevs/johnny_decimal/releases"
+              target="_blank"
+              rel="nofollow noopener noreferrer"
+            >latest release</a>
+          </li>
+          <li>
+            Rename the release to <code>johnny_decimal</code>, and reference it
+            from your <code>path</code> (for example, I have it placed in <code
+            >~/.apps/bin/johnny_decimal</code>, and have <code
+            >$HOME/.apps/bin:</code> added to the PATH var in my <code
+            >.zprofile</code>).
+          </li>
+          <li>
+            Run <code>johnny_decimal install</code>. This is the javascript
+            package. It will also setup the <code>jd</code> alias, so everything
+            past this point should be the same as via Deno.
+          </li>
+        </ol>
+        <h2 id="done">Done! <a href="#done" class="heading-anchor">#</a></h2>
+        <p>
+          And that’s it! You’re all done! You should be able to use the Johnny
+          Decimal! List all the commands you can use with <code>jd
+            --help</code>!
+        </p>
+        <p><img src="./screenshot-help.png" alt="Using Johnny Decimal"></p>
+      </main>
+    </div>
+    <button class="mobile-nav-toggle" onclick="toggleSidebar()">☰</button>
+
+    <script>
+      function toggleSidebar() {
+        const sidebar = document.querySelector(".sidebar");
+        sidebar.style.display = sidebar.style.display === "block"
+          ? "none"
+          : "block";
+      }
+    </script>
+  </body>
+</html>

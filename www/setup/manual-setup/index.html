@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Setup | Johnny Decimal CLI</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"
+    >
+    <style>
+      :root {
+        --primary-color: #3eaf7c;
+        --primary-color-light: #4abf8a;
+        --text-color: #2c3e50;
+        --background-color: #ffffff;
+        --border-color: #eaecef;
+        --code-bg-color: #282c34;
+        --sidebar-bg: #f8f9fa;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme]) {
+          --text-color: #e2e8f0;
+          --background-color: #111827;
+          --border-color: #374151;
+          --code-bg-color: #282c34;
+          --sidebar-bg: #1f2937;
+        }
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+          Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+          sans-serif;
+        line-height: 1.6;
+        color: var(--text-color) !important;
+        background-color: var(--background-color) !important;
+        margin: 0;
+        padding: 0;
+        max-width: 1000px;
+      }
+
+      .container {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        width: 280px;
+        background-color: var(--sidebar-bg);
+        border-right: 1px solid var(--border-color);
+        padding: 1.5rem 0;
+        position: fixed;
+        height: 100vh;
+        overflow-y: auto;
+      }
+
+      .sidebar h2 {
+        margin: 0 1.5rem 1rem 1.5rem;
+        color: var(--text-color);
+        font-size: 1.2rem;
+        font-weight: 600;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .theme-toggle {
+        background: none;
+        border: 1px solid var(--border-color);
+        color: var(--text-color);
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        transition: all 0.15s ease;
+      }
+
+      .theme-toggle:hover {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+      }
+
+      .sidebar nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .sidebar nav li {
+        margin: 0;
+      }
+
+      .sidebar nav a {
+        display: block;
+        padding: 0.5rem 1.5rem;
+        color: var(--text-color);
+        text-decoration: none;
+        transition: all 0.15s ease;
+        border-left: 3px solid transparent;
+      }
+
+      .sidebar nav a:hover {
+        color: var(--primary-color);
+        background-color: rgba(62, 175, 124, 0.1);
+        border-left-color: var(--primary-color);
+      }
+
+      .sidebar nav a.active {
+        color: var(--primary-color);
+        font-weight: 600;
+        border-left-color: var(--primary-color);
+        background-color: rgba(62, 175, 124, 0.1);
+      }
+
+      .sidebar nav .nav-group {
+        margin-bottom: 1rem;
+        margin-left: 0.5rem;
+      }
+
+      .sidebar nav .nav-group-title {
+        padding: 0.25rem 1.5rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #777;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: block;
+      }
+
+      .sidebar nav .nav-group-title.clickable {
+        color: var(--text-color);
+        text-decoration: none;
+        transition: all 0.15s ease;
+        border-left: 3px solid transparent;
+        text-transform: none;
+      }
+
+      .sidebar nav .nav-group-title.clickable:hover {
+        color: var(--primary-color);
+        background-color: rgba(62, 175, 124, 0.1);
+        border-left-color: var(--primary-color);
+      }
+
+      .sidebar nav .nav-group-title.clickable.active {
+        color: var(--primary-color);
+        font-weight: 600;
+        border-left-color: var(--primary-color);
+        background-color: rgba(62, 175, 124, 0.1);
+      }
+
+      .content {
+        flex: 1;
+        margin-left: 280px;
+        padding: 2rem 3rem;
+        max-width: calc(100% - 200px);
+      }
+
+      .content h1 {
+        color: var(--text-color);
+        font-size: 2.2rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 0.75rem;
+      }
+
+      .content h2 {
+        color: var(--text-color);
+        font-size: 1.6rem;
+        font-weight: 600;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-color);
+      }
+
+      .content h3 {
+        color: var(--text-color);
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-top: 1.5rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .content code {
+        color: #bdbfc5;
+        background-color: var(--code-bg-color);
+        padding: 0.2rem 0.4rem;
+        border-radius: 3px;
+        font-family:
+          source-code-pro, Menlo, Monaco, Consolas, Courier New, monospace;
+        font-size: 0.85em;
+      }
+
+      .content pre {
+        background-color: var(--code-bg-color);
+        padding: 1rem;
+        border-radius: 6px;
+        overflow-x: auto;
+        line-height: 1.45;
+      }
+
+      .content pre code {
+        background-color: transparent;
+        padding: 0;
+      }
+
+      .content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 6px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 1rem 0;
+      }
+
+      .content a {
+        color: var(--primary-color);
+        text-decoration: none;
+      }
+
+      .content a:hover {
+        text-decoration: underline;
+      }
+
+      .content blockquote {
+        border-left: 4px solid var(--primary-color);
+        padding-left: 1rem;
+        margin-left: 0;
+        font-style: italic;
+        color: #666;
+      }
+
+      /* Mobile responsiveness */
+      @media (max-width: 768px) {
+        .sidebar {
+          display: none;
+        }
+
+        .content {
+          margin-left: 0;
+          max-width: 100%;
+          padding: 1rem;
+        }
+
+        .mobile-nav-toggle {
+          display: block;
+          position: fixed;
+          top: 1rem;
+          left: 1rem;
+          z-index: 1000;
+          background: var(--primary-color);
+          color: white;
+          border: none;
+          padding: 0.5rem;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+      }
+
+      .mobile-nav-toggle {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="sidebar">
+        <h2>
+          Johnny•Decimal•JS
+        </h2>
+        <nav>
+          <ul>
+            <li><a href="/johnny/">Home</a></li>
+            <li class="nav-group">
+              <div class="nav-group-title">Plugins</div>
+              <ul>
+                <li>
+                  <a href="/johnny/plugins/plugin-development/"
+                  >Plugin Development</a>
+                </li>
+                <li>
+                  <a href="/johnny/plugins/plugin-usage/">Plugin Usage</a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-group">
+              <div class="nav-group-title">Setup</div>
+              <ul>
+                <li><a href="/johnny/setup/easy-setup/">Easy Setup</a></li>
+                <li><a href="/johnny/setup/manual-setup/">Manual Setup</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <main class="content">
+        <h1 id="manual-setup">Manual Setup</h1>
+        <p>
+          “Manual Installation” is basically walking through the steps of the
+          Johnny Decimal CLI’s <code>jd install</code> command.
+        </p>
+        <p>
+          This is preferred when you want to give Johnny Decimal less
+          permissions.
+        </p>
+        <h2 id="setup-johnny-decimal-cli">
+          Setup Johnny Decimal CLI <a
+            href="#setup-johnny-decimal-cli"
+            class="heading-anchor"
+          >#</a>
+        </h2>
+        <h3 id="create-jd-directory">Create <code>.jd</code> Directory</h3>
+        <p>
+          This is where we house our <code>cd</code> script, our configuration
+          file, and any plugins. The shape of the directory is as follows.
+        </p>
+        <pre>
+<code>.jd
+  &gt; plugins
+  - config.yaml
+  - main.sh
+</code></pre>
+        <ul>
+          <li>The <code>plugins</code> dir is where we install plugins.</li>
+          <li>
+            The config.yaml file is our configuration. We can enable plugins by
+            adding <code>pluginsEnabled: true</code>.
+          </li>
+          <li>
+            <code>main.sh</code> is our <a
+              href="https://github.com/ivebencrazy/johnny_decimal/blob/main/source/shell/main.sh"
+              target="_blank"
+              rel="nofollow noopener noreferrer"
+            >shell script</a> that we use for changing directories. It’s not
+            strictly necessary, but is really helpful.
+          </li>
+        </ul>
+        <h3 id="update-shell-config">Update Shell Config</h3>
+        <p>
+          First, we need to add our environment variables. This can be added in
+          a variety of locations, depending on your shell, but I add these to my
+          <code>.zshrc</code> file:
+        </p>
+        <pre>
+<code>export JD_HOME="$HOME/Root" # Your Johnny Decimal Root
+source $HOME/.jd/main.sh    # Source our cd script
+# Also, if you want to install via Binary, you should add `johnny_decimal` to your PATH
+</code></pre>
+        <p>And that’s it! Our setup is done!</p>
+        <h2 id="install-johnny-decimal-cli">
+          Install Johnny Decimal CLI <a
+            href="#install-johnny-decimal-cli"
+            class="heading-anchor"
+          >#</a>
+        </h2>
+        <p>
+          Now that our manual setup is done, we will never need to use <code>jd
+            install</code>. This allows us to ignore a bit of the
+          otherwise-required permissions. From here, we can either install the
+          jd binary, or the package from Deno.
+        </p>
+        <h3 id="install-jd-via-deno">Install jd via Deno</h3>
+        <p>
+          This step is still the same! Head to the <a
+            href="https://deno.land"
+            target="_blank"
+            rel="nofollow noopener noreferrer"
+          >Deno homepage</a>!
+        </p>
+        <p>The core of this command is still:</p>
+        <pre>
+<code>deno install --name=jd https://deno.land/x/johnny_decimal@1.0.3/main.ts
+</code></pre>
+        <p>We will want to tag on permissions as necessary:</p>
+        <pre>
+<code>deno install --name=jd --allow-env https://deno.land/x/johnny_decimal@1.0.3/main.ts
+</code></pre>
+        <p>
+          As an example, probably the most locked-down install of Johnny Decimal
+          CLI would probably look something like this:
+        </p>
+        <pre>
+<code>deno install --name=jd --allow-env=HOME,JD_HOME,JD_DIR --allow-read=$JD_HOME,$HOME/.jd https://deno.land/x/johnny_decimal@1.0.3/main.ts
+</code></pre>
+        <h2 id="install-via-binary">
+          Install via Binary <a
+            href="#install-via-binary"
+            class="heading-anchor"
+          >#</a>
+        </h2>
+        <ol>
+          <li>
+            Download the <a
+              href="https://github.com/bpevs/johnny_decimal/releases"
+              target="_blank"
+              rel="nofollow noopener noreferrer"
+            >latest release</a>
+          </li>
+          <li>
+            Rename the release to <code>johnny_decimal</code>, and make sure it
+            is referenced in your <code>path</code> (for example, I have it
+            placed in <code>~/.apps/bin/johnny_decimal</code>, and have <code
+            >$HOME/.apps/bin:</code> added to the PATH var in my <code
+            >.zprofile</code>).
+          </li>
+        </ol>
+        <p>And we’re done! Setup Complete!</p>
+        <h2 id="permissions">
+          Permissions <a href="#permissions" class="heading-anchor">#</a>
+        </h2>
+        <p>
+          Here s a list of all the permissions we use for different things…
+        </p>
+        <h3 id="allow-env-required">–allow-env (required)</h3>
+        <p>Currently, this permission is Required to use Johnny Decimal CLI.</p>
+        <p>It is used for reading the environment variables:</p>
+        <ul>
+          <li>
+            $HOME - We use this for <code>jd install</code>, which adds lines to
+            your <code>.</code>
+          </li>
+          <li>$JD_HOME - Directs</li>
+          <li>$JD_DIR - This generally <code>.jd</code>.</li>
+        </ul>
+        <p><code>--allow-env=HOME,JD_HOME,JD_DIR</code></p>
+        <h3 id="allow-read-required">–allow-read (required)</h3>
+        <p>
+          This is required, and is used for reading files in your Johnny Decimal
+          directory. You CAN however, narrow the usage of this api like so:
+        </p>
+        <p><code>--allow-read=$JD_HOME,~/.jd</code></p>
+        <p>
+          Here, we allow reading our Johnny Decimal Filesystem Root ($JD_HOME),
+          and the directory where Johnny Decimal CLI is storing both settings
+          and plugins (.jd)
+        </p>
+        <h3 id="allow-net-optional">–allow-net (optional)</h3>
+        <p>
+          This is used for downloading dependencies of plugins. It is not
+          necessary if either:
+        </p>
+        <ol>
+          <li>You don’t use plugins</li>
+          <li>Your plugins do not have any dependencies</li>
+        </ol>
+        <p>
+          Most strict version allowed currently is: <code
+          >--allow-net=https://deno.land</code>.
+        </p>
+        <h3 id="allow-write-optional">–allow-write (optional)</h3>
+        <p>
+          This is used by <code>jd install</code>, <code>jd uninstall</code>,
+          and <code>jd plugins</code> commands (for writing to <code
+          >.jd/config.yaml</code>). If you manually install Johnny Decimal CLI,
+          then this permission is not necessary
+        </p>
+        <h3 id="allow-run-optional">–allow-run (optional)</h3>
+        <p>
+          This is used by the <code>jd open</code> command. If you do not use
+          that or any plugins that use <code>Deno.run</code>, this permission is
+          optional.
+        </p>
+      </main>
+    </div>
+    <button class="mobile-nav-toggle" onclick="toggleSidebar()">☰</button>
+
+    <script>
+      function toggleSidebar() {
+        const sidebar = document.querySelector(".sidebar");
+        sidebar.style.display = sidebar.style.display === "block"
+          ? "none"
+          : "block";
+      }
+    </script>
+  </body>
+</html>

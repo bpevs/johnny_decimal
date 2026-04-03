@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plugin Usage | Johnny Decimal CLI</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"
+    >
+    <style>
+      :root {
+        --primary-color: #3eaf7c;
+        --primary-color-light: #4abf8a;
+        --text-color: #2c3e50;
+        --background-color: #ffffff;
+        --border-color: #eaecef;
+        --code-bg-color: #282c34;
+        --sidebar-bg: #f8f9fa;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme]) {
+          --text-color: #e2e8f0;
+          --background-color: #111827;
+          --border-color: #374151;
+          --code-bg-color: #282c34;
+          --sidebar-bg: #1f2937;
+        }
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+          Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+          sans-serif;
+        line-height: 1.6;
+        color: var(--text-color) !important;
+        background-color: var(--background-color) !important;
+        margin: 0;
+        padding: 0;
+        max-width: 1000px;
+      }
+
+      .container {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        width: 280px;
+        background-color: var(--sidebar-bg);
+        border-right: 1px solid var(--border-color);
+        padding: 1.5rem 0;
+        position: fixed;
+        height: 100vh;
+        overflow-y: auto;
+      }
+
+      .sidebar h2 {
+        margin: 0 1.5rem 1rem 1.5rem;
+        color: var(--text-color);
+        font-size: 1.2rem;
+        font-weight: 600;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .theme-toggle {
+        background: none;
+        border: 1px solid var(--border-color);
+        color: var(--text-color);
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        transition: all 0.15s ease;
+      }
+
+      .theme-toggle:hover {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+      }
+
+      .sidebar nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .sidebar nav li {
+        margin: 0;
+      }
+
+      .sidebar nav a {
+        display: block;
+        padding: 0.5rem 1.5rem;
+        color: var(--text-color);
+        text-decoration: none;
+        transition: all 0.15s ease;
+        border-left: 3px solid transparent;
+      }
+
+      .sidebar nav a:hover {
+        color: var(--primary-color);
+        background-color: rgba(62, 175, 124, 0.1);
+        border-left-color: var(--primary-color);
+      }
+
+      .sidebar nav a.active {
+        color: var(--primary-color);
+        font-weight: 600;
+        border-left-color: var(--primary-color);
+        background-color: rgba(62, 175, 124, 0.1);
+      }
+
+      .sidebar nav .nav-group {
+        margin-bottom: 1rem;
+        margin-left: 0.5rem;
+      }
+
+      .sidebar nav .nav-group-title {
+        padding: 0.25rem 1.5rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #777;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: block;
+      }
+
+      .sidebar nav .nav-group-title.clickable {
+        color: var(--text-color);
+        text-decoration: none;
+        transition: all 0.15s ease;
+        border-left: 3px solid transparent;
+        text-transform: none;
+      }
+
+      .sidebar nav .nav-group-title.clickable:hover {
+        color: var(--primary-color);
+        background-color: rgba(62, 175, 124, 0.1);
+        border-left-color: var(--primary-color);
+      }
+
+      .sidebar nav .nav-group-title.clickable.active {
+        color: var(--primary-color);
+        font-weight: 600;
+        border-left-color: var(--primary-color);
+        background-color: rgba(62, 175, 124, 0.1);
+      }
+
+      .content {
+        flex: 1;
+        margin-left: 280px;
+        padding: 2rem 3rem;
+        max-width: calc(100% - 200px);
+      }
+
+      .content h1 {
+        color: var(--text-color);
+        font-size: 2.2rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 0.75rem;
+      }
+
+      .content h2 {
+        color: var(--text-color);
+        font-size: 1.6rem;
+        font-weight: 600;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-color);
+      }
+
+      .content h3 {
+        color: var(--text-color);
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-top: 1.5rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .content code {
+        color: #bdbfc5;
+        background-color: var(--code-bg-color);
+        padding: 0.2rem 0.4rem;
+        border-radius: 3px;
+        font-family:
+          source-code-pro, Menlo, Monaco, Consolas, Courier New, monospace;
+        font-size: 0.85em;
+      }
+
+      .content pre {
+        background-color: var(--code-bg-color);
+        padding: 1rem;
+        border-radius: 6px;
+        overflow-x: auto;
+        line-height: 1.45;
+      }
+
+      .content pre code {
+        background-color: transparent;
+        padding: 0;
+      }
+
+      .content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 6px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 1rem 0;
+      }
+
+      .content a {
+        color: var(--primary-color);
+        text-decoration: none;
+      }
+
+      .content a:hover {
+        text-decoration: underline;
+      }
+
+      .content blockquote {
+        border-left: 4px solid var(--primary-color);
+        padding-left: 1rem;
+        margin-left: 0;
+        font-style: italic;
+        color: #666;
+      }
+
+      /* Mobile responsiveness */
+      @media (max-width: 768px) {
+        .sidebar {
+          display: none;
+        }
+
+        .content {
+          margin-left: 0;
+          max-width: 100%;
+          padding: 1rem;
+        }
+
+        .mobile-nav-toggle {
+          display: block;
+          position: fixed;
+          top: 1rem;
+          left: 1rem;
+          z-index: 1000;
+          background: var(--primary-color);
+          color: white;
+          border: none;
+          padding: 0.5rem;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+      }
+
+      .mobile-nav-toggle {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="sidebar">
+        <h2>
+          Johnny•Decimal•JS
+        </h2>
+        <nav>
+          <ul>
+            <li><a href="/johnny/">Home</a></li>
+            <li class="nav-group">
+              <div class="nav-group-title">Plugins</div>
+              <ul>
+                <li>
+                  <a href="/johnny/plugins/plugin-development/"
+                  >Plugin Development</a>
+                </li>
+                <li>
+                  <a href="/johnny/plugins/plugin-usage/">Plugin Usage</a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-group">
+              <div class="nav-group-title">Setup</div>
+              <ul>
+                <li><a href="/johnny/setup/easy-setup/">Easy Setup</a></li>
+                <li><a href="/johnny/setup/manual-setup/">Manual Setup</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <main class="content">
+        <h1 id="plugin-usage">Plugin Usage</h1>
+        <p>
+          <strong>DO NOT INSTALL PLUGINS FROM ANYWHERE YOU DO NOT TRUST</strong>
+        </p>
+        <p>
+          Plugins are powerful, but kind of by definition, these are not made by
+          me. Johnny Decimal CLI is running with fairly broad permissions, and
+          so plugins can be quite dangerous! Please be careful when using
+          plugins!
+        </p>
+        <h2 id="enabling-plugins">
+          Enabling Plugins <a href="#enabling-plugins" class="heading-anchor"
+          >#</a>
+        </h2>
+        <p>
+          JD CLI defaults to NOT running 3rd-party plugins, so in order to use
+          them, you will need to enable plugins:
+        </p>
+        <pre>
+<code>jd plugins enable
+</code></pre>
+        <p>
+          Keep in mind that enabling plugins will <strong>RUN ALL PLUGINS WITH
+            THE SAME PERMISSIONS AS JD CLI</strong>. So, again, proceed with
+          caution.
+        </p>
+        <h2 id="installing-plugins">
+          Installing Plugins <a
+            href="#installing-plugins"
+            class="heading-anchor"
+          >#</a>
+        </h2>
+        <p>
+          Plugin can be installed by simply installing the source into <code
+          >~/.jd/plugins</code>. This directory is created by the jd setup
+          script (this runs on the first usage of <code>jd</code>).
+        </p>
+        <p>
+          The easiest way to do this is to clone a directory directly into the
+          plugins folder.
+        </p>
+        <pre>
+<code>git clone https://github.com/ivebencrazy/jd_plugin_sublime ~/.jd/plugins/sublime
+</code></pre>
+        <p>
+          When plugins are enabled, Johnny Decimal CLI will look for the <code
+          >main.js</code> file of each plugin. If there is no <code
+          >main.js</code>, the plugin will not be seen.
+        </p>
+      </main>
+    </div>
+    <button class="mobile-nav-toggle" onclick="toggleSidebar()">☰</button>
+
+    <script>
+      function toggleSidebar() {
+        const sidebar = document.querySelector(".sidebar");
+        sidebar.style.display = sidebar.style.display === "block"
+          ? "none"
+          : "block";
+      }
+    </script>
+  </body>
+</html>
